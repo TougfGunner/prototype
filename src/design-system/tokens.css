@@ -1,0 +1,320 @@
+/* Reference Operations v1 — Versioned CSS Custom Properties & Base Styles */
+
+:root,
+html[data-theme='light'] {
+  color-scheme: light;
+
+  /* Surfaces & Canvas */
+  --ref-bg-canvas: #e5e7ec;
+  --ref-bg-ambient-wash: rgba(155, 178, 232, 0.3);
+  --ref-bg-ambient-wash-secondary: rgba(196, 208, 238, 0.38);
+  --ref-surface-workspace: rgba(240, 242, 246, 0.78);
+  --ref-surface-stage: rgba(248, 249, 252, 0.9);
+  --ref-surface-card: #ffffff;
+  --ref-surface-card-hover: #f9fafc;
+  --ref-surface-card-muted: rgba(255, 255, 255, 0.66);
+  --ref-surface-input: #ffffff;
+  --ref-surface-selected: #0d0d0f;
+  --ref-surface-backdrop: rgba(214, 218, 226, 0.68);
+
+  /* Text & Ink */
+  --ref-text-primary: #17181c;
+  --ref-text-secondary: #6e7381;
+  --ref-text-muted: #9aa0ae;
+  --ref-text-on-selected: #ffffff;
+
+  /* Restrained Pastel Accents */
+  --ref-accent-blue: #8fa8e0;
+  --ref-accent-blue-strong: #6f8ed6;
+  --ref-accent-blue-soft: rgba(143, 168, 224, 0.2);
+  --ref-accent-coral: #d96b70;
+  --ref-accent-coral-soft: rgba(217, 107, 112, 0.16);
+  --ref-accent-amber: #f2d06b;
+  --ref-accent-amber-soft: rgba(242, 208, 107, 0.25);
+  --ref-accent-emerald: #5bb98c;
+
+  /* Borders & Hairlines */
+  --ref-border-hairline: rgba(255, 255, 255, 0.85);
+  --ref-border-subtle: rgba(23, 24, 28, 0.065);
+  --ref-border-focus: #6f8ed6;
+
+  /* Typography */
+  --ref-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  --ref-text-title: 1.375rem;
+  --ref-text-panel: 0.84375rem;
+  --ref-text-body-sm: 0.71875rem;
+  --ref-text-micro: 0.625rem;
+
+  /* Spacing */
+  --ref-space-1: 4px;
+  --ref-space-2: 8px;
+  --ref-space-3: 14px;
+  --ref-space-4: 22px;
+
+  /* Radii */
+  --ref-radius-workspace: 28px;
+  --ref-radius-stage: 26px;
+  --ref-radius-card: 18px;
+  --ref-radius-pill: 9999px;
+
+  /* Elevation */
+  --ref-shadow-panel: 0 8px 24px -4px rgba(20, 25, 38, 0.045),
+    0 2px 6px -1px rgba(20, 25, 38, 0.02);
+  --ref-shadow-card: 0 2px 7px rgba(18, 22, 33, 0.035);
+  --ref-shadow-modal: 0 24px 60px -12px rgba(15, 20, 32, 0.18),
+    0 4px 16px rgba(15, 20, 32, 0.06);
+
+  /* Motion Tokens */
+  --motion-duration-instant: 90ms;
+  --motion-duration-fast: 160ms;
+  --motion-duration-normal: 260ms;
+  --motion-duration-modal: 320ms;
+  --motion-duration-connector: 380ms;
+  --motion-duration-stagger: 42ms;
+  --motion-ease-out-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Component-level --ajb-* aliases bound to Reference Operations v1 tokens */
+  --ajb-bg-canvas: var(--ref-bg-canvas);
+  --ajb-surface-shell: rgba(241, 243, 247, 0.86);
+  --ajb-surface-panel: rgba(248, 249, 252, 0.92);
+  --ajb-surface-card: #ffffff;
+  --ajb-surface-card-selected: #0d0d0f;
+  --ajb-surface-modal: rgba(246, 247, 251, 0.96);
+  --ajb-text-primary: #17181c;
+  --ajb-text-secondary: #6e7381;
+  --ajb-text-muted: #9aa0ae;
+  --ajb-text-on-dark: #ffffff;
+  --ajb-accent-black: #0d0d0f;
+  --ajb-accent-periwinkle: #8fa8e0;
+  --ajb-accent-coral: #d96b70;
+  --ajb-accent-amber: #f2d06b;
+  --ajb-border-subtle: rgba(23, 24, 28, 0.068);
+  --ajb-border-strong: rgba(23, 24, 28, 0.16);
+  --ajb-shadow-shell: 0 28px 64px -16px rgba(18, 22, 33, 0.1), 0 4px 16px rgba(18, 22, 33, 0.04);
+  --ajb-shadow-card: 0 2px 7px rgba(18, 22, 33, 0.038);
+  --ajb-shadow-floating: 0 10px 24px -4px rgba(18, 22, 33, 0.09);
+  --ajb-shadow-pill: 0 2px 5px rgba(18, 22, 33, 0.045);
+  --ajb-shadow-modal: 0 28px 68px -12px rgba(15, 20, 32, 0.22), 0 4px 16px rgba(15, 20, 32, 0.08);
+  --ajb-dur-hover: 160ms;
+  --ajb-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark Presentation Adaptation (Explicitly Labelled Separate Theme) */
+html[data-theme='dark'] {
+  color-scheme: dark;
+
+  --ref-bg-canvas: #111318;
+  --ref-bg-ambient-wash: rgba(74, 102, 172, 0.18);
+  --ref-bg-ambient-wash-secondary: rgba(54, 72, 122, 0.15);
+  --ref-surface-workspace: rgba(22, 25, 32, 0.86);
+  --ref-surface-stage: rgba(29, 33, 42, 0.92);
+  --ref-surface-card: #252a35;
+  --ref-surface-card-hover: #2c3240;
+  --ref-surface-card-muted: rgba(37, 42, 53, 0.68);
+  --ref-surface-input: #1e222b;
+  --ref-surface-selected: #f3f5f8;
+  --ref-surface-backdrop: rgba(8, 10, 15, 0.72);
+
+  --ref-text-primary: #f1f3f7;
+  --ref-text-secondary: #9ba2b2;
+  --ref-text-muted: #697082;
+  --ref-text-on-selected: #0d0d0f;
+
+  --ref-accent-blue: #7b99dc;
+  --ref-accent-blue-strong: #92aee8;
+  --ref-accent-blue-soft: rgba(123, 153, 220, 0.22);
+  --ref-accent-coral: #e0757a;
+  --ref-accent-coral-soft: rgba(224, 117, 122, 0.2);
+  --ref-accent-amber: #e5c358;
+  --ref-accent-amber-soft: rgba(229, 195, 88, 0.2);
+
+  --ref-border-hairline: rgba(255, 255, 255, 0.08);
+  --ref-border-subtle: rgba(255, 255, 255, 0.075);
+  --ref-border-focus: #92aee8;
+
+  --ref-shadow-panel: 0 10px 28px -4px rgba(0, 0, 0, 0.42);
+  --ref-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.32);
+  --ref-shadow-modal: 0 28px 68px -12px rgba(0, 0, 0, 0.72);
+
+  --ajb-bg-canvas: #111318;
+  --ajb-surface-shell: rgba(22, 25, 32, 0.9);
+  --ajb-surface-panel: rgba(29, 33, 42, 0.94);
+  --ajb-surface-card: #252a35;
+  --ajb-surface-card-selected: #0d0d0f;
+  --ajb-surface-modal: rgba(29, 33, 42, 0.98);
+  --ajb-text-primary: #f1f3f7;
+  --ajb-text-secondary: #9ba2b2;
+  --ajb-text-muted: #697082;
+  --ajb-text-on-dark: #ffffff;
+  --ajb-accent-black: #0d0d0f;
+  --ajb-accent-periwinkle: #7b99dc;
+  --ajb-accent-coral: #e0757a;
+  --ajb-accent-amber: #e5c358;
+  --ajb-border-subtle: rgba(255, 255, 255, 0.08);
+  --ajb-border-strong: rgba(255, 255, 255, 0.18);
+  --ajb-shadow-shell: 0 28px 64px -16px rgba(0, 0, 0, 0.55);
+  --ajb-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.34);
+  --ajb-shadow-floating: 0 10px 24px -4px rgba(0, 0, 0, 0.5);
+  --ajb-shadow-pill: 0 2px 5px rgba(0, 0, 0, 0.3);
+  --ajb-shadow-modal: 0 28px 68px -12px rgba(0, 0, 0, 0.72);
+}
+
+/* Reduced Motion Override — Preserves Instant Usability Without Delay */
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  html[data-theme='light'],
+  html[data-theme='dark'] {
+    --motion-duration-instant: 1ms;
+    --motion-duration-fast: 1ms;
+    --motion-duration-normal: 1ms;
+    --motion-duration-modal: 1ms;
+    --motion-duration-connector: 1ms;
+    --motion-duration-stagger: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition-duration: 1ms !important;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100vh;
+  background-color: var(--ref-bg-canvas);
+  color: var(--ref-text-primary);
+  font-family: var(--ref-font-sans);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent page scroll when native modal dialog is open (modern-web-guidance: prevent-page-scroll-under-modal-dialog) */
+body:has(dialog[open]) {
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+/* Visible Accessible Keyboard Focus */
+:focus-visible {
+  outline: 2px solid var(--ref-border-focus);
+  outline-offset: 2px;
+}
+
+.tabular-nums,
+.ajb-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Semantic Circular Progress Ring (modern-web-guidance: progress-ring) */
+progress.ref-progress-ring {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+progress.ref-progress-ring::-webkit-progress-bar {
+  background: transparent;
+}
+
+progress.ref-progress-ring::-webkit-progress-value {
+  background: transparent;
+}
+
+/* Native Modal Dialog Styling & Backdrop (modern-web-guidance: light-dismiss-a-dialog) */
+dialog.ref-modal-dialog {
+  margin: auto;
+  border: 1px solid var(--ref-border-hairline);
+  border-radius: var(--ref-radius-workspace);
+  background: var(--ref-surface-stage);
+  color: var(--ref-text-primary);
+  box-shadow: var(--ref-shadow-modal);
+  padding: 0;
+  width: min(416px, calc(100vw - 32px));
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  animation: refModalIn var(--motion-duration-modal) var(--motion-ease-out-quart) both;
+}
+
+dialog.ref-modal-dialog::backdrop {
+  background: var(--ref-surface-backdrop);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: refBackdropIn var(--motion-duration-modal) var(--motion-ease-out-quart) both;
+}
+
+@keyframes refModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes refBackdropIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes refStaggerIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes refAvatarPop {
+  from {
+    opacity: 0;
+    transform: scale(0.35);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes refSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

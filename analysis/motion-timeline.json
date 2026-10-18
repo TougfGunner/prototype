@@ -1,0 +1,1457 @@
+{
+  "schema_version": "1.0.0",
+  "design_system": "Reference Operations v1",
+  "video_metadata": {
+    "source_file": "references/93f37755fd19926a8a827c5719a7c7e2.mp4",
+    "container_format": "mov,mp4,m4a,3gp,3g2,mj2",
+    "width": 1600,
+    "height": 1200,
+    "display_aspect_ratio": "4:3",
+    "straight_on_app_bounds_at_f0000": {
+      "x": 88,
+      "y": 126,
+      "width": 1424,
+      "height": 954
+    },
+    "codec_name": "h264",
+    "profile": "Main",
+    "pix_fmt": "yuv420p",
+    "color_space": "bt709",
+    "r_frame_rate": "60/1",
+    "avg_frame_rate": "60/1",
+    "time_base": "1/60000",
+    "duration_seconds": 17.5,
+    "duration_ms": 17500.0,
+    "total_decoded_frames": 1050,
+    "is_variable_frame_rate": false,
+    "unique_frame_durations_ticks": [
+      1000
+    ],
+    "frame_interval_ms": 16.667,
+    "audio_stream": {
+      "codec_name": "aac",
+      "sample_rate": "48000",
+      "channels": 2
+    },
+    "extraction_limitations": [
+      "Container time_base is 1/60000 with constant 1000-tick (16.667 ms) frame durations; sub-frame (between-sample) motion cannot be observed below the 16.667 ms Nyquist interval.",
+      "Several transitions combine virtual camera 2D/3D pan-and-zoom of the presentation canvas with in-app UI state changes; camera motion and UI motion are explicitly separated in motion-timeline.json.",
+      "Original authoring code/CSS/After Effects keyframes are not embedded in the MP4 stream; easing curves and spring parameters are empirical fits to pixel trajectories and labeled as estimates."
+    ]
+  },
+  "reusable_motion_tokens": {
+    "motion-duration-instant": "90ms",
+    "motion-duration-fast": "160ms",
+    "motion-duration-normal": "240ms",
+    "motion-duration-modal": "320ms",
+    "motion-duration-connector": "380ms",
+    "motion-duration-stagger-step": "45ms",
+    "motion-ease-out-quart": "cubic-bezier(0.22, 1, 0.36, 1)",
+    "motion-ease-in-out-cubic": "cubic-bezier(0.65, 0, 0.35, 1)",
+    "motion-ease-spring-gentle": "linear(0, 0.009, 0.035 2.1%, 0.141, 0.281 6.7%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.041 22.7%, 1.035 26.8%, 1.006 35.5%, 0.998 44.2%, 1)",
+    "motion-ease-button-press": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+  },
+  "events": [
+    {
+      "id": "evt_01_camera_zoom_pipeline",
+      "name": "Presentation Camera Zoom onto New Cases Column",
+      "movement_origin": "camera_presentation",
+      "start_frame": 35,
+      "end_frame": 105,
+      "start_ms": 583.333,
+      "end_ms": 1750.0,
+      "duration_ms": 1166.667,
+      "target_element": "Browser Canvas Viewport",
+      "parent_container": "Outer 1600x1200 Presentation Stage",
+      "properties": {
+        "scale": {
+          "from": 1.0,
+          "to": 1.48
+        },
+        "translate_px": {
+          "from": [
+            0,
+            0
+          ],
+          "to": [
+            310,
+            145
+          ]
+        },
+        "opacity": {
+          "from": 1.0,
+          "to": 1.0
+        }
+      },
+      "clipping_and_layering": "Outer presentation frame clips the scaled browser card.",
+      "transform_origin": "28% 34% (centered on 'New Cases -> Take for processing' button)",
+      "stagger_and_overlap": "Overlaps at f=0085 (1416.7ms) with button depression and at f=0098 (1633.3ms) with modal backdrop fade-in.",
+      "estimated_curve": {
+        "type": "cubic-bezier (estimate)",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "notes": "Camera showcase zoom only; NOT reproduced in the usable straight-on browser prototype."
+      }
+    },
+    {
+      "id": "evt_02_open_processing_modal",
+      "name": "'Take for processing' Button Press & 'Processing of the New Case' Modal Open",
+      "movement_origin": "ui_interface",
+      "start_frame": 92,
+      "end_frame": 135,
+      "start_ms": 1533.333,
+      "end_ms": 2250.0,
+      "duration_ms": 716.667,
+      "target_element": "DetailModal ('Processing of the New Case') + Glass Backdrop",
+      "parent_container": "Application Shell Overlay Layer (z-index: 50)",
+      "properties": {
+        "trigger_button_scale": {
+          "from": 1.0,
+          "to": 0.96,
+          "return": 1.0
+        },
+        "backdrop_opacity": {
+          "from": 0.0,
+          "to": 1.0
+        },
+        "backdrop_blur_px": {
+          "from": 0,
+          "to": 8
+        },
+        "modal_scale": {
+          "from": 0.94,
+          "to": 1.0
+        },
+        "modal_translate_y_px": {
+          "from": 14,
+          "to": 0
+        },
+        "modal_opacity": {
+          "from": 0.0,
+          "to": 1.0
+        }
+      },
+      "clipping_and_layering": "Modal card (radius 28px) floats above translucent light-grey backdrop (rgba(218, 221, 227, 0.68) with backdrop-filter blur).",
+      "transform_origin": "50% 50%",
+      "stagger_and_overlap": "Button press occupies f=0092..0102 (167ms); modal entrance begins at f=0100 (1666.7ms) and settles by f=0132 (2200.0ms, ~533ms showcase / ~280ms normalized UI speed).",
+      "estimated_curve": {
+        "type": "spring / ease-out-quart (estimate)",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "prototype_token": "var(--motion-duration-modal) var(--motion-ease-out-quart)"
+      }
+    },
+    {
+      "id": "evt_03_type_case_name",
+      "name": "Text Input Focus & Character-by-Character Entry ('Conversion Issues')",
+      "movement_origin": "ui_interface",
+      "start_frame": 165,
+      "end_frame": 212,
+      "start_ms": 2750.0,
+      "end_ms": 3533.333,
+      "duration_ms": 783.333,
+      "target_element": "Create a case name input field",
+      "parent_container": "DetailModal Form Stack",
+      "properties": {
+        "placeholder_opacity": {
+          "from": 0.45,
+          "to": 0.0
+        },
+        "text_length_chars": {
+          "from": 0,
+          "to": 17
+        }
+      },
+      "clipping_and_layering": "Single-line pill input (radius 18px) with right-aligned edit pencil icon.",
+      "transform_origin": "0% 50%",
+      "stagger_and_overlap": "17 characters ('Conversion Issues') appear across 47 frames (~46ms per character average).",
+      "estimated_curve": {
+        "type": "stepped discrete input",
+        "value": "instantaneous per keystroke (0ms UI delay)"
+      }
+    },
+    {
+      "id": "evt_04_drag_budget_slider",
+      "name": "Allocated Budget Pill Slider Drag (22,500 $ -> 24,985 $)",
+      "movement_origin": "ui_interface",
+      "start_frame": 220,
+      "end_frame": 292,
+      "start_ms": 3666.667,
+      "end_ms": 4866.667,
+      "duration_ms": 1200.0,
+      "target_element": "Allocated Budget Pill Track & Thumb",
+      "parent_container": "DetailModal Form Stack",
+      "properties": {
+        "fill_ratio": {
+          "from": 0.75,
+          "to": 0.833
+        },
+        "displayed_value_usd": {
+          "from": 22500,
+          "to": 24985
+        },
+        "pill_right_edge_px_in_zoomed_frame": {
+          "from": 861,
+          "to": 896
+        }
+      },
+      "clipping_and_layering": "Outer pale pill track clips inner #111215 black capsule with white vertical drag bar and live numeric readout.",
+      "transform_origin": "0% 50%",
+      "stagger_and_overlap": "Continuous pointer drag with 1:1 numeric counter update on every frame.",
+      "estimated_curve": {
+        "type": "continuous pointer tracking (estimate)",
+        "value": "cubic-bezier(0.25, 0.1, 0.25, 1.0) during pointer drag; direct 1:1 input binding in prototype"
+      }
+    },
+    {
+      "id": "evt_05_submit_modal_to_grid_view",
+      "name": "Click 'Take for Processing' & Transition to 'Cases in Progress' 8-Card Grid",
+      "movement_origin": "mixed_ui_and_camera",
+      "start_frame": 310,
+      "end_frame": 378,
+      "start_ms": 5166.667,
+      "end_ms": 6300.0,
+      "duration_ms": 1133.333,
+      "target_element": "Modal Close + Sub-navigation Switch ('Case Pipelines' -> 'Cases in Progress')",
+      "parent_container": "Main Workspace Surface",
+      "properties": {
+        "modal_opacity": {
+          "from": 1.0,
+          "to": 0.0
+        },
+        "camera_scale": {
+          "from": 1.48,
+          "to": 1.0
+        },
+        "grid_cards_scale": {
+          "from": 0.96,
+          "to": 1.0
+        },
+        "progress_rings_sweep_pct": {
+          "from": 0,
+          "to": 100
+        }
+      },
+      "clipping_and_layering": "8 cards arranged in a 4x2 grid inside the notched inner workspace container.",
+      "transform_origin": "50% 50%",
+      "stagger_and_overlap": "Cards reveal with ~35ms row/column stagger while circular conic progress rings sweep to their target percentages (e.g., 58%/84%, 39%/75%).",
+      "estimated_curve": {
+        "type": "cubic-bezier (estimate)",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "id": "evt_06_add_case_team_dropdown_accordion",
+      "name": "Open '+ Add New Case' Modal & Expand 'Responsible Team' Dropdown Accordion",
+      "movement_origin": "ui_interface",
+      "start_frame": 420,
+      "end_frame": 555,
+      "start_ms": 7000.0,
+      "end_ms": 9250.0,
+      "duration_ms": 2250.0,
+      "target_element": "Responsible Team Selector (Team-A, Team-B, Team-C)",
+      "parent_container": "DetailModal ('Add New Case')",
+      "properties": {
+        "dropdown_Menu_height_px": {
+          "from": 0,
+          "to": 168
+        },
+        "dropdown_chevron_rotation_deg": {
+          "from": 0,
+          "to": 180
+        },
+        "selected_option": {
+          "from": "Team-A",
+          "to": "Team-B"
+        }
+      },
+      "clipping_and_layering": "Dropdown expands inline/overlaid with rounded 20px container showing 3-avatar clusters + team label on each row.",
+      "transform_origin": "50% 0%",
+      "stagger_and_overlap": "Modal opens f=0420..0445; chevron clicked at f=0462; list expands f=0465..0492 (450ms); Team-B clicked at f=0515; modal collapses list f=0520..0540.",
+      "estimated_curve": {
+        "type": "ease-out-quart (estimate)",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)"
+      }
+    },
+    {
+      "id": "evt_07_customer_journey_stagger_reveal",
+      "name": "Navigate to 'Customer Journeys -> New Case Managment' & Staggered Reveal of Stages, Connectors & Top Avatars",
+      "movement_origin": "mixed_ui_and_camera",
+      "start_frame": 600,
+      "end_frame": 675,
+      "start_ms": 10000.0,
+      "end_ms": 11250.0,
+      "duration_ms": 1250.0,
+      "target_element": "4 Workflow Stage Columns + Curved SVG Connectors + 8 Notched Top Avatars",
+      "parent_container": "Main Journey Canvas",
+      "properties": {
+        "stage_columns_opacity": {
+          "from": 0.0,
+          "to": 1.0
+        },
+        "stage_columns_translate_y_px": {
+          "from": 16,
+          "to": 0
+        },
+        "top_avatars_scale": {
+          "from": 0.0,
+          "to": 1.0
+        },
+        "svg_connector_dashoffset_normalized": {
+          "from": 1.0,
+          "to": 0.0
+        }
+      },
+      "clipping_and_layering": "Top 8 avatars sit inside the carved top-center notch; SVG bezier curves render in an overlay SVG layer connecting right-hand output ports to left-hand input ports.",
+      "transform_origin": "50% 50% for avatars; left-to-right path length for SVG connectors",
+      "stagger_and_overlap": "8 top avatars pop in sequentially from left to right between f=0615 and f=0662 (~40ms stagger per avatar); stage cards and connectors draw concurrently left-to-right.",
+      "estimated_curve": {
+        "type": "spring-gentle for avatars, ease-out for connectors (estimate)",
+        "value": "cubic-bezier(0.34, 1.56, 0.64, 1) for avatar pop; cubic-bezier(0.22, 1, 0.36, 1) for stage cards"
+      }
+    },
+    {
+      "id": "evt_08_avatar_assignment_and_connector_solidify",
+      "name": "Assign 6th Top Avatar to 'Estimate Resolution Time' & Transition Incoming Connector from Coral Dashed to Blue Solid",
+      "movement_origin": "ui_interface",
+      "start_frame": 755,
+      "end_frame": 828,
+      "start_ms": 12583.333,
+      "end_ms": 13800.0,
+      "duration_ms": 1216.667,
+      "target_element": "Top Notch Avatar #6 -> 'Estimate Resolution Time' Task Row + Incoming SVG Connector",
+      "parent_container": "Technical Resolution Stage (Col 3)",
+      "properties": {
+        "dragged_avatar_position_norm": {
+          "from": [
+            0.57,
+            0.19
+          ],
+          "to": [
+            0.64,
+            0.45
+          ]
+        },
+        "top_avatar_badge": {
+          "from": "1 (coral #D96B70)",
+          "to": "2 (blue #8FA8E0)"
+        },
+        "task_slot_content": {
+          "from": "+ button",
+          "to": "Assigned user avatar"
+        },
+        "incoming_connector_stroke": {
+          "from": "#D96B70 dashed (stroke-dasharray: 5 5)",
+          "to": "#8FA8E0 solid (stroke-dasharray: none)"
+        }
+      },
+      "clipping_and_layering": "Floating avatar clone translates across canvas above stage cards (z-index: 30) and snaps into the right-side action slot of 'Estimate Resolution Time'.",
+      "transform_origin": "50% 50%",
+      "stagger_and_overlap": "Avatar drag runs f=0758..0804 (766ms); slot snap & badge update occur at f=0805..0818; connector stroke transitions from coral dashed to blue solid at f=0808..0828 (333ms).",
+      "estimated_curve": {
+        "type": "ease-in-out-cubic drag + spring snap (estimate)",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)"
+      }
+    },
+    {
+      "id": "evt_09_select_request_processing_black_tile",
+      "name": "Select 'Request Processing' Tile in 'New Tasks' (Black Fill Transition + Outgoing Connector Draw)",
+      "movement_origin": "ui_interface",
+      "start_frame": 904,
+      "end_frame": 952,
+      "start_ms": 15066.667,
+      "end_ms": 15866.667,
+      "duration_ms": 800.0,
+      "target_element": "'Request Processing' Tile (Col 4, Row 1, Left) + Connector from 'Estimate Resolution Time'",
+      "parent_container": "New Tasks Stage (Col 4)",
+      "properties": {
+        "tile_background_rgb": {
+          "from": [
+            248,
+            248,
+            250
+          ],
+          "to": [
+            13,
+            13,
+            15
+          ]
+        },
+        "tile_text_rgb": {
+          "from": [
+            28,
+            29,
+            33
+          ],
+          "to": [
+            248,
+            249,
+            251
+          ]
+        },
+        "tile_scale": {
+          "from": 1.0,
+          "to": 0.97,
+          "return": 1.0
+        },
+        "connector_draw_progress": {
+          "from": 0.0,
+          "to": 1.0
+        }
+      },
+      "clipping_and_layering": "Tile background cross-fades to #0D0D0F over 16 frames (f=0906..0922, 266.7ms) while the connector path draws from 'Estimate Resolution Time' right port to 'Request Processing' left border.",
+      "transform_origin": "50% 50%",
+      "stagger_and_overlap": "Tile color inversion completes in 267ms; outgoing bezier curve draws concurrently and finishes as camera zooms out to full canvas (f=0950..1005).",
+      "static_vs_video_note": "In video frame f=0950..1049, this newly drawn connector is rendered as a coral-red dashed bezier curve (#D96B70), whereas in the static tilted laptop image (reference_image_uploaded.webp) the same connector is shown as a solid dark charcoal curve (#18191C) with an arrowhead. Our prototype supports both visual modes and documents this exact discrepancy.",
+      "estimated_curve": {
+        "type": "ease-out-quart (estimate)",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1) (260ms color/scale transition, 380ms SVG path draw)"
+      }
+    }
+  ],
+  "tracked_pixel_trajectories": {
+    "modal_open_opacity_proxy": [
+      {
+        "frame": 85,
+        "pts_ms": 1416.667,
+        "center_patch_rgb": [
+          217,
+          222,
+          227
+        ]
+      },
+      {
+        "frame": 86,
+        "pts_ms": 1433.333,
+        "center_patch_rgb": [
+          215,
+          220,
+          225
+        ]
+      },
+      {
+        "frame": 87,
+        "pts_ms": 1450.0,
+        "center_patch_rgb": [
+          215,
+          220,
+          226
+        ]
+      },
+      {
+        "frame": 88,
+        "pts_ms": 1466.667,
+        "center_patch_rgb": [
+          218,
+          223,
+          230
+        ]
+      },
+      {
+        "frame": 89,
+        "pts_ms": 1483.333,
+        "center_patch_rgb": [
+          220,
+          222,
+          230
+        ]
+      },
+      {
+        "frame": 90,
+        "pts_ms": 1500.0,
+        "center_patch_rgb": [
+          218,
+          223,
+          230
+        ]
+      },
+      {
+        "frame": 91,
+        "pts_ms": 1516.667,
+        "center_patch_rgb": [
+          221,
+          225,
+          232
+        ]
+      },
+      {
+        "frame": 92,
+        "pts_ms": 1533.333,
+        "center_patch_rgb": [
+          228,
+          231,
+          236
+        ]
+      },
+      {
+        "frame": 93,
+        "pts_ms": 1550.0,
+        "center_patch_rgb": [
+          235,
+          237,
+          241
+        ]
+      },
+      {
+        "frame": 94,
+        "pts_ms": 1566.667,
+        "center_patch_rgb": [
+          236,
+          238,
+          242
+        ]
+      },
+      {
+        "frame": 95,
+        "pts_ms": 1583.333,
+        "center_patch_rgb": [
+          235,
+          237,
+          240
+        ]
+      },
+      {
+        "frame": 96,
+        "pts_ms": 1600.0,
+        "center_patch_rgb": [
+          233,
+          237,
+          240
+        ]
+      },
+      {
+        "frame": 97,
+        "pts_ms": 1616.667,
+        "center_patch_rgb": [
+          232,
+          237,
+          240
+        ]
+      },
+      {
+        "frame": 98,
+        "pts_ms": 1633.333,
+        "center_patch_rgb": [
+          226,
+          231,
+          233
+        ]
+      },
+      {
+        "frame": 99,
+        "pts_ms": 1650.0,
+        "center_patch_rgb": [
+          212,
+          216,
+          218
+        ]
+      },
+      {
+        "frame": 100,
+        "pts_ms": 1666.667,
+        "center_patch_rgb": [
+          178,
+          180,
+          183
+        ]
+      },
+      {
+        "frame": 101,
+        "pts_ms": 1683.333,
+        "center_patch_rgb": [
+          167,
+          168,
+          172
+        ]
+      },
+      {
+        "frame": 102,
+        "pts_ms": 1700.0,
+        "center_patch_rgb": [
+          174,
+          176,
+          180
+        ]
+      },
+      {
+        "frame": 103,
+        "pts_ms": 1716.667,
+        "center_patch_rgb": [
+          173,
+          175,
+          179
+        ]
+      },
+      {
+        "frame": 104,
+        "pts_ms": 1733.333,
+        "center_patch_rgb": [
+          170,
+          171,
+          176
+        ]
+      },
+      {
+        "frame": 105,
+        "pts_ms": 1750.0,
+        "center_patch_rgb": [
+          170,
+          172,
+          177
+        ]
+      },
+      {
+        "frame": 106,
+        "pts_ms": 1766.667,
+        "center_patch_rgb": [
+          170,
+          172,
+          177
+        ]
+      },
+      {
+        "frame": 107,
+        "pts_ms": 1783.333,
+        "center_patch_rgb": [
+          170,
+          172,
+          177
+        ]
+      },
+      {
+        "frame": 108,
+        "pts_ms": 1800.0,
+        "center_patch_rgb": [
+          170,
+          172,
+          177
+        ]
+      },
+      {
+        "frame": 109,
+        "pts_ms": 1816.667,
+        "center_patch_rgb": [
+          170,
+          171,
+          176
+        ]
+      },
+      {
+        "frame": 110,
+        "pts_ms": 1833.333,
+        "center_patch_rgb": [
+          170,
+          171,
+          176
+        ]
+      },
+      {
+        "frame": 111,
+        "pts_ms": 1850.0,
+        "center_patch_rgb": [
+          170,
+          171,
+          176
+        ]
+      },
+      {
+        "frame": 112,
+        "pts_ms": 1866.667,
+        "center_patch_rgb": [
+          170,
+          171,
+          176
+        ]
+      },
+      {
+        "frame": 113,
+        "pts_ms": 1883.333,
+        "center_patch_rgb": [
+          169,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 114,
+        "pts_ms": 1900.0,
+        "center_patch_rgb": [
+          169,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 115,
+        "pts_ms": 1916.667,
+        "center_patch_rgb": [
+          169,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 116,
+        "pts_ms": 1933.333,
+        "center_patch_rgb": [
+          168,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 117,
+        "pts_ms": 1950.0,
+        "center_patch_rgb": [
+          168,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 118,
+        "pts_ms": 1966.667,
+        "center_patch_rgb": [
+          168,
+          170,
+          175
+        ]
+      },
+      {
+        "frame": 119,
+        "pts_ms": 1983.333,
+        "center_patch_rgb": [
+          168,
+          169,
+          174
+        ]
+      },
+      {
+        "frame": 120,
+        "pts_ms": 2000.0,
+        "center_patch_rgb": [
+          168,
+          169,
+          174
+        ]
+      },
+      {
+        "frame": 121,
+        "pts_ms": 2016.667,
+        "center_patch_rgb": [
+          149,
+          151,
+          155
+        ]
+      },
+      {
+        "frame": 122,
+        "pts_ms": 2033.333,
+        "center_patch_rgb": [
+          188,
+          191,
+          194
+        ]
+      },
+      {
+        "frame": 123,
+        "pts_ms": 2050.0,
+        "center_patch_rgb": [
+          226,
+          231,
+          234
+        ]
+      },
+      {
+        "frame": 124,
+        "pts_ms": 2066.667,
+        "center_patch_rgb": [
+          232,
+          237,
+          240
+        ]
+      },
+      {
+        "frame": 125,
+        "pts_ms": 2083.333,
+        "center_patch_rgb": [
+          211,
+          217,
+          229
+        ]
+      },
+      {
+        "frame": 126,
+        "pts_ms": 2100.0,
+        "center_patch_rgb": [
+          215,
+          219,
+          226
+        ]
+      },
+      {
+        "frame": 127,
+        "pts_ms": 2116.667,
+        "center_patch_rgb": [
+          212,
+          217,
+          224
+        ]
+      },
+      {
+        "frame": 128,
+        "pts_ms": 2133.333,
+        "center_patch_rgb": [
+          213,
+          216,
+          221
+        ]
+      },
+      {
+        "frame": 129,
+        "pts_ms": 2150.0,
+        "center_patch_rgb": [
+          219,
+          221,
+          225
+        ]
+      },
+      {
+        "frame": 130,
+        "pts_ms": 2166.667,
+        "center_patch_rgb": [
+          228,
+          230,
+          233
+        ]
+      },
+      {
+        "frame": 131,
+        "pts_ms": 2183.333,
+        "center_patch_rgb": [
+          235,
+          237,
+          238
+        ]
+      },
+      {
+        "frame": 132,
+        "pts_ms": 2200.0,
+        "center_patch_rgb": [
+          247,
+          249,
+          250
+        ]
+      },
+      {
+        "frame": 133,
+        "pts_ms": 2216.667,
+        "center_patch_rgb": [
+          244,
+          246,
+          247
+        ]
+      },
+      {
+        "frame": 134,
+        "pts_ms": 2233.333,
+        "center_patch_rgb": [
+          229,
+          231,
+          233
+        ]
+      },
+      {
+        "frame": 135,
+        "pts_ms": 2250.0,
+        "center_patch_rgb": [
+          229,
+          232,
+          233
+        ]
+      },
+      {
+        "frame": 136,
+        "pts_ms": 2266.667,
+        "center_patch_rgb": [
+          229,
+          232,
+          233
+        ]
+      },
+      {
+        "frame": 137,
+        "pts_ms": 2283.333,
+        "center_patch_rgb": [
+          229,
+          232,
+          233
+        ]
+      },
+      {
+        "frame": 138,
+        "pts_ms": 2300.0,
+        "center_patch_rgb": [
+          229,
+          232,
+          233
+        ]
+      },
+      {
+        "frame": 139,
+        "pts_ms": 2316.667,
+        "center_patch_rgb": [
+          231,
+          231,
+          233
+        ]
+      },
+      {
+        "frame": 140,
+        "pts_ms": 2333.333,
+        "center_patch_rgb": [
+          231,
+          231,
+          233
+        ]
+      }
+    ],
+    "budget_slider_progress": [
+      {
+        "frame": 222,
+        "pts_ms": 3700.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 225,
+        "pts_ms": 3750.0,
+        "pill_right_edge_px": 868
+      },
+      {
+        "frame": 228,
+        "pts_ms": 3800.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 231,
+        "pts_ms": 3850.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 234,
+        "pts_ms": 3900.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 237,
+        "pts_ms": 3950.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 240,
+        "pts_ms": 4000.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 243,
+        "pts_ms": 4050.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 246,
+        "pts_ms": 4100.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 249,
+        "pts_ms": 4150.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 252,
+        "pts_ms": 4200.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 255,
+        "pts_ms": 4250.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 258,
+        "pts_ms": 4300.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 261,
+        "pts_ms": 4350.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 264,
+        "pts_ms": 4400.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 267,
+        "pts_ms": 4450.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 270,
+        "pts_ms": 4500.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 273,
+        "pts_ms": 4550.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 276,
+        "pts_ms": 4600.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 279,
+        "pts_ms": 4650.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 282,
+        "pts_ms": 4700.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 285,
+        "pts_ms": 4750.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 288,
+        "pts_ms": 4800.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 291,
+        "pts_ms": 4850.0,
+        "pill_right_edge_px": 550
+      },
+      {
+        "frame": 294,
+        "pts_ms": 4900.0,
+        "pill_right_edge_px": 550
+      }
+    ],
+    "request_processing_tile_rgb": [
+      {
+        "frame": 900,
+        "pts_ms": 15000.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 901,
+        "pts_ms": 15016.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 902,
+        "pts_ms": 15033.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 903,
+        "pts_ms": 15050.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 904,
+        "pts_ms": 15066.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 905,
+        "pts_ms": 15083.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 906,
+        "pts_ms": 15100.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 907,
+        "pts_ms": 15116.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 908,
+        "pts_ms": 15133.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 909,
+        "pts_ms": 15150.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 910,
+        "pts_ms": 15166.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 911,
+        "pts_ms": 15183.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 912,
+        "pts_ms": 15200.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 913,
+        "pts_ms": 15216.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 914,
+        "pts_ms": 15233.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 915,
+        "pts_ms": 15250.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 916,
+        "pts_ms": 15266.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 917,
+        "pts_ms": 15283.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 918,
+        "pts_ms": 15300.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 919,
+        "pts_ms": 15316.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 920,
+        "pts_ms": 15333.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 921,
+        "pts_ms": 15350.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 922,
+        "pts_ms": 15366.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 923,
+        "pts_ms": 15383.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 924,
+        "pts_ms": 15400.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 925,
+        "pts_ms": 15416.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 926,
+        "pts_ms": 15433.333,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 927,
+        "pts_ms": 15450.0,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 928,
+        "pts_ms": 15466.667,
+        "rgb": [
+          239,
+          242,
+          245
+        ],
+        "luma": 241.58
+      },
+      {
+        "frame": 929,
+        "pts_ms": 15483.333,
+        "rgb": [
+          223,
+          226,
+          229
+        ],
+        "luma": 225.58
+      },
+      {
+        "frame": 930,
+        "pts_ms": 15500.0,
+        "rgb": [
+          217,
+          219,
+          222
+        ],
+        "luma": 218.79
+      },
+      {
+        "frame": 931,
+        "pts_ms": 15516.667,
+        "rgb": [
+          223,
+          226,
+          229
+        ],
+        "luma": 225.58
+      },
+      {
+        "frame": 932,
+        "pts_ms": 15533.333,
+        "rgb": [
+          221,
+          224,
+          227
+        ],
+        "luma": 223.58
+      },
+      {
+        "frame": 933,
+        "pts_ms": 15550.0,
+        "rgb": [
+          215,
+          217,
+          221
+        ],
+        "luma": 216.86
+      },
+      {
+        "frame": 934,
+        "pts_ms": 15566.667,
+        "rgb": [
+          240,
+          242,
+          245
+        ],
+        "luma": 241.79
+      },
+      {
+        "frame": 935,
+        "pts_ms": 15583.333,
+        "rgb": [
+          231,
+          233,
+          235
+        ],
+        "luma": 232.72
+      },
+      {
+        "frame": 936,
+        "pts_ms": 15600.0,
+        "rgb": [
+          245,
+          247,
+          249
+        ],
+        "luma": 246.72
+      },
+      {
+        "frame": 937,
+        "pts_ms": 15616.667,
+        "rgb": [
+          221,
+          219,
+          227
+        ],
+        "luma": 220.0
+      },
+      {
+        "frame": 938,
+        "pts_ms": 15633.333,
+        "rgb": [
+          204,
+          212,
+          229
+        ],
+        "luma": 211.53
+      },
+      {
+        "frame": 939,
+        "pts_ms": 15650.0,
+        "rgb": [
+          219,
+          225,
+          234
+        ],
+        "luma": 224.37
+      },
+      {
+        "frame": 940,
+        "pts_ms": 15666.667,
+        "rgb": [
+          226,
+          230,
+          235
+        ],
+        "luma": 229.51
+      }
+    ]
+  }
+}

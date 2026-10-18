@@ -1,0 +1,126 @@
+{
+  "generated_at": "2026-10-18T19:59:02.458Z",
+  "base_url": "http://127.0.0.1:5173",
+  "viewport": {
+    "width": 1600,
+    "height": 1200
+  },
+  "total": 16,
+  "passed": 16,
+  "failed": 0,
+  "assertions": [
+    {
+      "id": "check_01_workspace_shell",
+      "description": "Floating frosted workspace shell renders straight-on at 1600x1200 viewport",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_02_svg_connectors",
+      "description": "Curved SVG connector paths render between Stage 1, Stage 2, Stage 3 and Stage 4",
+      "passed": true,
+      "detail": "paths=11"
+    },
+    {
+      "id": "check_03_reference_1to1_labels",
+      "description": "Reference 1:1 label mode switches stage headers to Case Allocation, Issue Identification, Technical Resolution, New Tasks",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_04_black_tile_selection",
+      "description": "Clicking Request Processing (tile-4) activates #0D0D0F black selected state and active connector",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_05_starter_highlight",
+      "description": "Selecting a starter avatar in the top carved notch highlights their connected cards and connectors across stages",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_06_assign_reviewer_transition",
+      "description": "Clicking + on unassigned task row assigns reviewer avatar and transitions connector from dashed coral to solid periwinkle",
+      "passed": true,
+      "detail": "before=3, after=2"
+    },
+    {
+      "id": "check_07_detail_modal_open",
+      "description": "Clicking a workflow card opens the glassmorphic Detail Modal dialog with stage stepper",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_08_team_accordion",
+      "description": "Responsible Team accordion expands in-flow with 4 team options and 3-avatar clusters",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_09_accessible_form_validation",
+      "description": "Submitting empty required field triggers aria-invalid and role=\"alert\" validation message",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_10_stage_switch_retains_form",
+      "description": "Moving between workflow stages inside the form retains entered field values",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_11_local_draft_persistence",
+      "description": "Saved local draft persists across browser reload in localStorage",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_12_pipelines_screen",
+      "description": "Role Pipelines screen renders 4 stage columns, featured Take for Processing CTA, and bottom metrics",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_13_cases_in_progress_grid",
+      "description": "Cases in Progress screen renders 4x2 8-card grid with conic progress rings and dark highlighted Case #102 card",
+      "passed": true,
+      "detail": "cards=8"
+    },
+    {
+      "id": "check_14_filters_and_states",
+      "description": "Filtering by role/team/status and switching between Normal, Loading, Empty, Error, and Completed states works cleanly",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_15_gallery_route_light",
+      "description": "Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Light Reference mode",
+      "passed": true,
+      "detail": "url=http://127.0.0.1:5173/gallery"
+    },
+    {
+      "id": "check_16_gallery_dark_adaptation",
+      "description": "Dark Adaptation toggle in /gallery switches theme tokens while clearly identifying it as an adaptation",
+      "passed": true,
+      "detail": ""
+    }
+  ],
+  "screenshots": [
+    "analysis/screenshots/01_journey_ajbell_default.png",
+    "analysis/screenshots/02_journey_reference_1to1_solid_dark.png",
+    "analysis/screenshots/03_journey_reference_1to1_video_dashed.png",
+    "analysis/screenshots/04_journey_participant_selected.png",
+    "analysis/screenshots/05_modal_detail_form_and_team_accordion.png",
+    "analysis/screenshots/06_modal_validation_and_draft_saved.png",
+    "analysis/screenshots/07_role_pipelines_screen.png",
+    "analysis/screenshots/08_cases_in_progress_8card_grid.png",
+    "analysis/screenshots/09_filtered_and_state_views.png",
+    "analysis/screenshots/10_gallery_reference_operations_v1_light.png",
+    "analysis/screenshots/11_gallery_reference_operations_v1_dark_adaptation.png"
+  ],
+  "recordings": [
+    "analysis/verification-recording.mp4",
+    "analysis/verification-recording.webm"
+  ]
+}

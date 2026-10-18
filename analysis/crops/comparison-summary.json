@@ -1,0 +1,64 @@
+{
+  "comparisons": [
+    {
+      "title": "Comparison 01 \u2014 Full Connected Journey Workspace Shell (1600x1200)",
+      "output": "analysis/crops/comparison_01_journey_canvas.png",
+      "crop_box": [
+        60,
+        100,
+        1540,
+        1080
+      ],
+      "dimensions": [
+        1480,
+        980
+      ],
+      "mean_rgb_delta": 54.43
+    },
+    {
+      "title": "Comparison 02 \u2014 Workflow Stages, Curved SVG Connectors & Black Selected Tile",
+      "output": "analysis/crops/comparison_02_stage_connectors_and_tiles.png",
+      "crop_box": [
+        160,
+        270,
+        1460,
+        740
+      ],
+      "dimensions": [
+        1300,
+        470
+      ],
+      "mean_rgb_delta": 38.16
+    },
+    {
+      "title": "Comparison 03 \u2014 Detail Modal Dialog, Responsible Team Accordion & Budget Slider",
+      "output": "analysis/crops/comparison_03_modal_form.png",
+      "crop_box": [
+        320,
+        150,
+        1280,
+        1040
+      ],
+      "dimensions": [
+        960,
+        890
+      ],
+      "mean_rgb_delta": 28.95
+    },
+    {
+      "title": "Comparison 04 \u2014 Cases in Progress 4x2 8-Card Operations Grid",
+      "output": "analysis/crops/comparison_04_in_progress_grid.png",
+      "crop_box": [
+        110,
+        210,
+        1490,
+        980
+      ],
+      "dimensions": [
+        1380,
+        770
+      ],
+      "mean_rgb_delta": 28.57
+    }
+  ]
+}
