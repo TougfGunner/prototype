@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-18T19:59:02.458Z",
+  "generated_at": "2026-10-18T22:40:19.053Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
     "height": 1200
   },
-  "total": 16,
-  "passed": 16,
+  "total": 17,
+  "passed": 17,
   "failed": 0,
   "assertions": [
     {
@@ -29,7 +29,7 @@
     },
     {
       "id": "check_04_black_tile_selection",
-      "description": "Clicking Request Processing (tile-4) activates #0D0D0F black selected state and active connector",
+      "description": "Clicking Request Processing (tile-1 top-left) activates #0D0D0F black selected state and active connector",
       "passed": true,
       "detail": ""
     },
@@ -100,6 +100,12 @@
       "detail": "url=http://127.0.0.1:5173/gallery"
     },
     {
+      "id": "check_17_gallery_section3_shared_canvas",
+      "description": "Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar",
+      "passed": true,
+      "detail": "gallery_paths=10"
+    },
+    {
       "id": "check_16_gallery_dark_adaptation",
       "description": "Dark Adaptation toggle in /gallery switches theme tokens while clearly identifying it as an adaptation",
       "passed": true,
@@ -117,7 +123,9 @@
     "analysis/screenshots/08_cases_in_progress_8card_grid.png",
     "analysis/screenshots/09_filtered_and_state_views.png",
     "analysis/screenshots/10_gallery_reference_operations_v1_light.png",
-    "analysis/screenshots/11_gallery_reference_operations_v1_dark_adaptation.png"
+    "analysis/screenshots/11_gallery_reference_operations_v1_dark_adaptation.png",
+    "analysis/screenshots/12_gallery_section3_connected_workflow_choreography.png",
+    "analysis/screenshots/13_journey_seq06_avatar_drag_choreography.png"
   ],
   "recordings": [
     "analysis/verification-recording.mp4",

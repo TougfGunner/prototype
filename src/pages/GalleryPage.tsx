@@ -10,13 +10,10 @@ import {
   TopNavigationBar,
 } from '../design-system/components/NavigationShell';
 import {
-  AllocationStageCard,
-  CompactTaskRowCard,
-  ActionTileCard,
+  ConnectedWorkflowCanvas,
   PipelineRowCard,
   ProgressGridCard,
 } from '../design-system/components/WorkflowCards';
-import { CurvedConnectorLayer } from '../design-system/components/CurvedConnectorLayer';
 import { DetailModal } from '../design-system/components/DetailModal';
 import {
   SuggestedKnowledgeTable,
@@ -461,103 +458,35 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           </button>
         </div>
 
-        {/* Live 4-Stage Connected Canvas inside Gallery */}
+        {/* Live 4-Stage Connected Canvas inside Gallery — exact 1:1 shared component, gradients & motion choreography */}
         <div
           style={{
             position: 'relative',
             width: '1110px',
             maxWidth: '100%',
-            height: '300px',
             margin: '0 auto',
           }}
         >
-          <CurvedConnectorLayer
+          <ConnectedWorkflowCanvas
+            labelMode={state.labelMode}
             allocationCards={state.allocationCards}
             stageTasks={state.stageTasks}
             onboardingTiles={state.onboardingTiles}
             selectedParticipantId={state.selectedParticipantId}
+            activeStageFilter={state.activeStageFilter}
             connectorVariant={state.connectorVariant}
+            onSetConnectorVariant={store.setConnectorVariant}
+            onAssignSlot={store.assignParticipantToTask}
+            onSelectTile={store.selectOnboardingTile}
+            onOpenDetail={(id) =>
+              store.openModalForCard(
+                id.startsWith('role-') || id.startsWith('mgr-') ? 'edit_task' : 'process_case',
+                id
+              )
+            }
+            onAddNewCase={() => store.openModalForCard('add_case')}
+            autoLoopDefault={true}
           />
-
-          <div
-            style={{
-              position: 'relative',
-              zIndex: 3,
-              display: 'grid',
-              gridTemplateColumns: '218px 234px 234px 234px',
-              columnGap: '60px',
-              alignItems: 'start',
-              paddingTop: '34px',
-            }}
-          >
-            {/* Stage 1 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {state.allocationCards.map((card) => (
-                <AllocationStageCard
-                  key={card.id}
-                  card={card}
-                  labelMode={state.labelMode}
-                  highlighted={false}
-                  dimmed={false}
-                  onSelect={() => store.openModalForCard('process_case', card.id)}
-                  onOpenDetail={(id) => store.openModalForCard('process_case', id)}
-                />
-              ))}
-            </div>
-
-            {/* Stage 2 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {state.stageTasks
-                .filter((t) => t.stageId === 'role_access_profile')
-                .map((task) => (
-                  <CompactTaskRowCard
-                    key={task.id}
-                    task={task}
-                    labelMode={state.labelMode}
-                    highlighted={false}
-                    dimmed={false}
-                    onOpenDetail={(id) => store.openModalForCard('edit_task', id)}
-                    onAssignParticipant={store.assignParticipantToTask}
-                  />
-                ))}
-            </div>
-
-            {/* Stage 3 */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-              {state.stageTasks
-                .filter((t) => t.stageId === 'manager_review')
-                .map((task) => (
-                  <CompactTaskRowCard
-                    key={task.id}
-                    task={task}
-                    labelMode={state.labelMode}
-                    highlighted={false}
-                    dimmed={false}
-                    onOpenDetail={(id) => store.openModalForCard('edit_task', id)}
-                    onAssignParticipant={store.assignParticipantToTask}
-                  />
-                ))}
-            </div>
-
-            {/* Stage 4 */}
-            <div
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '112px 112px',
-                gap: '10px',
-              }}
-            >
-              {state.onboardingTiles.map((tile) => (
-                <ActionTileCard
-                  key={tile.id}
-                  tile={tile}
-                  labelMode={state.labelMode}
-                  onSelectTile={store.selectOnboardingTile}
-                  onOpenDetail={(id) => store.openModalForCard('process_case', id)}
-                />
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 

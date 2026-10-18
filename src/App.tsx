@@ -6,20 +6,16 @@ import {
   Inbox,
   SlidersHorizontal,
 } from 'lucide-react';
-import { STAGE_METADATA } from './data/syntheticStarters';
 import {
   TopNavigationBar,
   SlimNavigationRail,
   SubHeaderBreadcrumb,
 } from './design-system/components/NavigationShell';
 import {
-  AllocationStageCard,
-  CompactTaskRowCard,
-  ActionTileCard,
+  ConnectedWorkflowCanvas,
   PipelineRowCard,
   ProgressGridCard,
 } from './design-system/components/WorkflowCards';
-import { CurvedConnectorLayer } from './design-system/components/CurvedConnectorLayer';
 import { DetailModal } from './design-system/components/DetailModal';
 import {
   SuggestedKnowledgeTable,
@@ -104,19 +100,6 @@ export const App: React.FC = () => {
     return true;
   };
 
-  const hasActiveFilters =
-    state.roleFilter !== 'all' ||
-    state.teamFilter !== 'all' ||
-    state.statusFilter !== 'all' ||
-    Boolean(state.selectedParticipantId);
-
-  const stage2Tasks = state.stageTasks.filter(
-    (t) => t.stageId === 'role_access_profile'
-  );
-  const stage3Tasks = state.stageTasks.filter(
-    (t) => t.stageId === 'manager_review'
-  );
-
   return (
     <div
       style={{
@@ -139,10 +122,9 @@ export const App: React.FC = () => {
           minHeight: '856px',
           borderRadius: '38px',
           padding: '22px 28px 24px',
-          background:
-            'radial-gradient(circle at 46% 36%, rgba(193, 207, 236, 0.42) 0%, rgba(235, 238, 244, 0.78) 54%, rgba(242, 243, 247, 0.90) 100%)',
+          background: 'var(--ajb-bg-ambient-wash)',
           backdropFilter: 'blur(22px)',
-          border: '1.5px solid rgba(255, 255, 255, 0.85)',
+          border: '1.5px solid rgba(255, 255, 255, 0.88)',
           boxShadow: 'var(--ajb-shadow-shell)',
           display: 'flex',
           flexDirection: 'column',
@@ -545,174 +527,28 @@ export const App: React.FC = () => {
                 {/* SCREEN MODE 1: NEW STARTER JOURNEY / CUSTOMER ISSUE CANVAS */}
                 {state.screenMode === 'journey' && (
                   <>
-                    <div
-                      style={{
-                        position: 'relative',
-                        width: '1110px',
-                        maxWidth: '100%',
-                        height: '304px',
-                        marginBottom: '18px',
-                      }}
-                    >
-                      {/* Stage Column Headers */}
-                      <div
-                        style={{
-                          display: 'grid',
-                          gridTemplateColumns: '218px 234px 234px 234px',
-                          columnGap: '60px',
-                          marginBottom: '12px',
-                        }}
-                      >
-                        {STAGE_METADATA.map((st) => (
-                          <div
-                            key={st.id}
-                            style={{
-                              fontSize: '12.5px',
-                              fontWeight: 500,
-                              color: 'var(--ajb-text-primary)',
-                              paddingLeft: '2px',
-                            }}
-                          >
-                            {state.labelMode === 'reference'
-                              ? st.referenceTitle
-                              : st.operationsTitle}
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* SVG Bezier & Orthogonal Connectors */}
-                      <CurvedConnectorLayer
+                    <div style={{ marginBottom: '16px' }}>
+                      <ConnectedWorkflowCanvas
+                        labelMode={state.labelMode}
                         allocationCards={state.allocationCards}
                         stageTasks={state.stageTasks}
                         onboardingTiles={state.onboardingTiles}
                         selectedParticipantId={state.selectedParticipantId}
+                        activeStageFilter={state.activeStageFilter}
                         connectorVariant={state.connectorVariant}
-                      />
-
-                      {/* 4-Column Stage Cards Grid */}
-                      <div
-                        style={{
-                          position: 'relative',
-                          zIndex: 3,
-                          display: 'grid',
-                          gridTemplateColumns: '218px 234px 234px 234px',
-                          columnGap: '60px',
-                          alignItems: 'start',
+                        onSetConnectorVariant={store.setConnectorVariant}
+                        onAssignSlot={store.assignParticipantToTask}
+                        onSelectTile={store.selectOnboardingTile}
+                        onOpenDetail={(id) => {
+                          if (id.startsWith('role-') || id.startsWith('mgr-')) {
+                            store.openModalForCard('edit_task', id);
+                          } else {
+                            store.openModalForCard('process_case', id);
+                          }
                         }}
-                      >
-                        {/* Column 1: Starter details / Case Allocation */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '12px',
-                          }}
-                        >
-                          {state.allocationCards.map((card) => {
-                            const isParticipantMatch =
-                              !state.selectedParticipantId ||
-                              state.selectedParticipantId === card.participantId;
-                            return (
-                              <AllocationStageCard
-                                key={card.id}
-                                card={card}
-                                labelMode={state.labelMode}
-                                highlighted={
-                                  state.selectedParticipantId === card.participantId
-                                }
-                                dimmed={!isParticipantMatch}
-                                onSelect={() =>
-                                  store.openModalForCard('process_case', card.id)
-                                }
-                                onOpenDetail={(id) =>
-                                  store.openModalForCard('process_case', id)
-                                }
-                              />
-                            );
-                          })}
-                        </div>
-
-                        {/* Column 2: Role and access profile / Issue Identification */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '10px',
-                          }}
-                        >
-                          {stage2Tasks.map((task) => {
-                            const matched = matchesTaskFilter(task);
-                            return (
-                              <CompactTaskRowCard
-                                key={task.id}
-                                task={task}
-                                labelMode={state.labelMode}
-                                highlighted={
-                                  Boolean(state.selectedParticipantId) &&
-                                  task.assignedParticipantId ===
-                                    state.selectedParticipantId
-                                }
-                                dimmed={hasActiveFilters && !matched}
-                                onOpenDetail={(id) =>
-                                  store.openModalForCard('edit_task', id)
-                                }
-                                onAssignParticipant={store.assignParticipantToTask}
-                              />
-                            );
-                          })}
-                        </div>
-
-                        {/* Column 3: Manager review / Technical Resolution */}
-                        <div
-                          style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '10px',
-                          }}
-                        >
-                          {stage3Tasks.map((task) => {
-                            const matched = matchesTaskFilter(task);
-                            return (
-                              <CompactTaskRowCard
-                                key={task.id}
-                                task={task}
-                                labelMode={state.labelMode}
-                                highlighted={
-                                  Boolean(state.selectedParticipantId) &&
-                                  task.assignedParticipantId ===
-                                    state.selectedParticipantId
-                                }
-                                dimmed={hasActiveFilters && !matched}
-                                onOpenDetail={(id) =>
-                                  store.openModalForCard('edit_task', id)
-                                }
-                                onAssignParticipant={store.assignParticipantToTask}
-                              />
-                            );
-                          })}
-                        </div>
-
-                        {/* Column 4: Ready for onboarding / New Tasks (2x3 Action Tile Grid) */}
-                        <div
-                          style={{
-                            display: 'grid',
-                            gridTemplateColumns: '112px 112px',
-                            gap: '10px',
-                          }}
-                        >
-                          {state.onboardingTiles.map((tile) => (
-                            <ActionTileCard
-                              key={tile.id}
-                              tile={tile}
-                              labelMode={state.labelMode}
-                              onSelectTile={store.selectOnboardingTile}
-                              onOpenDetail={(id) =>
-                                store.openModalForCard('process_case', id)
-                              }
-                            />
-                          ))}
-                        </div>
-                      </div>
+                        onAddNewCase={() => store.openModalForCard('add_case')}
+                        matchesTaskFilter={matchesTaskFilter}
+                      />
                     </div>
 
                     {/* Bottom Panels: Suggested Knowledge Table + Support Ticket Journey */}

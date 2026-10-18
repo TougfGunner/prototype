@@ -49,7 +49,7 @@ async function runVerificationAndScreenshots() {
 
   // Check 2: 4 workflow stages and SVG connector layer present
   const connectorCount = await page
-    .locator('svg[viewBox="0 0 1110 296"] > path')
+    .locator('svg[data-connector-svg="true"] > g')
     .count();
   recordAssertion(
     'check_02_svg_connectors',
@@ -85,12 +85,23 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Switch to Video dashed coral mode and select tile-1 to capture the pre-selection state (matching f=0825)
+  // Trigger Seq 06: Avatar Drag choreography to capture floating avatar drag-and-drop from top notch p-6 to Estimate Resolution Time (mgr-3)
+  await page.locator('button:has-text("Seq 06: Avatar Drag")').first().click();
+  await page.waitForTimeout(450);
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '13_journey_seq06_avatar_drag_choreography.png'),
+    fullPage: false,
+  });
+
+  // Switch to Video dashed coral mode and select tile-1 (Request Processing) to capture the f=0825 state
   await page.goto(`${BASE_URL}/?labels=reference&connector=video_dashed_coral`, {
     waitUntil: 'networkidle',
   });
   await page.waitForTimeout(250);
-  await page.locator('[data-tile-id="tile-1"]').click();
+  await page.locator('[data-tile-id="tile-2"]').click();
+  await page.waitForTimeout(200);
+  const reqProcTile = page.locator('[data-tile-id="tile-1"]');
+  await reqProcTile.click();
   await page.waitForTimeout(300);
 
   await page.screenshot({
@@ -98,15 +109,11 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Re-select Request Processing (tile-4) to verify black selected state and active connector arrow
-  const reqProcTile = page.locator('[data-tile-id="tile-4"]');
-  await reqProcTile.click();
-  await page.waitForTimeout(300);
-  const tile4Selected = await reqProcTile.getAttribute('aria-pressed');
+  const tile1Selected = await reqProcTile.getAttribute('aria-pressed');
   recordAssertion(
     'check_04_black_tile_selection',
-    'Clicking Request Processing (tile-4) activates #0D0D0F black selected state and active connector',
-    tile4Selected === 'true'
+    'Clicking Request Processing (tile-1 top-left) activates #0D0D0F black selected state and active connector',
+    tile1Selected === 'true'
   );
 
   // Switch back to AJ Bell New Starter Journey labels
@@ -307,7 +314,25 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Switch to Dark Adaptation in /gallery
+  // Scroll to Section 3 in /gallery ("3. Connected Workflow Cards, Task Rows, Action Tiles & Curved Connectors") and capture live shared component + choreography
+  const gallerySec3Heading = page.locator('#gallery-workflow-heading');
+  await gallerySec3Heading.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(450);
+  const gallerySec3Connectors = await page.locator('svg[data-connector-svg="true"] > g').count();
+  recordAssertion(
+    'check_17_gallery_section3_shared_canvas',
+    'Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar',
+    gallerySec3Connectors >= 10,
+    `gallery_paths=${gallerySec3Connectors}`
+  );
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '12_gallery_section3_connected_workflow_choreography.png'),
+    fullPage: false,
+  });
+
+  // Scroll back to top and switch to Dark Adaptation in /gallery
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.waitForTimeout(150);
   await page.locator('button:has-text("Light Reference (Primary)")').first().click();
   await page.waitForTimeout(350);
   const dataTheme = await page.evaluate(() =>

@@ -1,190 +1,178 @@
-import React, { useState } from 'react';
-import { Calendar, Check, Plus, ArrowUpRight } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import {
+  Check,
+  CheckCheck,
+  Calendar,
+  Plus,
+  MoreHorizontal,
+  Share2,
+  Play,
+  Sparkles,
+} from 'lucide-react';
 import {
   AllocationCardData,
+  JourneyStageId,
   LabelParityMode,
   OnboardingActionTileData,
   PipelineColumnItem,
   ProgressGridCardItem,
+  STAGE_METADATA,
   StageTaskRowData,
 } from '../../data/syntheticStarters';
+import { ConnectorRenderVariant } from '../../state/useStarterStore';
 import { ConicProgressRing, OverlappingAvatarCluster } from './AvatarAndStatus';
+import { CurvedConnectorLayer } from './CurvedConnectorLayer';
+
+export type ChoreographyPhase =
+  | 'idle'
+  | 'seq05_stagger'
+  | 'seq06_drag'
+  | 'seq06_solidify'
+  | 'seq07_arrow'
+  | 'seq07_press'
+  | 'seq07_dashed';
 
 export interface AllocationStageCardProps {
   card: AllocationCardData;
   labelMode: LabelParityMode;
   highlighted: boolean;
-  dimmed: boolean;
-  onSelect: (cardId: string) => void;
   onOpenDetail: (cardId: string) => void;
+  showBottomDivider?: boolean;
+  staggerIndex?: number;
 }
 
 export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
   card,
   labelMode,
   highlighted,
-  dimmed,
-  onSelect,
   onOpenDetail,
+  showBottomDivider = false,
+  staggerIndex = 0,
 }) => {
   const title = labelMode === 'reference' ? card.referenceTitle : card.operationsTitle;
   const socketColor = card.connectorTone === 'blue' ? '#8FA8E0' : '#D96B70';
 
   return (
     <div
-      data-card-id={card.id}
-      onClick={() => onSelect(card.id)}
-      onDoubleClick={() => onOpenDetail(card.id)}
       role="button"
       tabIndex={0}
+      onClick={() => onOpenDetail(card.id)}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           onOpenDetail(card.id);
         }
       }}
-      aria-label={`${title} — ${card.formValues.starterFullName}. Due ${card.dueDate}. Press Enter to edit starter details.`}
+      data-card-id={card.id}
+      aria-label={`${title} — Open starter detail form`}
+      className="ref-task-row-reveal"
       style={{
         position: 'relative',
-        width: '218px',
-        minHeight: '118px',
-        padding: '14px 16px',
-        borderRadius: '22px',
-        background: 'var(--ajb-surface-card)',
-        border: highlighted
-          ? '1.5px solid var(--ajb-accent-black)'
-          : '1px solid var(--ajb-border-subtle)',
-        boxShadow: highlighted ? 'var(--ajb-shadow-floating)' : 'var(--ajb-shadow-card)',
+        padding: '14px 12px',
+        minHeight: '116px',
+        borderBottom: showBottomDivider ? '1px solid var(--ajb-border-row-divider)' : 'none',
+        background: 'transparent',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
+        gap: '14px',
         cursor: 'pointer',
-        opacity: dimmed ? 0.38 : 1,
+        opacity: highlighted ? 1 : 0.42,
+        animationDelay: `${staggerIndex * 55}ms`,
         transition:
-          'transform var(--ajb-dur-hover) var(--ajb-ease-standard), box-shadow var(--ajb-dur-hover) var(--ajb-ease-standard), opacity var(--ajb-dur-hover) var(--ajb-ease-standard)',
-        userSelect: 'none',
+          'transform var(--ajb-duration-hover) var(--ajb-ease-standard), opacity var(--ajb-duration-hover) var(--ajb-ease-standard)',
       }}
     >
-      {/* Top Row: Title + Verified Check */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'flex-start',
-          justifyContent: 'space-between',
-          gap: '8px',
-        }}
-      >
-        <div
-          style={{
-            fontSize: '12.5px',
-            fontWeight: 500,
-            lineHeight: 1.32,
-            color: 'var(--ajb-text-primary)',
-            maxWidth: '148px',
-          }}
-        >
-          {title}
-        </div>
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenDetail(card.id);
-          }}
-          title="Open detailed starter form"
-          style={{
-            width: '20px',
-            height: '20px',
-            borderRadius: '9999px',
-            border: 'none',
-            background: 'transparent',
-            color: 'var(--ajb-text-secondary)',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            padding: 0,
-          }}
-        >
-          <Check size={13} strokeWidth={2} />
-        </button>
-      </div>
-
-      {/* Bottom Row: Avatar + Date Pill */}
+      {/* Top Row: Avatar on Top-Left + Double-Check & Circular Calendar Button on Top-Right (Matches Reference 1:1) */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          marginTop: '18px',
+          gap: '8px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <img
-            src={card.avatarUrl}
-            alt={card.formValues.starterFullName}
-            style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '9999px',
-              objectFit: 'cover',
-              border: '1.5px solid #FFFFFF',
-              boxShadow: '0 2px 5px rgba(18, 22, 33, 0.12)',
-            }}
-          />
-          {labelMode === 'operations' && (
-            <span
-              style={{
-                fontSize: '10.5px',
-                color: 'var(--ajb-text-secondary)',
-                fontWeight: 500,
-                maxWidth: '78px',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-              }}
-            >
-              {card.formValues.starterFullName}
-            </span>
-          )}
-        </div>
-
-        <span
-          className="ajb-tabular"
+        <img
+          src={card.avatarUrl}
+          alt=""
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '5px',
-            padding: '4px 9px',
+            width: '36px',
+            height: '36px',
             borderRadius: '9999px',
-            background: 'rgba(235, 237, 242, 0.85)',
-            color: 'var(--ajb-text-secondary)',
-            fontSize: '10.5px',
-            fontWeight: 500,
+            objectFit: 'cover',
+            border: '1.5px solid #FFFFFF',
+            boxShadow: '0 3px 8px rgba(18, 23, 38, 0.10)',
           }}
-        >
-          <Calendar size={11} strokeWidth={1.9} />
-          {card.dueDate}
-        </span>
+        />
+
+        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+          <CheckCheck
+            size={14}
+            strokeWidth={2}
+            style={{ color: 'var(--ajb-text-primary)', opacity: 0.82 }}
+          />
+          <span
+            title={`Target date: ${card.dueDate}`}
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '9999px',
+              background: '#FFFFFF',
+              border: '1px solid rgba(18, 22, 33, 0.05)',
+              boxShadow: '0 2px 5px rgba(18, 23, 38, 0.05)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'var(--ajb-text-primary)',
+            }}
+          >
+            <Calendar size={13} strokeWidth={1.8} />
+          </span>
+        </div>
       </div>
 
-      {/* Outgoing Right Connector Socket */}
+      {/* Bottom Row: 2-Line Action Label on Bottom-Left (Matches Reference 1:1) */}
       <span
+        style={{
+          fontSize: '12px',
+          fontWeight: 500,
+          lineHeight: 1.28,
+          color: 'var(--ajb-text-primary)',
+          letterSpacing: '-0.01em',
+          maxWidth: '155px',
+        }}
+      >
+        {title}
+      </span>
+
+      {/* Recessed Outgoing Connector Cutout Socket on Right Frosted Stage Edge */}
+      <span
+        data-port-out={card.id}
         aria-hidden="true"
         style={{
           position: 'absolute',
-          right: '-5px',
+          right: '-19px',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '9px',
-          height: '9px',
+          width: '18px',
+          height: '18px',
           borderRadius: '9999px',
-          background: '#FFFFFF',
-          border: `2px solid ${socketColor}`,
-          boxShadow: '0 1px 3px rgba(0,0,0,0.12)',
-          zIndex: 3,
+          background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 5,
         }}
-      />
+      >
+        <span
+          style={{
+            width: '6.5px',
+            height: '6.5px',
+            borderRadius: '9999px',
+            background: socketColor,
+          }}
+        />
+      </span>
     </div>
   );
 };
@@ -193,204 +181,303 @@ export interface CompactTaskRowCardProps {
   task: StageTaskRowData;
   labelMode: LabelParityMode;
   highlighted: boolean;
-  dimmed: boolean;
+  onAssignSlot: (taskId: string) => void;
   onOpenDetail: (taskId: string) => void;
-  onAssignParticipant: (taskId: string, participantId?: string) => void;
+  /** Whether this row is non-last inside its frosted column (adds subtle horizontal divider) */
+  showBottomDivider?: boolean;
+  /** Choreography override: temporarily force unassigned during Seq 06 drag flight */
+  forceUnassignedDuringDrag?: boolean;
+  /** Choreography override: dark circular hover state when floating avatar passes over '+' slot (f=0785..0801) */
+  isDropTargetHighlighted?: boolean;
+  /** Choreography override: play snap spring when avatar lands in slot (f=0809) */
+  justSnappedAvatar?: boolean;
+  staggerIndex?: number;
 }
 
 export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
   task,
   labelMode,
   highlighted,
-  dimmed,
+  onAssignSlot,
   onOpenDetail,
-  onAssignParticipant,
+  showBottomDivider = false,
+  forceUnassignedDuringDrag = false,
+  isDropTargetHighlighted = false,
+  justSnappedAvatar = false,
+  staggerIndex = 0,
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
-  const [justAssigned, setJustAssigned] = useState(false);
-
   const title = labelMode === 'reference' ? task.referenceTitle : task.operationsTitle;
-  const socketColor = task.incomingTone === 'blue' ? '#8FA8E0' : '#D96B70';
-  const isUnassigned = !task.avatarUrl;
+  const isAssigned = !forceUnassignedDuringDrag && Boolean(task.avatarUrl);
 
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragOver(false);
-    const participantId = e.dataTransfer.getData('text/plain');
-    onAssignParticipant(task.id, participantId || undefined);
-    setJustAssigned(true);
-    window.setTimeout(() => setJustAssigned(false), 750);
-  };
+  // In the reference image, rows with diagonal handles or active assignments have bold primary ink (#17181C)
+  const isBoldActiveRow =
+    isAssigned &&
+    (task.id === 'role-4' ||
+      task.id === 'role-5' ||
+      task.id === 'mgr-3' ||
+      task.id === 'mgr-4');
+
+  const incomingDotColor =
+    !forceUnassignedDuringDrag && task.incomingTone === 'blue' ? '#8FA8E0' : '#D96B70';
+  const outgoingDotColor =
+    task.id === 'role-3' && !forceUnassignedDuringDrag ? '#8FA8E0' : '#D96B70';
+
+  const hasOutgoingSocket =
+    task.targetTaskIds.length > 0 ||
+    Boolean(task.hasDiagonalConnectorHandle) ||
+    task.stageId === 'manager_review';
+
+  const showDropHighlight = isDragOver || isDropTargetHighlighted;
 
   return (
     <div
       data-task-id={task.id}
-      onClick={() => onOpenDetail(task.id)}
       onDragOver={(e) => {
         e.preventDefault();
-        if (!isDragOver) setIsDragOver(true);
+        setIsDragOver(true);
       }}
       onDragLeave={() => setIsDragOver(false)}
-      onDrop={handleDrop}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onOpenDetail(task.id);
-        }
+      onDrop={(e) => {
+        e.preventDefault();
+        setIsDragOver(false);
+        onAssignSlot(task.id);
       }}
-      aria-label={`${title} (${task.status}). ${
-        isUnassigned ? 'Unassigned slot — click plus to assign reviewer or Enter to open form.' : 'Assigned.'
-      }`}
+      className="ref-task-row-reveal"
       style={{
         position: 'relative',
-        width: '234px',
-        height: '42px',
-        padding: '0 13px 0 9px',
-        borderRadius: '16px',
-        background: isDragOver ? '#FFFFFF' : 'var(--ajb-surface-card)',
-        border: highlighted
-          ? '1.5px solid var(--ajb-accent-black)'
-          : isDragOver
-            ? '1.5px solid var(--ajb-accent-coral)'
-            : '1px solid var(--ajb-border-subtle)',
-        boxShadow:
-          highlighted || isDragOver ? 'var(--ajb-shadow-floating)' : 'var(--ajb-shadow-card)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '10px',
-        cursor: 'pointer',
-        opacity: dimmed ? 0.35 : 1,
+        padding: '7px 10px',
+        minHeight: '50px',
+        borderBottom: showBottomDivider ? '1px solid var(--ajb-border-row-divider)' : 'none',
+        background: showDropHighlight
+          ? 'rgba(255, 255, 255, 0.85)'
+          : task.id === 'mgr-3' && isAssigned
+            ? 'rgba(255, 255, 255, 0.72)'
+            : 'transparent',
+        borderRadius: task.id === 'mgr-3' && isAssigned ? '16px' : undefined,
+        opacity: highlighted ? 1 : 0.38,
+        animationDelay: `${staggerIndex * 42}ms`,
         transition:
-          'all var(--ajb-dur-hover) var(--ajb-ease-standard)',
-        userSelect: 'none',
+          'background var(--ajb-duration-hover) var(--ajb-ease-standard), opacity var(--ajb-duration-hover) var(--ajb-ease-standard)',
       }}
     >
-      {/* Left Incoming Connector Socket */}
+      {/* Left Recessed Incoming Connector Cutout Socket on Frosted Stage Edge */}
       <span
+        data-port-in={task.id}
         aria-hidden="true"
         style={{
           position: 'absolute',
-          left: '-5px',
+          left: '-19px',
           top: '50%',
           transform: 'translateY(-50%)',
-          width: '8px',
-          height: '8px',
+          width: '18px',
+          height: '18px',
           borderRadius: '9999px',
-          background: '#FFFFFF',
-          border: `2px solid ${socketColor}`,
-          zIndex: 3,
+          background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 5,
         }}
-      />
-
-      {/* Left Avatar or Unassigned '+' Drop Target (Seq 06 f=0769..0825) */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0 }}>
-        {task.avatarUrl ? (
-          <div style={{ position: 'relative', width: '30px', height: '30px', flexShrink: 0 }}>
-            <img
-              src={task.avatarUrl}
-              alt={task.formValues.approverName || 'Assigned reviewer'}
-              style={{
-                width: '30px',
-                height: '30px',
-                borderRadius: '9999px',
-                objectFit: 'cover',
-                border: justAssigned
-                  ? '2px solid var(--ajb-accent-black)'
-                  : '1.5px solid #FFFFFF',
-                boxShadow: '0 2px 4px rgba(18, 22, 33, 0.12)',
-              }}
-            />
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              onAssignParticipant(task.id);
-              setJustAssigned(true);
-              window.setTimeout(() => setJustAssigned(false), 750);
-            }}
-            title="Assign selected participant to this workflow task (Seq 06)"
-            aria-label={`Assign reviewer to ${title}`}
-            style={{
-              width: '30px',
-              height: '30px',
-              borderRadius: '9999px',
-              border: '1px dashed var(--ajb-border-strong)',
-              background: isDragOver ? '#2B2D33' : 'rgba(232, 235, 241, 0.9)',
-              color: isDragOver ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              flexShrink: 0,
-              padding: 0,
-              transition: 'all 140ms ease',
-            }}
-          >
-            <Plus size={13} strokeWidth={2.2} />
-          </button>
-        )}
-
+      >
         <span
           style={{
-            fontSize: '11.5px',
-            fontWeight: isUnassigned ? 400 : 500,
-            color: isUnassigned ? 'var(--ajb-text-muted)' : 'var(--ajb-text-primary)',
-            lineHeight: 1.22,
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
+            width: '6.5px',
+            height: '6.5px',
+            borderRadius: '9999px',
+            background: incomingDotColor,
+            transition: 'background var(--ajb-duration-connector) var(--ajb-ease-standard)',
+          }}
+        />
+      </span>
+
+      {/* Left Avatar or Circular '+' Assignment Slot */}
+      {isAssigned ? (
+        <button
+          type="button"
+          onClick={() => onOpenDetail(task.id)}
+          aria-label={`Open ${title} details`}
+          className={justSnappedAvatar ? 'ref-avatar-slot-snap' : undefined}
+          style={{
+            padding: 0,
+            border: 'none',
+            background: 'transparent',
+            cursor: 'pointer',
+            flexShrink: 0,
+            display: 'inline-flex',
+            borderRadius: '9999px',
           }}
         >
-          {title}
-        </span>
-      </div>
+          <img
+            src={task.avatarUrl!}
+            alt=""
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '9999px',
+              objectFit: 'cover',
+              border: '1.5px solid #FFFFFF',
+              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.10)',
+            }}
+          />
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => onAssignSlot(task.id)}
+          aria-label={`Assign reviewer to ${title}`}
+          title="Click or drop a top-notch participant here to assign"
+          style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '9999px',
+            border: showDropHighlight
+              ? '1.5px solid #2A2D35'
+              : '1px solid rgba(18, 22, 33, 0.06)',
+            background: showDropHighlight ? '#34373F' : '#FFFFFF',
+            color: showDropHighlight ? '#FFFFFF' : 'var(--ajb-text-primary)',
+            boxShadow: showDropHighlight
+              ? '0 6px 14px rgba(18, 23, 38, 0.24)'
+              : 'var(--ajb-shadow-plus-circle)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            flexShrink: 0,
+            transform: showDropHighlight ? 'scale(1.08)' : 'scale(1)',
+            transition:
+              'background 140ms var(--ajb-ease-standard), color 140ms var(--ajb-ease-standard), transform 140ms var(--ajb-ease-spring)',
+          }}
+        >
+          <Plus size={13} strokeWidth={2} />
+        </button>
+      )}
 
-      {/* Right Status Icon (Checkmark, Calendar, or Diagonal Connector Handle ↗) */}
+      {/* Middle 2-Line Task Title */}
+      <button
+        type="button"
+        onClick={() => onOpenDetail(task.id)}
+        style={{
+          flex: 1,
+          border: 'none',
+          background: 'transparent',
+          padding: 0,
+          textAlign: 'left',
+          cursor: 'pointer',
+          fontFamily: 'var(--ajb-font-sans)',
+          fontSize: '11.5px',
+          fontWeight: isBoldActiveRow ? 600 : isAssigned ? 500 : 400,
+          lineHeight: 1.22,
+          letterSpacing: '-0.01em',
+          color: isAssigned ? 'var(--ajb-text-primary)' : 'var(--ajb-text-muted)',
+          transition: 'color var(--ajb-duration-hover) var(--ajb-ease-standard)',
+        }}
+      >
+        {title}
+      </button>
+
+      {/* Right Status / Action Cluster (Matches Reference: CheckCheck + Circular Calendar OR Diagonal 3-Dots) */}
       <div
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '4px',
-          color: task.hasDiagonalConnectorHandle
-            ? 'var(--ajb-text-primary)'
-            : 'var(--ajb-text-secondary)',
+          gap: '5px',
           flexShrink: 0,
         }}
       >
-        {task.hasDiagonalConnectorHandle ? (
-          <ArrowUpRight size={14} strokeWidth={2.1} />
-        ) : task.hasCalendarTag ? (
-          <Calendar size={13} strokeWidth={1.8} style={{ opacity: 0.55 }} />
-        ) : task.completed ? (
-          <Check size={13} strokeWidth={2} />
-        ) : null}
+        {isAssigned && task.completed && task.hasCalendarTag && (
+          <CheckCheck
+            size={13}
+            strokeWidth={2}
+            style={{ color: 'var(--ajb-text-primary)', opacity: 0.78 }}
+          />
+        )}
+
+        {task.hasCalendarTag && (
+          <button
+            type="button"
+            onClick={() => onOpenDetail(task.id)}
+            aria-label={`Schedule ${title}`}
+            style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(18, 22, 33, 0.05)',
+              background: '#FFFFFF',
+              boxShadow: '0 2px 5px rgba(18, 23, 38, 0.05)',
+              color: 'var(--ajb-text-primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <Calendar size={12} strokeWidth={1.8} />
+          </button>
+        )}
+
+        {isAssigned && task.hasDiagonalConnectorHandle && (
+          <button
+            type="button"
+            onClick={() => onOpenDetail(task.id)}
+            aria-label={`Configure connector for ${title}`}
+            style={{
+              width: '24px',
+              height: '24px',
+              borderRadius: '9999px',
+              border: 'none',
+              background: 'transparent',
+              color: 'var(--ajb-text-primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              opacity: 0.78,
+            }}
+          >
+            <MoreHorizontal
+              size={14}
+              strokeWidth={2.2}
+              style={{ transform: 'rotate(-35deg)' }}
+            />
+          </button>
+        )}
       </div>
 
-      {/* Outgoing Right Connector Socket if task has targetTaskIds */}
-      {task.targetTaskIds.length > 0 && (
+      {/* Right Recessed Outgoing Connector Cutout Socket */}
+      {hasOutgoingSocket && (
         <span
+          data-port-out={task.id}
           aria-hidden="true"
           style={{
             position: 'absolute',
-            right: '-5px',
+            right: '-19px',
             top: '50%',
             transform: 'translateY(-50%)',
-            width: '8px',
-            height: '8px',
+            width: '18px',
+            height: '18px',
             borderRadius: '9999px',
-            background: '#FFFFFF',
-            border: `2px solid ${
-              task.id === 'mgr-3' ? '#18191C' : '#D96B70'
-            }`,
-            zIndex: 3,
+            background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+            display: 'inline-flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 5,
           }}
-        />
+        >
+          <span
+            style={{
+              width: '6.5px',
+              height: '6.5px',
+              borderRadius: '9999px',
+              background: outgoingDotColor,
+              transition: 'background var(--ajb-duration-connector) var(--ajb-ease-standard)',
+            }}
+          />
+        </span>
       )}
     </div>
   );
@@ -401,6 +488,11 @@ export interface ActionTileCardProps {
   labelMode: LabelParityMode;
   onSelectTile: (tileId: string) => void;
   onOpenDetail: (tileId: string) => void;
+  /** Choreography override: temporary unselected before Seq 07 click */
+  forceUnselected?: boolean;
+  /** Choreography override: medium slate-grey press state at f=0919 */
+  isPressingTile?: boolean;
+  staggerIndex?: number;
 }
 
 export const ActionTileCard: React.FC<ActionTileCardProps> = ({
@@ -408,92 +500,789 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
   labelMode,
   onSelectTile,
   onOpenDetail,
+  forceUnselected = false,
+  isPressingTile = false,
+  staggerIndex = 0,
 }) => {
   const title = labelMode === 'reference' ? tile.referenceTitle : tile.operationsTitle;
+  const isSelected = !forceUnselected && tile.selected;
+
+  let backgroundStyle = 'var(--ajb-surface-card-gradient)';
+  let textColor = 'var(--ajb-text-primary)';
+  if (isSelected && isPressingTile) {
+    backgroundStyle = 'var(--ajb-surface-selected-press)';
+    textColor = '#FFFFFF';
+  } else if (isSelected) {
+    backgroundStyle = 'var(--ajb-surface-selected-gradient)';
+    textColor = 'var(--ajb-text-on-dark)';
+  }
 
   return (
-    <div
+    <button
+      type="button"
       data-tile-id={tile.id}
       onClick={() => onSelectTile(tile.id)}
       onDoubleClick={() => onOpenDetail(tile.id)}
-      role="button"
-      tabIndex={0}
-      aria-pressed={tile.selected}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          onSelectTile(tile.id);
-        }
-      }}
+      aria-pressed={isSelected}
+      className="ref-action-tile-pop"
       style={{
         position: 'relative',
-        width: '112px',
-        height: '74px',
-        padding: '12px 13px',
-        borderRadius: '18px',
-        background: tile.selected
-          ? 'var(--ajb-surface-card-selected)'
-          : 'var(--ajb-surface-card)',
-        color: tile.selected ? 'var(--ajb-text-on-dark)' : 'var(--ajb-text-secondary)',
-        border: tile.selected
-          ? '1px solid var(--ajb-surface-card-selected)'
-          : '1px solid var(--ajb-border-subtle)',
-        boxShadow: tile.selected
-          ? '0 10px 22px rgba(13, 13, 15, 0.24)'
-          : 'var(--ajb-shadow-card)',
+        minHeight: '76px',
+        padding: '13px 14px',
+        borderRadius: '20px',
+        border: isSelected
+          ? '1px solid rgba(13, 13, 15, 0.95)'
+          : '1px solid rgba(255, 255, 255, 0.90)',
+        background: backgroundStyle,
+        color: textColor,
+        boxShadow: isSelected ? 'var(--ajb-shadow-card-active)' : 'var(--ajb-shadow-card)',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        textAlign: 'left',
         cursor: 'pointer',
+        fontFamily: 'var(--ajb-font-sans)',
+        animationDelay: `${staggerIndex * 45}ms`,
+        transform: isPressingTile ? 'scale(0.96)' : 'scale(1)',
         transition:
-          'background var(--ajb-dur-hover) var(--ajb-ease-standard), color var(--ajb-dur-hover) var(--ajb-ease-standard), transform var(--ajb-dur-hover) var(--ajb-ease-standard), box-shadow var(--ajb-dur-hover) var(--ajb-ease-standard)',
-        userSelect: 'none',
+          'background var(--ajb-duration-tile-select) var(--ajb-ease-standard), color var(--ajb-duration-tile-select) var(--ajb-ease-standard), transform var(--ajb-duration-hover) var(--ajb-ease-standard), box-shadow var(--ajb-duration-tile-select) var(--ajb-ease-standard)',
       }}
     >
-      <div
+      {/* Incoming Connector Socket on Bottom-Left of Tile (Matches Reference f=0909 & Static Image) */}
+      <span
+        data-port-in={tile.id}
+        aria-hidden="true"
+        style={{
+          position: 'absolute',
+          left: '-4px',
+          bottom: '12px',
+          width: '8px',
+          height: '8px',
+          borderRadius: '9999px',
+          background: isSelected ? '#18191C' : 'transparent',
+          border: isSelected ? '1.5px solid #FFFFFF' : 'none',
+          pointerEvents: 'none',
+        }}
+      />
+
+      <span
         style={{
           fontSize: '11.5px',
-          fontWeight: tile.selected ? 500 : 400,
-          lineHeight: 1.28,
-          color: tile.selected ? '#FFFFFF' : 'var(--ajb-text-secondary)',
+          fontWeight: isSelected ? 600 : 500,
+          lineHeight: 1.24,
+          letterSpacing: '-0.01em',
+          maxWidth: '96px',
         }}
       >
         {title}
+      </span>
+    </button>
+  );
+};
+
+export interface FrostedStageColumnProps {
+  stageTitle: string;
+  children: React.ReactNode;
+  dimmed?: boolean;
+  staggerIndex?: number;
+  contentPadding?: string;
+}
+
+export const FrostedStageColumn: React.FC<FrostedStageColumnProps> = ({
+  stageTitle,
+  children,
+  dimmed = false,
+  staggerIndex = 0,
+  contentPadding = '12px',
+}) => {
+  return (
+    <div
+      className="ref-stage-cascade"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'stretch',
+        opacity: dimmed ? 0.35 : 1,
+        animationDelay: `${staggerIndex * 70}ms`,
+        transition: 'opacity var(--ajb-duration-hover) var(--ajb-ease-standard)',
+      }}
+    >
+      {/* Tall Translucent Frosted Stage Container (Matches Reference Image 1:1) */}
+      <div
+        style={{
+          position: 'relative',
+          flex: 1,
+          minHeight: '264px',
+          padding: contentPadding,
+          borderRadius: 'var(--ajb-radius-stage)',
+          background: 'var(--ajb-surface-stage-column)',
+          backdropFilter: 'blur(14px)',
+          border: '1px solid var(--ajb-border-glass)',
+          boxShadow: 'var(--ajb-shadow-stage)',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
+        {children}
       </div>
 
-      {/* Top-right subtle checkmark on completed unselected tiles */}
-      {!tile.selected && tile.completed && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            right: '10px',
-            bottom: '10px',
-            color: 'var(--ajb-text-muted)',
-            opacity: 0.7,
-          }}
-        >
-          <Check size={12} strokeWidth={1.9} />
-        </span>
-      )}
+      {/* Centered Stage Label BELOW the Frosted Container (Matches Reference Image 1:1) */}
+      <div
+        style={{
+          marginTop: '10px',
+          textAlign: 'center',
+          fontSize: '12px',
+          fontWeight: 500,
+          letterSpacing: '-0.01em',
+          color: 'var(--ajb-text-primary)',
+        }}
+      >
+        {stageTitle}
+      </div>
+    </div>
+  );
+};
 
-      {/* Incoming connector dot on bottom-left corner when selected (Seq 07 f=0909 / f=0950) */}
-      {tile.selected && (
-        <span
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            left: '-4px',
-            bottom: '12px',
-            width: '8px',
-            height: '8px',
-            borderRadius: '9999px',
-            background: '#FFFFFF',
-            border: '2px solid #D96B70',
-            zIndex: 4,
-          }}
+export interface ConnectedWorkflowCanvasProps {
+  labelMode: LabelParityMode;
+  allocationCards: AllocationCardData[];
+  stageTasks: StageTaskRowData[];
+  onboardingTiles: OnboardingActionTileData[];
+  selectedParticipantId: string | null;
+  activeStageFilter?: JourneyStageId | 'all';
+  connectorVariant: ConnectorRenderVariant;
+  onSetConnectorVariant?: (variant: ConnectorRenderVariant) => void;
+  onAssignSlot: (taskId: string, participantId?: string) => void;
+  onSelectTile: (tileId: string) => void;
+  onOpenDetail: (cardId: string) => void;
+  onAddNewCase?: () => void;
+  matchesTaskFilter?: (task: StageTaskRowData) => boolean;
+  /** If true, automatically loops the Seq 05 -> Seq 06 -> Seq 07 motion choreography */
+  autoLoopDefault?: boolean;
+}
+
+export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = ({
+  labelMode,
+  allocationCards,
+  stageTasks,
+  onboardingTiles,
+  selectedParticipantId,
+  activeStageFilter = 'all',
+  connectorVariant,
+  onSetConnectorVariant,
+  onAssignSlot,
+  onSelectTile,
+  onOpenDetail,
+  onAddNewCase,
+  matchesTaskFilter,
+  autoLoopDefault = true,
+}) => {
+  const stageCanvasRef = useRef<HTMLDivElement | null>(null);
+  const [phase, setPhase] = useState<ChoreographyPhase>('idle');
+  const [autoLoop, setAutoLoop] = useState<boolean>(autoLoopDefault);
+  const [animTriggerKey, setAnimTriggerKey] = useState<number>(1);
+  const [hoveredDropSlotId, setHoveredDropSlotId] = useState<string | null>(null);
+  const [floatingAvatarPos, setFloatingAvatarPos] = useState<{
+    visible: boolean;
+    x: string;
+    y: string;
+    scale: number;
+  }>({ visible: false, x: '56%', y: '-18px', scale: 1 });
+
+  const timersRef = useRef<number[]>([]);
+
+  const clearTimers = useCallback(() => {
+    timersRef.current.forEach((id) => window.clearTimeout(id));
+    timersRef.current = [];
+  }, []);
+
+  const runFullChoreography = useCallback(() => {
+    clearTimers();
+    setAnimTriggerKey((k) => k + 1);
+
+    // Phase 1: Seq 05 Staggered Stage & Row Reveal (0ms -> 900ms)
+    setPhase('seq05_stagger');
+    setHoveredDropSlotId(null);
+    setFloatingAvatarPos({ visible: false, x: '55%', y: '-22px', scale: 0.9 });
+
+    // Phase 2: Seq 06 Floating Avatar Pickup from Top Notch (900ms)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setPhase('seq06_drag');
+        setFloatingAvatarPos({ visible: true, x: '55%', y: '-14px', scale: 1.08 });
+      }, 900)
+    );
+
+    // Glide over Stage 3 Row 1 (mgr-1, f=0785)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setHoveredDropSlotId('mgr-1');
+        setFloatingAvatarPos({ visible: true, x: '54.5%', y: '36px', scale: 1.06 });
+      }, 1350)
+    );
+
+    // Glide over Stage 3 Row 2 (mgr-2, f=0793)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setHoveredDropSlotId('mgr-2');
+        setFloatingAvatarPos({ visible: true, x: '54.5%', y: '86px', scale: 1.06 });
+      }, 1720)
+    );
+
+    // Hover Stage 3 Row 3 (mgr-3: Estimate Resolution Time, f=0801)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setHoveredDropSlotId('mgr-3');
+        setFloatingAvatarPos({ visible: true, x: '54.5%', y: '134px', scale: 1.02 });
+      }, 2080)
+    );
+
+    // Drop into mgr-3 & Solidify Coral->Blue Connector (f=0809..0833)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setHoveredDropSlotId(null);
+        setFloatingAvatarPos({ visible: false, x: '54.5%', y: '134px', scale: 0.8 });
+        setPhase('seq06_solidify');
+      }, 2440)
+    );
+
+    // Phase 3: Seq 07 Diagonal Dark Arrow Draw to Request Processing (f=0895..0907)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setPhase('seq07_arrow');
+      }, 3150)
+    );
+
+    // Tile Press Slate Grey Pulse (f=0919)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setPhase('seq07_press');
+      }, 3700)
+    );
+
+    // Routed Dashed Coral Connector & Black Tile Settled (f=0925..0961)
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setPhase('seq07_dashed');
+      }, 4020)
+    );
+
+    // Return to settled idle state
+    timersRef.current.push(
+      window.setTimeout(() => {
+        setPhase('idle');
+      }, 5200)
+    );
+  }, [clearTimers]);
+
+  useEffect(() => {
+    if (!autoLoop) return;
+    const initialTimer = window.setTimeout(() => {
+      runFullChoreography();
+    }, 1800);
+    const interval = window.setInterval(() => {
+      runFullChoreography();
+    }, 6800);
+    return () => {
+      window.clearTimeout(initialTimer);
+      window.clearInterval(interval);
+      clearTimers();
+    };
+  }, [autoLoop, runFullChoreography, clearTimers]);
+
+  useEffect(() => {
+    return () => clearTimers();
+  }, [clearTimers]);
+
+  const stage2Tasks = stageTasks.filter((t) => t.stageId === 'role_access_profile');
+  const stage3Tasks = stageTasks.filter((t) => t.stageId === 'manager_review');
+
+  const getStageTitle = (id: JourneyStageId) => {
+    const meta = STAGE_METADATA.find((s) => s.id === id);
+    if (!meta) return '';
+    return labelMode === 'reference' ? meta.referenceTitle : meta.operationsTitle;
+  };
+
+  return (
+    <div
+      style={{
+        padding: '16px 20px 18px',
+        borderRadius: '30px',
+        background: 'var(--ajb-surface-subpanel)',
+        border: '1px solid var(--ajb-border-glass)',
+        boxShadow: '0 8px 28px -8px rgba(18, 23, 38, 0.04)',
+        position: 'relative',
+      }}
+    >
+      {/* Sub-Panel Top Bar: "New Case Management" + Replay Motion Controls + 3 Circular Action Icons */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px',
+          marginBottom: '14px',
+          flexWrap: 'wrap',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <h2
+            style={{
+              margin: 0,
+              fontSize: '15.5px',
+              fontWeight: 500,
+              letterSpacing: '-0.015em',
+              color: 'var(--ajb-text-primary)',
+            }}
+          >
+            {labelMode === 'reference' ? 'New Case Management' : 'New Starter Journey'}
+          </h2>
+
+          {/* Live Motion Choreography Controls (Seq 05 -> Seq 06 -> Seq 07) */}
+          <div
+            role="group"
+            aria-label="Workflow motion choreography controls"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '3px 5px',
+              borderRadius: '9999px',
+              background: 'rgba(255, 255, 255, 0.72)',
+              border: '1px solid rgba(18, 22, 33, 0.06)',
+            }}
+          >
+            <button
+              type="button"
+              onClick={runFullChoreography}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '3px 9px',
+                borderRadius: '9999px',
+                border: 'none',
+                background: phase !== 'idle' ? '#0D0D0F' : 'rgba(143, 168, 224, 0.22)',
+                color: phase !== 'idle' ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                fontSize: '10px',
+                fontWeight: 600,
+                cursor: 'pointer',
+              }}
+            >
+              <Play size={10} fill="currentColor" />
+              {phase === 'idle' ? 'Replay Motion (Seq 05–07)' : `Playing: ${phase}`}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                clearTimers();
+                setPhase('seq06_drag');
+                setHoveredDropSlotId('mgr-3');
+                setFloatingAvatarPos({ visible: true, x: '54.5%', y: '134px', scale: 1.04 });
+                timersRef.current.push(
+                  window.setTimeout(() => {
+                    setHoveredDropSlotId(null);
+                    setFloatingAvatarPos({ visible: false, x: '54.5%', y: '134px', scale: 0.85 });
+                    setPhase('seq06_solidify');
+                  }, 1400),
+                  window.setTimeout(() => {
+                    setPhase('idle');
+                  }, 2800)
+                );
+              }}
+              style={{
+                padding: '3px 8px',
+                borderRadius: '9999px',
+                border: 'none',
+                background: phase === 'seq06_drag' || phase === 'seq06_solidify' ? '#0D0D0F' : 'transparent',
+                color: phase === 'seq06_drag' || phase === 'seq06_solidify' ? '#FFFFFF' : 'var(--ajb-text-secondary)',
+                fontSize: '10px',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              Seq 06: Avatar Drag
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                clearTimers();
+                setAnimTriggerKey((k) => k + 1);
+                setPhase('seq07_arrow');
+                timersRef.current.push(
+                  window.setTimeout(() => setPhase('seq07_press'), 650),
+                  window.setTimeout(() => setPhase('seq07_dashed'), 1050),
+                  window.setTimeout(() => setPhase('idle'), 2600)
+                );
+              }}
+              style={{
+                padding: '3px 8px',
+                borderRadius: '9999px',
+                border: 'none',
+                background:
+                  phase === 'seq07_arrow' || phase === 'seq07_press' || phase === 'seq07_dashed'
+                    ? '#0D0D0F'
+                    : 'transparent',
+                color:
+                  phase === 'seq07_arrow' || phase === 'seq07_press' || phase === 'seq07_dashed'
+                    ? '#FFFFFF'
+                    : 'var(--ajb-text-secondary)',
+                fontSize: '10px',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              Seq 07: Arrow & Tile
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setAutoLoop((prev) => !prev)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '3px 8px',
+                borderRadius: '9999px',
+                border: 'none',
+                background: autoLoop ? '#0D0D0F' : 'transparent',
+                color: autoLoop ? '#FFFFFF' : 'var(--ajb-text-secondary)',
+                fontSize: '10px',
+                fontWeight: 500,
+                cursor: 'pointer',
+              }}
+            >
+              <Sparkles size={10} />
+              {autoLoop ? 'Looping ON' : 'Auto-Loop'}
+            </button>
+
+            {onSetConnectorVariant && (
+              <button
+                type="button"
+                onClick={() =>
+                  onSetConnectorVariant(
+                    connectorVariant === 'static_solid_dark'
+                      ? 'video_dashed_coral'
+                      : 'static_solid_dark'
+                  )
+                }
+                title="Toggle Stage 3→4 connector between Static Reference (solid dark arrow) and Video f=0925 (dashed coral spline)"
+                style={{
+                  padding: '3px 8px',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  background: 'transparent',
+                  color: 'var(--ajb-text-secondary)',
+                  fontSize: '10px',
+                  fontWeight: 500,
+                  cursor: 'pointer',
+                }}
+              >
+                {connectorVariant === 'static_solid_dark'
+                  ? 'Spline: Dark Arrow (Ref)'
+                  : 'Spline: Dashed Coral (f=0925)'}
+              </button>
+            )}
+          </div>
+        </div>
+
+        {/* Top-Right 3 Circular Action Icons (+, Share/Upload, Calendar — Matches Reference Image 1:1) */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <button
+            type="button"
+            onClick={onAddNewCase}
+            aria-label="Add new starter case"
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255, 255, 255, 0.88)',
+              background: '#FFFFFF',
+              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              color: 'var(--ajb-text-primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <Plus size={13} strokeWidth={1.9} />
+          </button>
+          <button
+            type="button"
+            onClick={runFullChoreography}
+            aria-label="Share or replay workflow"
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255, 255, 255, 0.88)',
+              background: '#FFFFFF',
+              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              color: 'var(--ajb-text-primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <Share2 size={12} strokeWidth={1.8} />
+          </button>
+          <button
+            type="button"
+            onClick={() => onOpenDetail('alloc-1')}
+            aria-label="Open schedule calendar"
+            style={{
+              width: '30px',
+              height: '30px',
+              borderRadius: '9999px',
+              border: '1px solid rgba(255, 255, 255, 0.88)',
+              background: '#FFFFFF',
+              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              color: 'var(--ajb-text-primary)',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+            }}
+          >
+            <Calendar size={12} strokeWidth={1.8} />
+          </button>
+        </div>
+      </div>
+
+      {/* 4 Connected Stage Columns + SVG Cubic Bézier Connector Overlay */}
+      <div
+        ref={stageCanvasRef}
+        style={{
+          position: 'relative',
+          display: 'grid',
+          gridTemplateColumns: '0.88fr 1.15fr 1.15fr 1.08fr',
+          gap: '24px',
+          alignItems: 'stretch',
+        }}
+      >
+        {/* Animated Floating Avatar Sprite for Seq 06 (f=0769..0809) */}
+        {floatingAvatarPos.visible && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: 'absolute',
+              left: floatingAvatarPos.x,
+              top: floatingAvatarPos.y,
+              transform: `translate(-50%, -50%) scale(${floatingAvatarPos.scale})`,
+              zIndex: 30,
+              pointerEvents: 'none',
+              transition:
+                'left 340ms cubic-bezier(0.22, 1, 0.36, 1), top 340ms cubic-bezier(0.22, 1, 0.36, 1), transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+            }}
+          >
+            <img
+              src="/avatars/avatar-6.png"
+              alt=""
+              style={{
+                width: '36px',
+                height: '36px',
+                borderRadius: '9999px',
+                objectFit: 'cover',
+                border: '2px solid #FFFFFF',
+                boxShadow: '0 10px 24px rgba(18, 23, 38, 0.28)',
+              }}
+            />
+            <span
+              style={{
+                padding: '2px 7px',
+                borderRadius: '9999px',
+                background: '#0D0D0F',
+                color: '#FFFFFF',
+                fontSize: '9.5px',
+                fontWeight: 600,
+                boxShadow: '0 4px 12px rgba(0,0,0,0.22)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              Assigning Reviewer…
+            </span>
+          </div>
+        )}
+
+        {/* SVG Connector Layer */}
+        <CurvedConnectorLayer
+          containerRef={stageCanvasRef}
+          allocationCards={allocationCards}
+          stageTasks={stageTasks}
+          onboardingTiles={onboardingTiles}
+          selectedParticipantId={selectedParticipantId}
+          connectorVariant={connectorVariant}
+          choreographyPhase={phase}
+          animationTriggerKey={animTriggerKey}
         />
-      )}
+
+        {/* Column 1: Case Allocation / Starter details */}
+        <FrostedStageColumn
+          key={`col1-${animTriggerKey}`}
+          stageTitle={getStageTitle('starter_details')}
+          dimmed={activeStageFilter !== 'all' && activeStageFilter !== 'starter_details'}
+          staggerIndex={0}
+          contentPadding="8px 10px"
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              flex: 1,
+            }}
+          >
+            {allocationCards.map((card, idx) => (
+              <AllocationStageCard
+                key={card.id}
+                card={card}
+                labelMode={labelMode}
+                highlighted={
+                  !selectedParticipantId || card.participantId === selectedParticipantId
+                }
+                onOpenDetail={onOpenDetail}
+                showBottomDivider={idx < allocationCards.length - 1}
+                staggerIndex={idx}
+              />
+            ))}
+          </div>
+        </FrostedStageColumn>
+
+        {/* Column 2: Issue Identification / Role and access profile */}
+        <FrostedStageColumn
+          key={`col2-${animTriggerKey}`}
+          stageTitle={getStageTitle('role_access_profile')}
+          dimmed={activeStageFilter !== 'all' && activeStageFilter !== 'role_access_profile'}
+          staggerIndex={1}
+          contentPadding="6px 10px"
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              flex: 1,
+            }}
+          >
+            {stage2Tasks.map((task, idx) => {
+              const matched = matchesTaskFilter ? matchesTaskFilter(task) : true;
+              const isHighlighted =
+                matched &&
+                (!selectedParticipantId || task.assignedParticipantId === selectedParticipantId);
+              return (
+                <CompactTaskRowCard
+                  key={task.id}
+                  task={task}
+                  labelMode={labelMode}
+                  highlighted={isHighlighted}
+                  onAssignSlot={(taskId) => onAssignSlot(taskId)}
+                  onOpenDetail={onOpenDetail}
+                  showBottomDivider={idx < stage2Tasks.length - 1}
+                  staggerIndex={idx + 2}
+                />
+              );
+            })}
+          </div>
+        </FrostedStageColumn>
+
+        {/* Column 3: Technical Resolution / Manager review */}
+        <FrostedStageColumn
+          key={`col3-${animTriggerKey}`}
+          stageTitle={getStageTitle('manager_review')}
+          dimmed={activeStageFilter !== 'all' && activeStageFilter !== 'manager_review'}
+          staggerIndex={2}
+          contentPadding="6px 10px"
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              flex: 1,
+            }}
+          >
+            {stage3Tasks.map((task, idx) => {
+              const isMgr3 = task.id === 'mgr-3';
+              const forceUnassigned =
+                isMgr3 && (phase === 'seq05_stagger' || phase === 'seq06_drag');
+              const justSnapped = isMgr3 && phase === 'seq06_solidify';
+              const matched = matchesTaskFilter ? matchesTaskFilter(task) : true;
+              const isHighlighted =
+                matched &&
+                (!selectedParticipantId ||
+                  task.assignedParticipantId === selectedParticipantId ||
+                  !task.assignedParticipantId);
+
+              return (
+                <CompactTaskRowCard
+                  key={task.id}
+                  task={task}
+                  labelMode={labelMode}
+                  highlighted={isHighlighted}
+                  onAssignSlot={(taskId) => onAssignSlot(taskId)}
+                  onOpenDetail={onOpenDetail}
+                  showBottomDivider={idx < stage3Tasks.length - 1}
+                  forceUnassignedDuringDrag={forceUnassigned}
+                  isDropTargetHighlighted={hoveredDropSlotId === task.id}
+                  justSnappedAvatar={justSnapped}
+                  staggerIndex={idx + 4}
+                />
+              );
+            })}
+          </div>
+        </FrostedStageColumn>
+
+        {/* Column 4: New Tasks / Ready for onboarding (2x3 Grid) */}
+        <FrostedStageColumn
+          key={`col4-${animTriggerKey}`}
+          stageTitle={getStageTitle('ready_for_onboarding')}
+          dimmed={activeStageFilter !== 'all' && activeStageFilter !== 'ready_for_onboarding'}
+          staggerIndex={3}
+          contentPadding="12px"
+        >
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2, 1fr)',
+              gap: '10px',
+              flex: 1,
+              alignContent: 'space-between',
+            }}
+          >
+            {onboardingTiles.map((tile, idx) => {
+              const isRequestProcessing = tile.id === 'tile-1';
+              const forceUnselected =
+                isRequestProcessing &&
+                (phase === 'seq05_stagger' ||
+                  phase === 'seq06_drag' ||
+                  phase === 'seq06_solidify');
+              const isPressingTile = isRequestProcessing && phase === 'seq07_press';
+
+              return (
+                <ActionTileCard
+                  key={tile.id}
+                  tile={tile}
+                  labelMode={labelMode}
+                  onSelectTile={onSelectTile}
+                  onOpenDetail={onOpenDetail}
+                  forceUnselected={forceUnselected}
+                  isPressingTile={isPressingTile}
+                  staggerIndex={idx + 6}
+                />
+              );
+            })}
+          </div>
+        </FrostedStageColumn>
+      </div>
     </div>
   );
 };
@@ -532,8 +1321,8 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
           ? '1px solid var(--ajb-accent-black)'
           : '1px solid var(--ajb-border-subtle)',
         background: showBlackTakeCta
-          ? 'var(--ajb-surface-card-selected)'
-          : 'var(--ajb-surface-card)',
+          ? 'var(--ajb-surface-selected-gradient)'
+          : 'var(--ajb-surface-card-gradient)',
         color: showBlackTakeCta ? '#FFFFFF' : 'var(--ajb-text-primary)',
         boxShadow: showBlackTakeCta
           ? '0 10px 24px rgba(13, 13, 15, 0.22)'
@@ -642,7 +1431,9 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
       style={{
         padding: '18px 20px',
         borderRadius: '24px',
-        background: card.muted ? 'rgba(255, 255, 255, 0.52)' : 'var(--ajb-surface-card)',
+        background: card.muted
+          ? 'rgba(255, 255, 255, 0.52)'
+          : 'var(--ajb-surface-card-gradient)',
         border: '1px solid var(--ajb-border-subtle)',
         boxShadow: 'var(--ajb-shadow-card)',
         display: 'flex',
@@ -651,7 +1442,8 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
         minHeight: '214px',
         cursor: 'pointer',
         opacity: card.muted ? 0.68 : 1,
-        transition: 'transform 180ms var(--ajb-ease-standard), box-shadow 180ms var(--ajb-ease-standard)',
+        transition:
+          'transform 180ms var(--ajb-ease-standard), box-shadow 180ms var(--ajb-ease-standard)',
       }}
     >
       {/* Top Row: Title + Overlapping Avatar Cluster */}
@@ -681,7 +1473,7 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
       <div
         style={{
           display: 'flex',
-           flexDirection: 'column',
+          flexDirection: 'column',
           gap: '6px',
           margin: '16px 0',
           paddingTop: '10px',
@@ -750,3 +1542,4 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
     </div>
   );
 };
+

@@ -371,60 +371,61 @@ export interface SupportTicketJourneyCardProps {
 export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> = ({
   labelMode,
 }) => {
-  const [activeMonth, setActiveMonth] = useState<'Feb' | 'Mar'>('Mar');
+  const [activeMonth, setActiveMonth] = useState<'Feb' | 'Mar'>('Feb');
 
-  const metrics =
-    activeMonth === 'Mar'
-      ? { left: '86.4%', center: '95.0%', right: '69.7%' }
-      : { left: '82.1%', center: '91.8%', right: '74.2%' };
+  const counts =
+    activeMonth === 'Feb'
+      ? { executed: 5, active: 7 }
+      : { executed: 8, active: 6 };
 
   return (
     <section
       aria-label="Support Ticket Journey"
       style={{
-        padding: '16px 20px',
-        borderRadius: '24px',
-        background: 'rgba(255, 255, 255, 0.56)',
-        border: '1px solid var(--ajb-border-subtle)',
-        boxShadow: 'var(--ajb-shadow-card)',
+        padding: '16px 20px 0 20px',
+        borderRadius: '26px',
+        background: 'var(--ajb-surface-stage-column)',
+        border: '1px solid var(--ajb-border-glass)',
+        boxShadow: 'var(--ajb-shadow-stage)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         position: 'relative',
         overflow: 'hidden',
+        minHeight: '198px',
       }}
     >
-      {/* Top Row: Heading + Feb/Mar Pill Toggle */}
+      {/* Top Row: Heading + Feb/Mar Pill Toggle (Matches Reference Image 1:1) */}
       <div
         style={{
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
           gap: '8px',
+          zIndex: 3,
         }}
       >
         <h3
           style={{
             margin: 0,
-            fontSize: '14.5px',
+            fontSize: '15px',
             fontWeight: 500,
             lineHeight: 1.22,
             letterSpacing: '-0.015em',
             color: 'var(--ajb-text-primary)',
-            maxWidth: '120px',
+            maxWidth: '130px',
           }}
         >
           {labelMode === 'reference'
             ? 'Support Ticket Journey'
-            : 'Onboarding Readiness Velocity'}
+            : 'Support Ticket Journey'}
         </h3>
 
         <div
           style={{
             display: 'inline-flex',
-            padding: '2px',
-            borderRadius: '9999px',
-            background: 'rgba(226, 229, 237, 0.85)',
+            gap: '6px',
+            alignItems: 'center',
           }}
         >
           {(['Feb', 'Mar'] as const).map((m) => {
@@ -435,14 +436,18 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
                 type="button"
                 onClick={() => setActiveMonth(m)}
                 style={{
-                  padding: '3px 9px',
+                  padding: '5px 12px',
                   borderRadius: '9999px',
-                  border: 'none',
-                  background: active ? '#18191C' : 'transparent',
-                  color: active ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-                  fontSize: '10px',
+                  border: active ? 'none' : '1px solid rgba(255, 255, 255, 0.85)',
+                  background: active ? 'var(--ajb-surface-selected-gradient)' : '#FFFFFF',
+                  color: active ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                  boxShadow: active
+                    ? '0 6px 14px rgba(13, 13, 15, 0.22)'
+                    : '0 2px 6px rgba(18, 23, 38, 0.05)',
+                  fontSize: '11px',
                   fontWeight: 500,
                   cursor: 'pointer',
+                  transition: 'all var(--ajb-duration-hover) var(--ajb-ease-standard)',
                 }}
               >
                 {m}
@@ -452,144 +457,122 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
         </div>
       </div>
 
-      {/* Week Axis 3, 4, 5, 6 + Overlapping Proportional Bubbles */}
-      <div style={{ position: 'relative', height: '108px', marginTop: '6px' }}>
-        <div
-          className="ajb-tabular"
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            textAlign: 'center',
-            fontSize: '10px',
-            color: 'var(--ajb-text-muted)',
-          }}
-        >
-          <span>3</span>
-          <span style={{ color: 'var(--ajb-text-primary)', fontWeight: 600 }}>4</span>
-          <span>5</span>
-          <span>6</span>
-        </div>
-
-        {/* Vertical dashed guide line under 4 */}
-        <div
-          aria-hidden="true"
-          style={{
-            position: 'absolute',
-            left: '37.5%',
-            top: '16px',
-            bottom: '4px',
-            borderLeft: '1.5px dashed rgba(24, 25, 28, 0.45)',
-            zIndex: 1,
-          }}
-        />
-
-        {/* Left Periwinkle Bubble (86.4%) */}
-        <div
-          className="ajb-tabular"
-          style={{
-            position: 'absolute',
-            left: '10%',
-            bottom: '8px',
-            width: '66px',
-            height: '66px',
-            borderRadius: '9999px',
-            background: 'rgba(181, 200, 242, 0.78)',
-            border: '1.5px solid rgba(255, 255, 255, 0.85)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '11.5px',
-            fontWeight: 600,
-            color: '#18191C',
-            zIndex: 2,
-          }}
-        >
-          {metrics.left}
-        </div>
-
-        {/* Center Highlight Bubble (95.0%) */}
-        <div
-          className="ajb-tabular"
-          style={{
-            position: 'absolute',
-            left: '31%',
-            bottom: '6px',
-            width: '78px',
-            height: '78px',
-            borderRadius: '9999px',
-            background: 'rgba(218, 224, 236, 0.82)',
-            border: '1.5px solid #FFFFFF',
-            boxShadow: '0 6px 16px rgba(18, 22, 33, 0.08)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '12.5px',
-            fontWeight: 600,
-            color: '#18191C',
-            zIndex: 3,
-          }}
-        >
-          {metrics.center}
-        </div>
-
-        {/* Right Rose/Coral Bubble (69.7%) */}
-        <div
-          className="ajb-tabular"
-          style={{
-            position: 'absolute',
-            right: '10%',
-            bottom: '10px',
-            width: '58px',
-            height: '58px',
-            borderRadius: '9999px',
-            background: 'rgba(235, 169, 173, 0.78)',
-            border: '1.5px solid rgba(255, 255, 255, 0.85)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '11px',
-            fontWeight: 600,
-            color: '#18191C',
-            zIndex: 2,
-          }}
-        >
-          {metrics.right}
-        </div>
-      </div>
-
-      {/* Footer Caption */}
+      {/* Bottom Rising Semi-Circular Domes: Executed (5, Periwinkle) & Active (7, Coral) */}
       <div
         style={{
+          position: 'relative',
+          height: '132px',
+          marginTop: '8px',
           display: 'flex',
           alignItems: 'flex-end',
-          justifyContent: 'space-between',
-          marginTop: '4px',
+          justifyContent: 'center',
         }}
       >
-        <span
+        {/* Left Periwinkle Dome: Executed (5) */}
+        <div
           style={{
-            fontSize: '10px',
-            color: 'var(--ajb-text-muted)',
-            lineHeight: 1.25,
-            maxWidth: '130px',
-          }}
-        >
-          average indicators across all parameters
-        </span>
-        <span
-          style={{
-            width: '26px',
-            height: '26px',
-            borderRadius: '9999px',
-            background: 'var(--ajb-surface-card)',
-            display: 'inline-flex',
+            position: 'absolute',
+            left: '-6px',
+            bottom: '-34px',
+            width: '148px',
+            height: '126px',
+            borderRadius: '9999px 9999px 0 0',
+            background: 'var(--ajb-accent-periwinkle-gradient)',
+            display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'var(--ajb-text-secondary)',
+            paddingBottom: '12px',
+            zIndex: 2,
+            transition: 'transform var(--ajb-duration-morph) var(--ajb-ease-spring)',
           }}
         >
-          <ArrowUpRight size={13} />
-        </span>
+          {/* Floating count circle '5' perched on top-left arc */}
+          <span
+            className="ajb-tabular"
+            style={{
+              position: 'absolute',
+              top: '-6px',
+              left: '22px',
+              width: '26px',
+              height: '26px',
+              borderRadius: '9999px',
+              background: '#E6E9F2',
+              border: '2px solid rgba(255, 255, 255, 0.92)',
+              color: '#18191C',
+              fontSize: '11px',
+              fontWeight: 600,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 10px rgba(18, 23, 38, 0.08)',
+            }}
+          >
+            {counts.executed}
+          </span>
+          <span
+            style={{
+              color: '#FFFFFF',
+              fontSize: '12px',
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            Executed
+          </span>
+        </div>
+
+        {/* Right Coral Dome: Active (7) */}
+        <div
+          style={{
+            position: 'absolute',
+            right: '-10px',
+            bottom: '-28px',
+            width: '166px',
+            height: '146px',
+            borderRadius: '9999px 9999px 0 0',
+            background: 'var(--ajb-accent-coral-gradient)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: '18px',
+            zIndex: 1,
+            transition: 'transform var(--ajb-duration-morph) var(--ajb-ease-spring)',
+          }}
+        >
+          {/* Floating count circle '7' perched on top-left arc */}
+          <span
+            className="ajb-tabular"
+            style={{
+              position: 'absolute',
+              top: '-4px',
+              left: '20px',
+              width: '28px',
+              height: '28px',
+              borderRadius: '9999px',
+              background: '#E6E9F2',
+              border: '2px solid rgba(255, 255, 255, 0.92)',
+              color: '#18191C',
+              fontSize: '11px',
+              fontWeight: 600,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              boxShadow: '0 4px 10px rgba(18, 23, 38, 0.08)',
+            }}
+          >
+            {counts.active}
+          </span>
+          <span
+            style={{
+              color: '#FFFFFF',
+              fontSize: '12px',
+              fontWeight: 500,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            Active
+          </span>
+        </div>
       </div>
     </section>
   );
