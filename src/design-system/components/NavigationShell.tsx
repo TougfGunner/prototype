@@ -62,7 +62,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
   isGalleryActive = false,
   theme = 'light',
   onToggleTheme,
-  paletteMode = 'light-blue',
+  paletteMode = 'chime-crimson',
   onChangePaletteMode,
 }) => {
   const navItems: {
@@ -618,9 +618,9 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
                   outline: 'none',
                 }}
               >
+                <option value="chime-crimson">Crimson (Red)</option>
                 <option value="light-blue">Blue · Slate-Navy</option>
                 <option value="chime-blue-dark">Chime + Blue Dark</option>
-                <option value="chime-crimson">Crimson (Red)</option>
               </select>
             </label>
           )}
@@ -841,7 +841,7 @@ export interface SubHeaderBreadcrumbProps {
 export const SubHeaderBreadcrumb: React.FC<SubHeaderBreadcrumbProps> = ({
   screenMode,
   labelMode,
-  activeDemoRole,
+  activeDemoRole: _activeDemoRole,
   onBackToPipelines,
 }) => {
   const trailLabel =
@@ -909,19 +909,6 @@ export const SubHeaderBreadcrumb: React.FC<SubHeaderBreadcrumbProps> = ({
         }}
       >
         {trailLabel}
-      </span>
-      <span
-        style={{
-          fontSize: '11.5px',
-          fontWeight: 600,
-          padding: '3px 10px',
-          borderRadius: '999px',
-          background: 'var(--ajb-surface-control)',
-          border: '1px solid var(--ajb-border-subtle)',
-          color: 'var(--ajb-text-primary)',
-        }}
-      >
-        Role Token: {activeDemoRole}
       </span>
     </div>
   );

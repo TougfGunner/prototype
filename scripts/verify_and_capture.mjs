@@ -305,8 +305,9 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Check 15: Dark Mode consistency on main / workspace (Default Light-Blue Palette) + Role-Level Design Tokens
-  await page.goto(`${BASE_URL}/?theme=dark&palette=light-blue`, { waitUntil: 'networkidle' });
+  // Check 15: Dark Mode consistency on main / workspace (Default Chime-Crimson Palette) + Role-Level Design Tokens
+  await page.evaluate(() => localStorage.clear());
+  await page.goto(`${BASE_URL}/?theme=dark`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   const journeyDarkTheme = await page.evaluate(() =>
     document.documentElement.getAttribute('data-theme')
@@ -315,11 +316,15 @@ async function runVerificationAndScreenshots() {
     document.documentElement.getAttribute('data-palette')
   );
   const roleTokenChipVisible = await page.locator('[data-testid="active-role-token-chip"]').isVisible();
+  const crimsonChipText = await page.locator('[data-testid="active-role-token-chip"]').innerText();
   recordAssertion(
     'check_15_journey_dark_mode_and_role_tokens',
-    'Main workspace renders clean AJ Bell Light-Blue Cobalt Dark Mode by default with active --role-* design token synchronization',
-    journeyDarkTheme === 'dark' && activePaletteAttr === 'light-blue' && roleTokenChipVisible,
-    `data-theme=${journeyDarkTheme}, data-palette=${activePaletteAttr}, roleChip=${roleTokenChipVisible}`
+    'Main workspace renders AJ Bell Chime Crimson (chime-crimson) by default with active --role-* design token synchronization',
+    journeyDarkTheme === 'dark' &&
+      activePaletteAttr === 'chime-crimson' &&
+      roleTokenChipVisible &&
+      crimsonChipText.includes('#FF385C'),
+    `data-theme=${journeyDarkTheme}, data-palette=${activePaletteAttr}, roleChip=${crimsonChipText}`
   );
 
   await page.screenshot({
@@ -327,11 +332,45 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
   await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '18_palette_chime_crimson_dark.png'),
+    fullPage: false,
+  });
+
+  // Capture Default Chime-Crimson Light Mode
+  await page.goto(`${BASE_URL}/?theme=light`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(350);
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '19_palette_chime_crimson_light.png'),
+    fullPage: false,
+  });
+
+  // Check 20: Verify selectable Light-Blue & Chime-Blue-Dark palettes and zero leaks when changed via URL or external agent DOM mutation
+  await page.evaluate(() => {
+    document.documentElement.setAttribute('data-palette', 'light-blue');
+    document.documentElement.setAttribute('data-theme', 'dark');
+  });
+  await page.waitForTimeout(350);
+  const mutatedPaletteAttr = await page.evaluate(() =>
+    document.documentElement.getAttribute('data-palette')
+  );
+  const blueDarkChipText = await page.locator('[data-testid="active-role-token-chip"]').innerText();
+  const selectValueAfterDomMutation = await page
+    .locator('[data-testid="top-palette-select"]')
+    .inputValue();
+  recordAssertion(
+    'check_20_selectable_palettes_zero_leaks',
+    'Selectable Light-Blue & Chime-Blue-Dark palettes switch cleanly with zero red/blue leaks even when mutated directly on <html> by other agents',
+    mutatedPaletteAttr === 'light-blue' &&
+      selectValueAfterDomMutation === 'light-blue' &&
+      blueDarkChipText.includes('#7B99DC') &&
+      !blueDarkChipText.includes('#FF385C'),
+    `data-palette=${mutatedPaletteAttr}, select=${selectValueAfterDomMutation}, chip=${blueDarkChipText}`
+  );
+  await page.screenshot({
     path: path.join(SCREENSHOT_DIR, '16_palette_light_blue_dark.png'),
     fullPage: false,
   });
 
-  // Capture Light-Blue Light Mode comparison
   await page.goto(`${BASE_URL}/?theme=light&palette=light-blue`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(350);
   await page.screenshot({
@@ -339,32 +378,8 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Capture preserved Chime-Crimson (Red) Dark & Light Modes for side-by-side reference
+  // Return to Default Chime-Crimson Dark Mode and open Root & Role-Level Token Architecture & Repo Merge Blueprint drawer on /
   await page.goto(`${BASE_URL}/?theme=dark&palette=chime-crimson`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(350);
-  const redPaletteAttr = await page.evaluate(() =>
-    document.documentElement.getAttribute('data-palette')
-  );
-  recordAssertion(
-    'check_20_preserved_chime_crimson_palette',
-    'Preserved AJ Bell Chime Crimson (Red) palette switches cleanly via ?palette=chime-crimson in both Dark and Light modes',
-    redPaletteAttr === 'chime-crimson',
-    `data-palette=${redPaletteAttr}`
-  );
-  await page.screenshot({
-    path: path.join(SCREENSHOT_DIR, '18_palette_chime_crimson_dark.png'),
-    fullPage: false,
-  });
-
-  await page.goto(`${BASE_URL}/?theme=light&palette=chime-crimson`, { waitUntil: 'networkidle' });
-  await page.waitForTimeout(350);
-  await page.screenshot({
-    path: path.join(SCREENSHOT_DIR, '19_palette_chime_crimson_light.png'),
-    fullPage: false,
-  });
-
-  // Return to Default Light-Blue Dark Mode and open Root & Role-Level Token Architecture & Repo Merge Blueprint drawer on /
-  await page.goto(`${BASE_URL}/?theme=dark&palette=light-blue`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(300);
   await page.locator('[data-testid="toggle-blueprint-drawer"]').click();
   await page.waitForTimeout(350);

@@ -24,7 +24,7 @@ export interface TokenArchitectureBlueprintProps {
 export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProps> = ({
   activeDemoRole,
   theme,
-  paletteMode = 'light-blue',
+  paletteMode = 'chime-crimson',
   onChangeDemoRole,
   onToggleTheme,
   onChangePaletteMode,
@@ -337,9 +337,24 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
           >
             {ROLE_LEVEL_DESIGN_TOKENS.map((roleSpec) => {
               const isCurrentRole = activeDemoRole === roleSpec.roleId;
-              const activePrimary = theme === 'dark' ? roleSpec.darkPrimary : roleSpec.lightPrimary;
-              const activeSurface = theme === 'dark' ? roleSpec.darkSurface : roleSpec.lightSurface;
-              const activeBadge = theme === 'dark' ? roleSpec.darkBadgeBg : roleSpec.lightBadgeBg;
+              const blueRoleHexMap: Record<string, { light: string; dark: string }> = {
+                '--role-ops': { light: '#6F8ED6', dark: '#7B99DC' },
+                '--role-manager': { light: '#D96B70', dark: '#E0757A' },
+                '--role-it': { light: '#2889A8', dark: '#38BDF8' },
+                '--role-compliance': { light: '#218A65', dark: '#34D399' },
+              };
+              const lightHex =
+                paletteMode === 'light-blue'
+                  ? blueRoleHexMap[roleSpec.cssPrefix]?.light ?? roleSpec.lightPrimary
+                  : roleSpec.lightPrimary;
+              const darkHex =
+                paletteMode === 'light-blue' || paletteMode === 'chime-blue-dark'
+                  ? blueRoleHexMap[roleSpec.cssPrefix]?.dark ?? roleSpec.darkPrimary
+                  : roleSpec.darkPrimary;
+              const activePrimaryHex = theme === 'dark' ? darkHex : lightHex;
+              const cssPrimaryVar = `var(${roleSpec.cssPrefix}-primary)`;
+              const cssSurfaceVar = `var(${roleSpec.cssPrefix}-surface)`;
+              const cssBadgeVar = `var(${roleSpec.cssPrefix}-badge-bg)`;
 
               return (
                 <div
@@ -347,11 +362,11 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                   data-testid={`role-token-card-${roleSpec.shortCode}`}
                   onClick={() => onChangeDemoRole(roleSpec.roleId)}
                   style={{
-                    background: isCurrentRole ? activeSurface : 'var(--ajb-surface-card)',
+                    background: isCurrentRole ? cssSurfaceVar : 'var(--ajb-surface-card)',
                     borderRadius: '20px',
                     padding: '16px',
                     border: isCurrentRole
-                      ? `2px solid ${activePrimary}`
+                      ? `2px solid ${cssPrimaryVar}`
                       : '1px solid var(--ajb-border-subtle)',
                     boxShadow: 'var(--ajb-shadow-card)',
                     cursor: 'pointer',
@@ -376,7 +391,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                         style={{
                           padding: '3px 9px',
                           borderRadius: '9999px',
-                          background: activeBadge,
+                          background: cssBadgeVar,
                           color: '#FFFFFF',
                           fontSize: '10.5px',
                           fontWeight: 800,
@@ -389,7 +404,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                         style={{
                           fontSize: '11px',
                           fontWeight: 800,
-                          color: isCurrentRole ? activePrimary : 'var(--ajb-text-muted)',
+                          color: isCurrentRole ? cssPrimaryVar : 'var(--ajb-text-muted)',
                         }}
                       >
                         {isCurrentRole ? '● ACTIVE ROLE' : 'Click to preview'}
@@ -440,11 +455,11 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                               width: '12px',
                               height: '12px',
                               borderRadius: '4px',
-                              background: activePrimary,
+                              background: cssPrimaryVar,
                               border: '1px solid rgba(255,255,255,0.25)',
                             }}
                           />
-                          {activePrimary}
+                          {activePrimaryHex}
                         </span>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
@@ -452,7 +467,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                           Light / Dark
                         </code>
                         <span style={{ fontSize: '10.5px', fontFamily: 'var(--ajb-font-mono)', color: 'var(--ajb-text-secondary)' }}>
-                          {roleSpec.lightPrimary} → {roleSpec.darkPrimary}
+                          {lightHex} → {darkHex}
                         </span>
                       </div>
                     </div>

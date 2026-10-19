@@ -705,37 +705,9 @@ export interface PaletteReferenceProfile {
 
 export const PRESERVED_PALETTE_PROFILES: PaletteReferenceProfile[] = [
   {
-    id: 'light-blue',
-    label: 'Original Reference Light-Blue & Slate-Navy Dark',
-    shortLabel: 'Light-Blue · Slate Dark',
-    lightCanvas: '#DDE3EC',
-    lightAccent: '#5B73F5',
-    darkCanvas: '#0B101B',
-    darkSurfaceCard: '#1C2840',
-    darkSelected: '#1E3A8A',
-    darkPrimaryAccent: '#6E84F7',
-    darkSecondaryAccent: '#38BDF8',
-    description:
-      'Earlier Reference Silver-Blue Light Mode (#DDE3EC / #5B73F5) + Deep Slate-Navy & Light-Blue Periwinkle Dark Mode (#0B101B / #6E84F7 / #38BDF8) with zero red background flood.',
-  },
-  {
-    id: 'chime-blue-dark',
-    label: 'AJ Bell Chime Light + Light-Blue Slate Dark (Hybrid)',
-    shortLabel: 'Chime Light · Blue Dark',
-    lightCanvas: '#E6E5DD',
-    lightAccent: '#E81A41',
-    darkCanvas: '#0B101B',
-    darkSurfaceCard: '#1C2840',
-    darkSelected: '#1E3A8A',
-    darkPrimaryAccent: '#6E84F7',
-    darkSecondaryAccent: '#38BDF8',
-    description:
-      'Preserves the AJ Bell Chime Rebrand Warm Stone Light Mode (#E6E5DD / #E81A41) while switching Dark Mode to the calming Light-Blue & Periwinkle Slate-Navy palette (#0B101B / #6E84F7).',
-  },
-  {
     id: 'chime-crimson',
-    label: 'AJ Bell Chime Rebrand Warm Stone & Crimson Dark (Preserved Reference)',
-    shortLabel: 'Chime · Crimson Dark',
+    label: 'AJ Bell Chime Rebrand Warm Stone & Crimson Dark (Default)',
+    shortLabel: 'Chime · Crimson (Default)',
     lightCanvas: '#E6E5DD',
     lightAccent: '#E81A41',
     darkCanvas: '#110E13',
@@ -744,7 +716,35 @@ export const PRESERVED_PALETTE_PROFILES: PaletteReferenceProfile[] = [
     darkPrimaryAccent: '#FF385C',
     darkSecondaryAccent: '#F03E98',
     description:
-      'Preserved previous AJ Bell Chime Rebrand palette in both Light (#E6E5DD / #5D0A1A) and Crimson-Obsidian Dark (#110E13 / #9E1132 / #FF385C) kept intact for redesign comparison.',
+      'Default AJ Bell Chime Rebrand palette in both Warm Stone Light (#E6E5DD / #5D0A1A) and Crimson-Obsidian Dark (#110E13 / #9E1132 / #FF385C) with zero cross-palette leaks.',
+  },
+  {
+    id: 'light-blue',
+    label: 'Original Reference Light-Blue & Slate-Navy Dark',
+    shortLabel: 'Light-Blue · Slate Dark',
+    lightCanvas: '#DDE3EC',
+    lightAccent: '#6F8ED6',
+    darkCanvas: '#111318',
+    darkSurfaceCard: '#222733',
+    darkSelected: '#0D0D0F',
+    darkPrimaryAccent: '#7B99DC',
+    darkSecondaryAccent: '#E0757A',
+    description:
+      'Selectable Reference Silver-Blue Light Mode (#DCDFE6 / #6F8ED6) + Deep Slate-Navy & Light-Blue Periwinkle Dark Mode (#111318 / #7B99DC) with zero red leak.',
+  },
+  {
+    id: 'chime-blue-dark',
+    label: 'AJ Bell Chime Light + Light-Blue Slate Dark (Hybrid)',
+    shortLabel: 'Chime Light · Blue Dark',
+    lightCanvas: '#E6E5DD',
+    lightAccent: '#E81A41',
+    darkCanvas: '#111318',
+    darkSurfaceCard: '#222733',
+    darkSelected: '#0D0D0F',
+    darkPrimaryAccent: '#7B99DC',
+    darkSecondaryAccent: '#E0757A',
+    description:
+      'Selectable hybrid palette combining AJ Bell Chime Warm Stone Light Mode (#E6E5DD / #E81A41) with the calming Light-Blue & Periwinkle Slate-Navy Dark Mode (#111318 / #7B99DC).',
   },
 ];
 

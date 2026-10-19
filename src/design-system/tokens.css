@@ -1079,3 +1079,38 @@ html[data-theme='dark'][data-palette='chime-blue-dark'],
     opacity 220ms var(--ajb-ease-standard);
 }
 
+/* ==========================================================================
+   9. PURE CSS ACTIVE-ROLE TOKEN BINDINGS (Zero-Leak Across All Palettes)
+   ========================================================================== */
+:root,
+html[data-active-role='Operations Coordinator'] {
+  --role-active-primary: var(--role-ops-primary);
+  --role-active-surface: var(--role-ops-surface);
+  --role-active-border: var(--role-ops-border);
+  --role-active-badge-bg: var(--role-ops-badge-bg);
+  --role-active-badge-fg: var(--role-ops-badge-fg);
+}
+
+html[data-active-role='Hiring Manager'] {
+  --role-active-primary: var(--role-manager-primary);
+  --role-active-surface: var(--role-manager-surface);
+  --role-active-border: var(--role-manager-border);
+  --role-active-badge-bg: var(--role-manager-badge-bg);
+  --role-active-badge-fg: var(--role-manager-badge-fg);
+}
+
+html[data-active-role='Identity & Access Lead'] {
+  --role-active-primary: var(--role-it-primary);
+  --role-active-surface: var(--role-it-surface);
+  --role-active-border: var(--role-it-border);
+  --role-active-badge-bg: var(--role-it-badge-bg);
+  --role-active-badge-fg: var(--role-it-badge-fg);
+}
+
+html[data-active-role='Compliance Reviewer'] {
+  --role-active-primary: var(--role-compliance-primary);
+  --role-active-surface: var(--role-compliance-surface);
+  --role-active-border: var(--role-compliance-border);
+  --role-active-badge-bg: var(--role-compliance-badge-bg);
+  --role-active-badge-fg: var(--role-compliance-badge-fg);
+}

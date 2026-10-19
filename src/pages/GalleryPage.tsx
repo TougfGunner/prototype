@@ -143,9 +143,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           >
             {(
               [
+                { id: 'chime-crimson' as const, label: 'Chime Red (Default)' },
                 { id: 'light-blue' as const, label: 'Blue (Original 270bbc9)' },
                 { id: 'chime-blue-dark' as const, label: 'Stone + Blue Dark' },
-                { id: 'chime-crimson' as const, label: 'Chime Red' },
               ] as const
             ).map((opt) => {
               const active = state.paletteMode === opt.id;

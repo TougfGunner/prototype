@@ -81,7 +81,7 @@ interface PersistedOperationsState {
 }
 
 const STORAGE_KEY = 'ajb-ref-ops-v1-state';
-const SCHEMA_VERSION = 6;
+const SCHEMA_VERSION = 7;
 
 const DEFAULT_MODAL_DRAFT: ModalFormDraft = {
   mode: 'process_case',
@@ -157,7 +157,7 @@ function loadState(): PersistedOperationsState {
         return {
           ...parsed,
           theme: urlTheme || parsed.theme || 'light',
-          paletteMode: urlPalette || parsed.paletteMode || 'light-blue',
+          paletteMode: urlPalette || parsed.paletteMode || 'chime-crimson',
           labelMode:
             new URLSearchParams(window.location.search).get('labels') === 'reference'
               ? 'reference'
@@ -176,7 +176,7 @@ function loadState(): PersistedOperationsState {
   return {
     schemaVersion: SCHEMA_VERSION,
     theme: urlTheme || 'light',
-    paletteMode: urlPalette || 'light-blue',
+    paletteMode: urlPalette || 'chime-crimson',
     screenMode: getInitialScreenFromUrl(),
     labelMode: getInitialLabelModeFromUrl(),
     activeDemoRole: 'Operations Coordinator',
@@ -233,9 +233,18 @@ export function useStarterStore() {
   // Sync theme, palette, and role to root <html> attributes & persist to localStorage
   useEffect(() => {
     if (typeof document !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', state.theme || 'light');
-      document.documentElement.setAttribute('data-palette', state.paletteMode || 'light-blue');
-      document.documentElement.setAttribute('data-active-role', state.activeDemoRole);
+      const root = document.documentElement;
+      const targetTheme = state.theme || 'light';
+      const targetPalette = state.paletteMode || 'chime-crimson';
+      if (root.getAttribute('data-theme') !== targetTheme) {
+        root.setAttribute('data-theme', targetTheme);
+      }
+      if (root.getAttribute('data-palette') !== targetPalette) {
+        root.setAttribute('data-palette', targetPalette);
+      }
+      if (root.getAttribute('data-active-role') !== state.activeDemoRole) {
+        root.setAttribute('data-active-role', state.activeDemoRole);
+      }
     }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -243,6 +252,49 @@ export function useStarterStore() {
       // Ignore quota errors
     }
   }, [state]);
+
+  // Observe external DOM attribute changes on <html> so other agents / scripts mutating data-palette, data-theme, or data-active-role never leak or desync state
+  useEffect(() => {
+    if (typeof document === 'undefined' || typeof MutationObserver === 'undefined') return;
+    const root = document.documentElement;
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.type !== 'attributes') continue;
+        const domTheme = root.getAttribute('data-theme');
+        const domPalette = root.getAttribute('data-palette');
+        const domRole = root.getAttribute('data-active-role');
+        setState((prev) => {
+          let next = prev;
+          if ((domTheme === 'light' || domTheme === 'dark') && domTheme !== next.theme) {
+            next = { ...next, theme: domTheme };
+          }
+          if (
+            (domPalette === 'chime-crimson' ||
+              domPalette === 'light-blue' ||
+              domPalette === 'chime-blue-dark') &&
+            domPalette !== next.paletteMode
+          ) {
+            next = { ...next, paletteMode: domPalette };
+          }
+          if (
+            (domRole === 'Operations Coordinator' ||
+              domRole === 'Hiring Manager' ||
+              domRole === 'Identity & Access Lead' ||
+              domRole === 'Compliance Reviewer') &&
+            domRole !== next.activeDemoRole
+          ) {
+            next = { ...next, activeDemoRole: domRole };
+          }
+          return next;
+        });
+      }
+    });
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme', 'data-palette', 'data-active-role'],
+    });
+    return () => observer.disconnect();
+  }, []);
 
   const showToast = useCallback((msg: string) => {
     setToastMessage(msg);

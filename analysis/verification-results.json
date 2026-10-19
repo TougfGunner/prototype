@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19T09:57:53.734Z",
+  "generated_at": "2026-10-19T10:36:44.628Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
@@ -95,15 +95,15 @@
     },
     {
       "id": "check_15_journey_dark_mode_and_role_tokens",
-      "description": "Main workspace renders clean AJ Bell Light-Blue Cobalt Dark Mode by default with active --role-* design token synchronization",
+      "description": "Main workspace renders AJ Bell Chime Crimson (chime-crimson) by default with active --role-* design token synchronization",
       "passed": true,
-      "detail": "data-theme=dark, data-palette=light-blue, roleChip=true"
+      "detail": "data-theme=dark, data-palette=chime-crimson, roleChip=--role-ops-primary: #FF385C"
     },
     {
-      "id": "check_20_preserved_chime_crimson_palette",
-      "description": "Preserved AJ Bell Chime Crimson (Red) palette switches cleanly via ?palette=chime-crimson in both Dark and Light modes",
+      "id": "check_20_selectable_palettes_zero_leaks",
+      "description": "Selectable Light-Blue & Chime-Blue-Dark palettes switch cleanly with zero red/blue leaks even when mutated directly on <html> by other agents",
       "passed": true,
-      "detail": "data-palette=chime-crimson"
+      "detail": "data-palette=light-blue, select=light-blue, chip=--role-ops-primary: #7B99DC"
     },
     {
       "id": "check_16_token_blueprint_and_repo_merge",

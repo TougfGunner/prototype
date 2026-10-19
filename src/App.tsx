@@ -216,13 +216,27 @@ export const App: React.FC = () => {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-              {/* Live Role-Level Token Indicator Pill */}
+              {/* Live Role-Level Token Indicator Pill (Zero-leak CSS Variable driven) */}
               {(() => {
                 const activeRoleSpec =
                   ROLE_LEVEL_DESIGN_TOKENS.find((r) => r.roleId === state.activeDemoRole) ||
                   ROLE_LEVEL_DESIGN_TOKENS[0];
-                const roleColor =
-                  state.theme === 'dark' ? activeRoleSpec.darkPrimary : activeRoleSpec.lightPrimary;
+                const isBlueActive =
+                  state.paletteMode === 'light-blue' ||
+                  (state.paletteMode === 'chime-blue-dark' && state.theme === 'dark');
+                const blueRoleMap: Record<string, { light: string; dark: string }> = {
+                  '--role-ops': { light: '#6F8ED6', dark: '#7B99DC' },
+                  '--role-manager': { light: '#D96B70', dark: '#E0757A' },
+                  '--role-it': { light: '#2889A8', dark: '#38BDF8' },
+                  '--role-compliance': { light: '#218A65', dark: '#34D399' },
+                };
+                const roleHex = isBlueActive
+                  ? state.theme === 'dark'
+                    ? blueRoleMap[activeRoleSpec.cssPrefix]?.dark ?? activeRoleSpec.darkPrimary
+                    : blueRoleMap[activeRoleSpec.cssPrefix]?.light ?? activeRoleSpec.lightPrimary
+                  : state.theme === 'dark'
+                    ? activeRoleSpec.darkPrimary
+                    : activeRoleSpec.lightPrimary;
                 return (
                   <button
                     type="button"
@@ -248,11 +262,11 @@ export const App: React.FC = () => {
                         width: '8px',
                         height: '8px',
                         borderRadius: '9999px',
-                        background: roleColor,
+                        background: `var(${activeRoleSpec.cssPrefix}-primary, var(--ajb-accent-periwinkle))`,
                       }}
                     />
                     <code style={{ fontFamily: 'var(--ajb-font-mono)', fontSize: '11px' }}>
-                      {activeRoleSpec.cssPrefix}-primary: {roleColor}
+                      {activeRoleSpec.cssPrefix}-primary: {roleHex}
                     </code>
                   </button>
                 );

@@ -21,26 +21,26 @@ export const AJBellWordmarkLogo: React.FC<AJBellWordmarkProps> = ({
     variant === 'white'
       ? '#FFFFFF'
       : variant === 'burgundy'
-        ? '#5D0A1A'
+        ? 'var(--ajb-brand-burgundy)'
         : variant === 'monochrome'
           ? 'currentColor'
           : variant === 'crimson'
-            ? '#E81A41'
-            : 'var(--ajb-logo-wordmark, #DA3946)';
+            ? 'var(--ajb-brand-crimson)'
+            : 'var(--ajb-logo-wordmark)';
   const bellFill =
     variant === 'white'
-      ? '#FFE272'
+      ? 'var(--ajb-accent-amber)'
       : variant === 'burgundy'
-        ? '#E81A41'
+        ? 'var(--ajb-brand-crimson)'
         : variant === 'monochrome'
           ? 'currentColor'
-          : 'var(--ajb-brand-logo-red, #DA3946)';
+          : 'var(--ajb-brand-logo-red)';
   const clapperFill =
     variant === 'monochrome'
       ? 'currentColor'
       : variant === 'crimson'
-        ? '#DA3946'
-        : '#FFE272';
+        ? 'var(--ajb-brand-logo-red)'
+        : 'var(--ajb-accent-amber)';
 
   return (
     <svg
