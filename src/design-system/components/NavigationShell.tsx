@@ -23,11 +23,10 @@ import {
   LabelParityMode,
   NotchParticipant,
 } from '../../data/syntheticStarters';
-import { WorkspaceScreenMode } from '../../state/useStarterStore';
+import { PalettePresetMode, WorkspaceScreenMode } from '../../state/useStarterStore';
 import { NotchAvatarStrip } from './AvatarAndStatus';
 import {
   AJBellWordmarkLogo,
-  AJBellChimeMark,
   AJBellMottoPill,
 } from './AJBellBrandAssets';
 
@@ -45,6 +44,8 @@ export interface TopNavigationBarProps {
   isGalleryActive?: boolean;
   theme?: 'light' | 'dark';
   onToggleTheme?: () => void;
+  paletteMode?: PalettePresetMode;
+  onChangePaletteMode?: (palette: PalettePresetMode) => void;
 }
 
 export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
@@ -61,111 +62,449 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
   isGalleryActive = false,
   theme = 'light',
   onToggleTheme,
+  paletteMode = 'light-blue',
+  onChangePaletteMode,
 }) => {
   const navItems: {
     id: string;
     label: string;
-    screen?: WorkspaceScreenMode;
+    screen: WorkspaceScreenMode;
+    badgeCount: string;
+    description: string;
   }[] =
     labelMode === 'reference'
       ? [
-          { id: 'rel', label: 'Relationship' },
-          { id: 'opp', label: 'Opportunities', screen: 'pipelines' },
-          { id: 'leads', label: 'Leads', screen: 'in_progress' },
-          { id: 'cal', label: 'Calendar' },
-          { id: 'cases', label: 'Cases', screen: 'journey' },
-          { id: 'rep', label: 'Reports' },
-          { id: 'quo', label: 'Quotes' },
+          {
+            id: 'rel',
+            label: 'Relationship',
+            screen: 'relationship',
+            badgeCount: '8',
+            description: 'Participant & stakeholder ownership map',
+          },
+          {
+            id: 'opp',
+            label: 'Opportunities',
+            screen: 'pipelines',
+            badgeCount: '12',
+            description: 'Multi-column stage intake pipelines',
+          },
+          {
+            id: 'leads',
+            label: 'Leads',
+            screen: 'in_progress',
+            badgeCount: '24',
+            description: 'Active cohort progress cards & SLA metrics',
+          },
+          {
+            id: 'cal',
+            label: 'Calendar',
+            screen: 'inductions',
+            badgeCount: '6',
+            description: 'Day-1 induction schedule & milestone readiness',
+          },
+          {
+            id: 'cases',
+            label: 'Cases',
+            screen: 'journey',
+            badgeCount: '4 Stages',
+            description: 'Connected workflow cards, task rows & curved connectors',
+          },
+          {
+            id: 'rep',
+            label: 'Reports',
+            screen: 'audit_log',
+            badgeCount: '18',
+            description: 'Operational audit log & compliance sign-off ledger',
+          },
+          {
+            id: 'quo',
+            label: 'Quotes',
+            screen: 'entitlements',
+            badgeCount: '9',
+            description: 'System access packages, cost centres & clearance matrix',
+          },
         ]
       : [
-          { id: 'rel', label: 'Relationship' },
-          { id: 'opp', label: 'Role Pipelines', screen: 'pipelines' },
-          { id: 'leads', label: 'Starters in Progress', screen: 'in_progress' },
-          { id: 'cal', label: 'Inductions' },
-          { id: 'cases', label: 'Cases · Journey', screen: 'journey' },
-          { id: 'rep', label: 'Audit Log' },
-          { id: 'quo', label: 'Entitlements' },
+          {
+            id: 'rel',
+            label: 'Relationship',
+            screen: 'relationship',
+            badgeCount: '8',
+            description: 'Sponsor, buddy, line manager & reviewer relationships',
+          },
+          {
+            id: 'opp',
+            label: 'Role Pipelines',
+            screen: 'pipelines',
+            badgeCount: '12',
+            description: 'Role profiling & department intake pipelines',
+          },
+          {
+            id: 'leads',
+            label: 'Starters in Progress',
+            screen: 'in_progress',
+            badgeCount: '24',
+            description: 'Active new starter cohort cards & onboarding SLA telemetry',
+          },
+          {
+            id: 'cal',
+            label: 'Inductions',
+            screen: 'inductions',
+            badgeCount: '6',
+            description: 'Day-1 / Week-1 regulatory & platform induction schedule',
+          },
+          {
+            id: 'cases',
+            label: 'Cases · Journey',
+            screen: 'journey',
+            badgeCount: '4 Stages',
+            description: 'Connected New Starter Journey workflow & Bezier connectors',
+          },
+          {
+            id: 'rep',
+            label: 'Audit Log',
+            screen: 'audit_log',
+            badgeCount: '18',
+            description: 'SMCR / FCA approval trail & local draft mutation history',
+          },
+          {
+            id: 'quo',
+            label: 'Entitlements',
+            screen: 'entitlements',
+            badgeCount: '9',
+            description: 'Custody, SIPP, Dealing & SWIFT system entitlement matrix',
+          },
         ];
+
+  const activeNavMeta =
+    navItems.find((item) => item.screen === screenMode) || navItems[4];
 
   return (
     <header
       style={{
-        display: 'grid',
-        gridTemplateColumns: '1fr auto 1fr',
-        alignItems: 'center',
-        gap: '14px',
-        padding: '4px 6px 12px 6px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px',
+        padding: '2px 4px 10px 4px',
       }}
     >
-      {/* Left Cluster: Official AJ Bell Redesigned Wordmark + Quiet Horizontal Navigation */}
+      {/* TIER 1: Top Row aligned 1:1 with the Carved Center Notch (Brand + Role Left | 8 People Icons Center | Palette, Labels, Theme & Gallery Right) */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr auto 1fr',
+          alignItems: 'center',
+          gap: '12px',
+          minHeight: '46px',
+        }}
+      >
+        {/* Left Brand, Motto & Role Switcher Cluster */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            minWidth: 0,
+            flexWrap: 'nowrap',
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => onSwitchScreen('journey')}
+            title="AJ Bell — Feel good, investing (ajbell.co.uk Chime Rebrand & Reference Operations v1)"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              padding: '4px 6px',
+              borderRadius: '10px',
+              flexShrink: 0,
+            }}
+          >
+            <AJBellWordmarkLogo height={23} variant="auto" />
+            <span
+              style={{
+                fontSize: '12px',
+                fontWeight: 700,
+                letterSpacing: '-0.01em',
+                color: 'var(--ajb-text-primary)',
+                paddingLeft: '7px',
+                borderLeft: '1px solid var(--ajb-border-subtle)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {labelMode === 'reference' ? 'sugarcrm' : 'ops·profiling'}
+            </span>
+          </button>
+
+          <div style={{ flexShrink: 0 }}>
+            <AJBellMottoPill compact />
+          </div>
+
+          {/* Demo Role Switcher (Placed on Left to balance Center Notch) */}
+          <label
+            title="Demonstration role switcher (non-security UI perspective control)"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              fontSize: '11.5px',
+              color: 'var(--ajb-text-secondary)',
+              background: 'var(--ajb-surface-card)',
+              padding: '4px 9px',
+              borderRadius: '999px',
+              border: '1px solid var(--ajb-border-subtle)',
+              boxShadow: 'var(--ajb-shadow-pill)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
+          >
+            <span style={{ fontWeight: 700, color: 'var(--ajb-accent-periwinkle)' }}>Role:</span>
+            <select
+              aria-label="Demonstration role switcher"
+              value={activeDemoRole}
+              onChange={(e) => onChangeDemoRole(e.target.value as DemoRoleView)}
+              style={{
+                border: 'none',
+                background: 'transparent',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                color: 'var(--ajb-text-primary)',
+                cursor: 'pointer',
+                outline: 'none',
+              }}
+            >
+              <option value="Operations Coordinator">Operations Coordinator</option>
+              <option value="Hiring Manager">Hiring Manager</option>
+              <option value="Identity & Access Lead">Identity & Access Lead</option>
+              <option value="Compliance Reviewer">Compliance Reviewer</option>
+            </select>
+          </label>
+        </div>
+
+        {/* Center Carved Top Notch: 8 Participant People Icons with Numeric / '+' Badges */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '376px',
+            padding: '0 4px',
+          }}
+        >
+          <NotchAvatarStrip
+            participants={participants}
+            selectedParticipantId={selectedParticipantId}
+            onSelectParticipant={(id) =>
+              onSelectParticipant(selectedParticipantId === id ? null : id)
+            }
+            labelMode={labelMode}
+          />
+        </div>
+
+        {/* Right Utility Cluster: Perfectly Aligned Single-Row Controls */}
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            gap: '6px',
+            flexWrap: 'nowrap',
+            minWidth: 0,
+          }}
+        >
+          {/* Label Parity Switcher */}
+          <button
+            type="button"
+            onClick={onToggleLabelMode}
+            title="Toggle between AJ Bell New Starter Journey labels and 1:1 Reference image/video labels"
+            style={{
+              padding: '4px 9px',
+              borderRadius: '999px',
+              border: '1px solid var(--ajb-border-subtle)',
+              background:
+                labelMode === 'reference'
+                  ? 'var(--ref-accent-blue-soft)'
+                  : 'var(--ajb-surface-card)',
+              color: 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 600,
+              cursor: 'pointer',
+              boxShadow: 'var(--ajb-shadow-pill)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
+          >
+            {labelMode === 'reference' ? 'Labels: Ref 1:1' : 'Labels: Journey'}
+          </button>
+
+          {/* Theme Switcher Pill */}
+          {onToggleTheme && (
+            <button
+              type="button"
+              onClick={onToggleTheme}
+              data-testid="top-theme-toggle"
+              aria-label="Switch Light or Dark Theme"
+              title="Switch between Light Mode and Dark Mode"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 9px',
+                borderRadius: '999px',
+                border: '1px solid var(--ajb-border-subtle)',
+                background:
+                  theme === 'dark'
+                    ? 'var(--ajb-surface-selected-gradient)'
+                    : 'var(--ajb-surface-card)',
+                color:
+                  theme === 'dark'
+                    ? 'var(--ref-text-on-selected)'
+                    : 'var(--ajb-text-primary)',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                boxShadow: 'var(--ajb-shadow-pill)',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              {theme === 'dark' ? <Sun size={12.5} /> : <Moon size={12.5} />}
+              <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+            </button>
+          )}
+
+          {/* Discoverable /gallery Route Pill */}
+          <button
+            type="button"
+            data-testid="open-gallery-route"
+            onClick={onOpenGallery}
+            aria-current={isGalleryActive ? 'page' : undefined}
+            style={{
+              padding: '4px 9px',
+              borderRadius: '999px',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: isGalleryActive
+                ? 'var(--ajb-surface-selected-gradient)'
+                : 'var(--ajb-surface-card)',
+              color: isGalleryActive
+                ? 'var(--ref-text-on-selected)'
+                : 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: 'var(--ajb-shadow-pill)',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
+          >
+            /gallery
+          </button>
+
+          {/* Reference Right-Side Circular Icon Cluster */}
+          {[
+            { Icon: Search, label: 'Search records' },
+            { Icon: Mail, label: 'Notifications inbox' },
+            { Icon: Bell, label: 'Workflow alerts' },
+            { Icon: Settings, label: 'Workspace preferences' },
+          ].map(({ Icon, label }) => (
+            <button
+              key={label}
+              type="button"
+              aria-label={label}
+              style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '50%',
+                border: '1px solid var(--ajb-border-subtle)',
+                background: 'var(--ajb-surface-card)',
+                color: 'var(--ajb-text-secondary)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: 'var(--ajb-shadow-pill)',
+                flexShrink: 0,
+              }}
+            >
+              <Icon size={13.5} strokeWidth={1.85} />
+            </button>
+          ))}
+
+          {/* Top-Right Operator Avatar */}
+          <span
+            style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              border: '2px solid var(--ajb-surface-elevated)',
+              boxShadow: '0 2px 6px rgba(0,0,0,0.14)',
+              display: 'inline-block',
+              flexShrink: 0,
+            }}
+          >
+            <img
+              src="/avatars/avatar-3.png"
+              alt="Signed-in operator avatar"
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+              }}
+            />
+          </span>
+        </div>
+      </div>
+
+      {/* TIER 2: Full-Width Aligned Primary Navigation Tab Bar (All 7 Operational Views) */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'space-between',
           gap: '12px',
-          flexWrap: 'wrap',
-          minWidth: 0,
+          padding: '6px 12px',
+          borderRadius: '16px',
+          background: 'var(--ajb-surface-panel)',
+          border: '1px solid var(--ajb-border-subtle)',
+          boxShadow: 'var(--ajb-shadow-card)',
         }}
       >
-        <button
-          type="button"
-          onClick={() => onSwitchScreen('journey')}
-          title="AJ Bell — Feel good, investing (ajbell.co.uk Chime Rebrand)"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '9px',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            padding: '3px 6px',
-            borderRadius: '10px',
-          }}
-        >
-          <AJBellWordmarkLogo height={23} variant="auto" />
-          <span
-            style={{
-              fontSize: '12px',
-              fontWeight: 700,
-              letterSpacing: '-0.01em',
-              color: 'var(--ajb-text-primary)',
-              paddingLeft: '7px',
-              borderLeft: '1px solid var(--ajb-border-subtle)',
-            }}
-          >
-            {labelMode === 'reference' ? 'sugarcrm' : 'ops·profiling'}
-          </span>
-        </button>
-
         <nav
           aria-label="Primary workspace navigation"
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '3px',
-            flexWrap: 'wrap',
+            gap: '5px',
+            flexWrap: 'nowrap',
+            overflowX: 'auto',
           }}
         >
           {navItems.map((item) => {
-            const isSelected =
-              !isGalleryActive &&
-              ((item.screen && item.screen === screenMode) ||
-                (!item.screen && false));
+            const isSelected = !isGalleryActive && item.screen === screenMode;
 
             return (
               <button
                 key={item.id}
                 type="button"
-                onClick={() => {
-                  if (item.screen) {
-                    onSwitchScreen(item.screen);
-                  }
-                }}
+                onClick={() => onSwitchScreen(item.screen)}
+                title={item.description}
                 aria-current={isSelected ? 'page' : undefined}
+                data-testid={`nav-tab-${item.screen}`}
                 style={{
-                  padding: isSelected ? '7px 15px' : '6px 10px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: isSelected ? '6px 12px' : '5px 10px',
                   borderRadius: '999px',
-                  border: 'none',
+                  border: isSelected
+                    ? '1px solid var(--ajb-border-glass)'
+                    : '1px solid transparent',
                   background: isSelected
                     ? 'var(--ajb-surface-selected-gradient)'
                     : 'transparent',
@@ -177,217 +516,115 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
                   cursor: 'pointer',
                   boxShadow: isSelected ? 'var(--ajb-shadow-pill)' : 'none',
                   transition:
-                    'background-color var(--motion-duration-fast) var(--motion-ease-out-quart), color var(--motion-duration-fast) var(--motion-ease-out-quart)',
+                    'all var(--motion-duration-fast) var(--motion-ease-out-quart)',
+                  whiteSpace: 'nowrap',
+                  flexShrink: 0,
                 }}
               >
-                {item.label}
+                <span>{item.label}</span>
+                <span
+                  style={{
+                    fontSize: '10.5px',
+                    fontWeight: 700,
+                    padding: '1px 6px',
+                    borderRadius: '999px',
+                    background: isSelected
+                      ? 'rgba(255, 255, 255, 0.22)'
+                      : 'var(--ajb-surface-control)',
+                    color: isSelected
+                      ? 'var(--ref-text-on-selected)'
+                      : 'var(--ajb-text-muted)',
+                  }}
+                >
+                  {item.badgeCount}
+                </span>
               </button>
             );
           })}
         </nav>
-      </div>
 
-      {/* Center Carved Top Notch: 8 Participant Avatars with Numeric / '+' Badges */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          minWidth: '360px',
-        }}
-      >
-        <NotchAvatarStrip
-          participants={participants}
-          selectedParticipantId={selectedParticipantId}
-          onSelectParticipant={(id) =>
-            onSelectParticipant(selectedParticipantId === id ? null : id)
-          }
-          labelMode={labelMode}
-        />
-      </div>
-
-      {/* Right Utility Cluster: Role Switcher, Label Mode, /gallery Link, Theme Toggle, Circular Icons & Operator Avatar */}
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'flex-end',
-          gap: '7px',
-          flexWrap: 'wrap',
-        }}
-      >
-        {/* Demo Role Switcher */}
-        <label
-          title="Demonstration role switcher (non-security UI perspective control)"
+        {/* Active Tab Operational Context Indicator + Preserved Palette Switcher */}
+        <div
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '5px',
+            gap: '10px',
             fontSize: '11.5px',
-            color: 'var(--ajb-text-secondary)',
-            background: 'var(--ajb-surface-card)',
-            padding: '5px 11px',
-            borderRadius: '999px',
-            border: '1px solid var(--ajb-border-subtle)',
-            boxShadow: 'var(--ajb-shadow-pill)',
-          }}
-        >
-          <span style={{ fontWeight: 700, color: 'var(--ajb-accent-periwinkle)' }}>Role:</span>
-          <select
-            aria-label="Demonstration role switcher"
-            value={activeDemoRole}
-            onChange={(e) => onChangeDemoRole(e.target.value as DemoRoleView)}
-            style={{
-              border: 'none',
-              background: 'transparent',
-              fontSize: '11.5px',
-              fontWeight: 700,
-              color: 'var(--ajb-text-primary)',
-              cursor: 'pointer',
-              outline: 'none',
-            }}
-          >
-            <option value="Operations Coordinator">Operations Coordinator</option>
-            <option value="Hiring Manager">Hiring Manager</option>
-            <option value="Identity & Access Lead">Identity & Access Lead</option>
-            <option value="Compliance Reviewer">Compliance Reviewer</option>
-          </select>
-        </label>
-
-        {/* Label Parity Switcher */}
-        <button
-          type="button"
-          onClick={onToggleLabelMode}
-          title="Toggle between AJ Bell New Starter Journey labels and 1:1 Reference image/video labels"
-          style={{
-            padding: '5px 11px',
-            borderRadius: '999px',
-            border: '1px solid var(--ajb-border-subtle)',
-            background:
-              labelMode === 'reference'
-                ? 'var(--ref-accent-blue-soft)'
-                : 'var(--ajb-surface-card)',
-            color: 'var(--ajb-text-primary)',
-            fontSize: '11.5px',
-            fontWeight: 600,
-            cursor: 'pointer',
-            boxShadow: 'var(--ajb-shadow-pill)',
-          }}
-        >
-          {labelMode === 'reference' ? 'Labels: Reference 1:1' : 'Labels: Starter Journey'}
-        </button>
-
-        {/* Theme Switcher Pill */}
-        {onToggleTheme && (
-          <button
-            type="button"
-            onClick={onToggleTheme}
-            data-testid="top-theme-toggle"
-            aria-label="Switch Light or Dark Theme"
-            title="Switch between Light Reference and AJ Bell Obsidian Dark Mode"
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              padding: '5px 11px',
-              borderRadius: '999px',
-              border: '1px solid var(--ajb-border-subtle)',
-              background:
-                theme === 'dark'
-                  ? 'var(--ajb-surface-selected-gradient)'
-                  : 'var(--ajb-surface-card)',
-              color:
-                theme === 'dark'
-                  ? 'var(--ref-text-on-selected)'
-                  : 'var(--ajb-text-primary)',
-              fontSize: '11.5px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              boxShadow: 'var(--ajb-shadow-pill)',
-            }}
-          >
-            {theme === 'dark' ? <Sun size={12.5} /> : <Moon size={12.5} />}
-            <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
-          </button>
-        )}
-
-        {/* Discoverable /gallery Route Pill */}
-        <button
-          type="button"
-          onClick={onOpenGallery}
-          aria-current={isGalleryActive ? 'page' : undefined}
-          style={{
-            padding: '5px 12px',
-            borderRadius: '999px',
-            border: '1px solid var(--ajb-border-subtle)',
-            background: isGalleryActive
-              ? 'var(--ajb-surface-selected-gradient)'
-              : 'var(--ajb-surface-card)',
-            color: isGalleryActive
-              ? 'var(--ref-text-on-selected)'
-              : 'var(--ajb-text-primary)',
-            fontSize: '11.5px',
-            fontWeight: 700,
-            cursor: 'pointer',
-            boxShadow: 'var(--ajb-shadow-pill)',
-          }}
-        >
-          /gallery
-        </button>
-
-        {/* Reference Right-Side Circular Icon Cluster */}
-        {[
-          { Icon: Search, label: 'Search records' },
-          { Icon: Mail, label: 'Notifications inbox' },
-          { Icon: Bell, label: 'Workflow alerts' },
-          { Icon: Settings, label: 'Workspace preferences' },
-        ].map(({ Icon, label }) => (
-          <button
-            key={label}
-            type="button"
-            aria-label={label}
-            style={{
-              width: '30px',
-              height: '30px',
-              borderRadius: '50%',
-              border: '1px solid var(--ajb-border-subtle)',
-              background: 'var(--ajb-surface-card)',
-              color: 'var(--ajb-text-secondary)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer',
-              boxShadow: 'var(--ajb-shadow-pill)',
-            }}
-          >
-            <Icon size={13.5} strokeWidth={1.85} />
-          </button>
-        ))}
-
-        {/* Top-Right Operator Avatar */}
-        <span
-          style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            overflow: 'hidden',
-            border: '2px solid var(--ajb-surface-elevated)',
-            boxShadow: '0 2px 6px rgba(0,0,0,0.14)',
-            display: 'inline-block',
+            color: 'var(--ajb-text-muted)',
+            whiteSpace: 'nowrap',
             flexShrink: 0,
           }}
         >
-          <img
-            src="/avatars/avatar-3.png"
-            alt="Signed-in operator avatar"
+          <span
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              display: 'block',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
-          />
-        </span>
+          >
+            <span
+              style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                background: 'var(--ajb-accent-periwinkle)',
+                display: 'inline-block',
+              }}
+            />
+            <span
+              style={{
+                fontWeight: 600,
+                color: 'var(--ajb-text-secondary)',
+                maxWidth: '250px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {activeNavMeta.description}
+            </span>
+          </span>
+
+          {onChangePaletteMode && (
+            <label
+              title="Switch between preserved colour palettes (Light-Blue Reference, AJ Bell Chime + Light-Blue Dark, or AJ Bell Chime Crimson-Burgundy)"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                fontSize: '11.5px',
+                color: 'var(--ajb-text-secondary)',
+                background: 'var(--ajb-surface-card)',
+                padding: '4px 10px',
+                borderRadius: '999px',
+                border: '1px solid var(--ajb-border-subtle)',
+                boxShadow: 'var(--ajb-shadow-pill)',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              <span style={{ fontWeight: 700, color: 'var(--ajb-accent-coral)' }}>Palette:</span>
+              <select
+                aria-label="Colour palette reference preset"
+                data-testid="top-palette-select"
+                value={paletteMode}
+                onChange={(e) => onChangePaletteMode(e.target.value as PalettePresetMode)}
+                style={{
+                  border: 'none',
+                  background: 'transparent',
+                  fontSize: '11.5px',
+                  fontWeight: 700,
+                  color: 'var(--ajb-text-primary)',
+                  cursor: 'pointer',
+                  outline: 'none',
+                }}
+              >
+                <option value="light-blue">Blue · Slate-Navy</option>
+                <option value="chime-blue-dark">Chime + Blue Dark</option>
+                <option value="chime-crimson">Crimson (Red)</option>
+              </select>
+            </label>
+          )}
+        </div>
       </div>
     </header>
   );
@@ -613,12 +850,28 @@ export const SubHeaderBreadcrumb: React.FC<SubHeaderBreadcrumbProps> = ({
         ? 'Cases · Customer Issue #CS-4092'
         : screenMode === 'pipelines'
           ? 'Opportunities · Case Pipelines'
-          : 'Leads · Cases in Progress'
+          : screenMode === 'in_progress'
+            ? 'Leads · Cases in Progress'
+            : screenMode === 'relationship'
+              ? 'Relationship · Stakeholder & Reviewer Graph'
+              : screenMode === 'inductions'
+                ? 'Calendar · Scheduled Inductions & Day-1 Sessions'
+                : screenMode === 'audit_log'
+                  ? 'Reports · Immutable Operational Audit Log'
+                  : 'Quotes · Role Entitlements & Access Matrix'
       : screenMode === 'journey'
-        ? 'New Starter Profiling · Cohort Q4 (Synthetic Demo)'
+        ? 'Cases · Journey · New Starter Profiling Cohort Q4 (Synthetic Demo)'
         : screenMode === 'pipelines'
-          ? 'Role Pipelines · Intake Queue'
-          : 'Starters in Progress · Active Cohort';
+          ? 'Role Pipelines · Intake & Approval Queue'
+          : screenMode === 'in_progress'
+            ? 'Starters in Progress · Active Cohort'
+            : screenMode === 'relationship'
+              ? 'Relationship · Reviewer Ownership & Reporting Lines'
+              : screenMode === 'inductions'
+                ? 'Inductions · Day-1 IT & Compliance Schedule'
+                : screenMode === 'audit_log'
+                  ? 'Audit Log · SMCR & Entitlement Sign-off Ledger'
+                  : 'Entitlements · Role Access Bundles & Provisioning';
 
   return (
     <div

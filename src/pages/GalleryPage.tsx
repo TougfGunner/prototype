@@ -41,8 +41,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
     <div
       style={{
         minHeight: '100vh',
-        padding: '28px 36px 64px',
-        maxWidth: '1460px',
+        padding: '18px 22px 56px',
+        maxWidth: 'min(98.5vw, 1680px)',
         margin: '0 auto',
         color: 'var(--ajb-text-primary)',
       }}
@@ -112,7 +112,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   fontWeight: 600,
                 }}
               >
-                v{REFERENCE_OPERATIONS_TOKENS.version} · AJ Bell Chime Rebrand
+                v{REFERENCE_OPERATIONS_TOKENS.version} · Dual Preserved Palettes (Blue &amp; Chime Red)
               </span>
               <AJBellMottoPill />
             </div>
@@ -123,13 +123,54 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                 color: 'var(--ajb-text-secondary)',
               }}
             >
-              Official ajbell.co.uk Chime Rebrand Root-Level &amp; Role-Level design tokens (Warm Stone #E6E5DD / Obsidian #110E13, Crimson #E81A41 / #FF385C, Deep Burgundy #5D0A1A / #9E1132, Berry #B00054 / #F03E98, Gold #FFE272) and live interactive components shared 1:1 with the AJ Bell New Starter Operations Prototype.
+              Preserves both the Original Light-Blue Periwinkle Reference Palette (<code>light-blue</code>, commit 270bbc9) and the AJ Bell Chime Warm Stone &amp; Crimson Palette (<code>chime-crimson</code>), shared 1:1 with the AJ Bell New Starter Operations Prototype.
             </p>
           </div>
         </div>
 
-        {/* Controls: Label Mode + Unified Light/Dark Switch */}
+        {/* Controls: Palette Switcher + Label Mode + Unified Light/Dark Switch */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '3px',
+              borderRadius: '9999px',
+              background: 'var(--ajb-surface-card)',
+              border: '1px solid var(--ajb-border-subtle)',
+            }}
+          >
+            {(
+              [
+                { id: 'light-blue' as const, label: 'Blue (Original 270bbc9)' },
+                { id: 'chime-blue-dark' as const, label: 'Stone + Blue Dark' },
+                { id: 'chime-crimson' as const, label: 'Chime Red' },
+              ] as const
+            ).map((opt) => {
+              const active = state.paletteMode === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => store.setPaletteMode(opt.id)}
+                  style={{
+                    padding: '5px 11px',
+                    borderRadius: '9999px',
+                    border: 'none',
+                    background: active ? 'var(--ajb-accent-black)' : 'transparent',
+                    color: active ? '#FFFFFF' : 'var(--ajb-text-secondary)',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  {opt.label}
+                </button>
+              );
+            })}
+          </div>
+
           <button
             type="button"
             onClick={() =>
@@ -170,10 +211,10 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               cursor: 'pointer',
             }}
           >
-            {theme === 'light' ? <Sun size={14} /> : <Moon size={14} color="#FFE272" />}
+            {theme === 'light' ? <Sun size={14} /> : <Moon size={14} color="var(--ajb-accent-amber)" />}
             {theme === 'light'
               ? 'Light Reference (Primary)'
-              : 'Dark Adaptation (Obsidian Chime)'}
+              : 'Dark Mode'}
           </button>
         </div>
       </header>
@@ -184,7 +225,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           style={{
             padding: '12px 18px',
             borderRadius: '18px',
-            background: 'rgba(255, 56, 92, 0.14)',
+            background: 'var(--ajb-surface-subpanel)',
             border: '1px solid var(--ajb-border-strong)',
             marginBottom: '22px',
             fontSize: '12.5px',
@@ -195,7 +236,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           }}
         >
           <span>
-            <strong>Obsidian Dark Presentation Adaptation:</strong> Uses calibrated dark surfaces (<code>#110E13</code> canvas, <code>#18141C</code> shell, <code>#28212D</code> card, <code>#2F2735</code> elevated control) and luminous AJ Bell Crimson (<code>#FF385C</code>), Berry (<code>#F03E98</code>), and Warm Gold (<code>#FFE272</code>) splines.
+            <strong>Dark Mode ({state.paletteMode}):</strong> Preserves both the Original Slate-Periwinkle Blue Dark Mode (<code>#111318</code> / <code>#181C24</code> / <code>#222733</code> / <code>#7B99DC</code>) and the AJ Bell Chime Crimson Dark Mode (<code>#110E13</code> / <code>#18141C</code> / <code>#9E1132</code>).
           </span>
           <button
             type="button"
@@ -232,7 +273,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
           <Layers size={18} />
           <h2 id="gallery-tokens-heading" style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>
-            1. Versioned Design Tokens — AJ Bell Chime Rebrand ({theme === 'dark' ? 'Obsidian Dark Palette' : 'Warm Stone Light Palette'})
+            1. Versioned Design Tokens — Active Palette: {state.paletteMode} ({theme === 'dark' ? 'Dark Mode' : 'Light Mode'})
           </h2>
         </div>
 
@@ -246,14 +287,14 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           }}
         >
           {[
-            { name: 'canvasOuter', hex: activeColorSet.canvasOuter, desc: theme === 'dark' ? 'Obsidian Outer Canvas' : 'AJ Bell Warm Stone Canvas' },
-            { name: 'surfaceCard', hex: activeColorSet.surfaceCard, desc: theme === 'dark' ? 'Warm Charcoal Card Surface' : 'Warm Alabaster Floating Panel' },
-            { name: 'surfaceElevated', hex: activeColorSet.surfaceElevated, desc: theme === 'dark' ? 'Elevated Control & Socket' : 'Crisp White Control Surface' },
-            { name: 'accentBlack', hex: activeColorSet.accentBlack, desc: 'Deep Burgundy Selected State' },
-            { name: 'accentPeriwinkle', hex: activeColorSet.accentPeriwinkle, desc: 'AJ Bell Primary Crimson' },
-            { name: 'accentCoral', hex: activeColorSet.accentCoral, desc: 'AJ Bell Secondary Berry' },
-            { name: 'accentAmber', hex: activeColorSet.accentAmber, desc: 'AJ Bell Warm Gold' },
-            { name: 'accentEmerald', hex: activeColorSet.accentEmerald, desc: 'AJ Bell Emerald Green' },
+            { name: 'canvasOuter', cssVar: 'var(--ajb-bg-canvas)', hex: activeColorSet.canvasOuter, desc: 'Outer Canvas' },
+            { name: 'surfaceCard', cssVar: 'var(--ajb-surface-card)', hex: activeColorSet.surfaceCard, desc: 'Floating Card Surface' },
+            { name: 'surfaceElevated', cssVar: 'var(--ajb-surface-elevated)', hex: activeColorSet.surfaceElevated, desc: 'Elevated Control & Socket' },
+            { name: 'accentBlack', cssVar: 'var(--ajb-accent-black)', hex: activeColorSet.accentBlack, desc: 'Selected CTA Surface' },
+            { name: 'accentPeriwinkle', cssVar: 'var(--ajb-accent-periwinkle)', hex: activeColorSet.accentPeriwinkle, desc: 'Primary Accent' },
+            { name: 'accentCoral', cssVar: 'var(--ajb-accent-coral)', hex: activeColorSet.accentCoral, desc: 'Secondary Coral / Berry' },
+            { name: 'accentAmber', cssVar: 'var(--ajb-accent-amber)', hex: activeColorSet.accentAmber, desc: 'Warm Amber / Gold' },
+            { name: 'accentEmerald', cssVar: 'var(--ajb-accent-emerald)', hex: activeColorSet.accentEmerald, desc: 'Emerald Green' },
           ].map((sw) => (
             <div
               key={sw.name}
@@ -272,7 +313,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   width: '36px',
                   height: '36px',
                   borderRadius: '12px',
-                  background: sw.hex,
+                  background: sw.cssVar,
                   border: '1px solid var(--ajb-border-subtle)',
                   flexShrink: 0,
                 }}
@@ -280,7 +321,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               <div>
                 <div style={{ fontSize: '12px', fontWeight: 700 }}>{sw.name}</div>
                 <div className="ajb-tabular" style={{ fontSize: '11px', color: 'var(--ajb-text-secondary)' }}>
-                  {sw.hex}
+                  {sw.cssVar}
                 </div>
                 <div style={{ fontSize: '10px', color: 'var(--ajb-text-muted)' }}>{sw.desc}</div>
               </div>
@@ -342,8 +383,10 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
         <TokenArchitectureBlueprint
           activeDemoRole={state.activeDemoRole}
           theme={state.theme}
+          paletteMode={state.paletteMode}
           onChangeDemoRole={store.setActiveDemoRole}
           onToggleTheme={store.toggleTheme}
+          onChangePaletteMode={store.setPaletteMode}
         />
       </div>
 
@@ -375,6 +418,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             labelMode={state.labelMode}
             activeDemoRole={state.activeDemoRole}
             theme={state.theme}
+            paletteMode={state.paletteMode}
             participants={state.participants}
             selectedParticipantId={state.selectedParticipantId}
             onSelectParticipant={store.setSelectedParticipantId}
@@ -386,6 +430,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             }
             onChangeDemoRole={store.setActiveDemoRole}
             onToggleTheme={store.toggleTheme}
+            onChangePaletteMode={store.setPaletteMode}
             onOpenGallery={() => {}}
             isGalleryActive={true}
           />
@@ -478,7 +523,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
         <div
           style={{
             position: 'relative',
-            width: '1110px',
+            width: '100%',
             maxWidth: '100%',
             margin: '0 auto',
           }}

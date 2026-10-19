@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-19T02:14:21.823Z",
+  "generated_at": "2026-10-19T09:57:53.734Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
     "height": 1200
   },
-  "total": 19,
-  "passed": 19,
+  "total": 20,
+  "passed": 20,
   "failed": 0,
   "assertions": [
     {
@@ -95,9 +95,15 @@
     },
     {
       "id": "check_15_journey_dark_mode_and_role_tokens",
-      "description": "Main workspace renders ultra-clear AJ Bell Chime Obsidian Dark Mode with active --role-* design token synchronization",
+      "description": "Main workspace renders clean AJ Bell Light-Blue Cobalt Dark Mode by default with active --role-* design token synchronization",
       "passed": true,
-      "detail": "data-theme=dark, roleChip=true"
+      "detail": "data-theme=dark, data-palette=light-blue, roleChip=true"
+    },
+    {
+      "id": "check_20_preserved_chime_crimson_palette",
+      "description": "Preserved AJ Bell Chime Crimson (Red) palette switches cleanly via ?palette=chime-crimson in both Dark and Light modes",
+      "passed": true,
+      "detail": "data-palette=chime-crimson"
     },
     {
       "id": "check_16_token_blueprint_and_repo_merge",
@@ -139,7 +145,11 @@
     "analysis/screenshots/12_gallery_section3_connected_workflow_choreography.png",
     "analysis/screenshots/13_journey_seq06_avatar_drag_choreography.png",
     "analysis/screenshots/14_journey_dark_mode_obsidian.png",
-    "analysis/screenshots/15_token_architecture_and_repo_merge_blueprint.png"
+    "analysis/screenshots/15_token_architecture_and_repo_merge_blueprint.png",
+    "analysis/screenshots/16_palette_light_blue_dark.png",
+    "analysis/screenshots/17_palette_light_blue_light.png",
+    "analysis/screenshots/18_palette_chime_crimson_dark.png",
+    "analysis/screenshots/19_palette_chime_crimson_light.png"
   ],
   "recordings": [
     "analysis/verification-recording.mp4",

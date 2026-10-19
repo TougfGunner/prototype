@@ -686,3 +686,174 @@ export const PORTABLE_REPO_MERGE_MANIFEST = {
     },
   ],
 } as const;
+
+export type PalettePresetMode = 'light-blue' | 'chime-blue-dark' | 'chime-crimson';
+
+export interface PaletteReferenceProfile {
+  id: PalettePresetMode;
+  label: string;
+  shortLabel: string;
+  lightCanvas: string;
+  lightAccent: string;
+  darkCanvas: string;
+  darkSurfaceCard: string;
+  darkSelected: string;
+  darkPrimaryAccent: string;
+  darkSecondaryAccent: string;
+  description: string;
+}
+
+export const PRESERVED_PALETTE_PROFILES: PaletteReferenceProfile[] = [
+  {
+    id: 'light-blue',
+    label: 'Original Reference Light-Blue & Slate-Navy Dark',
+    shortLabel: 'Light-Blue · Slate Dark',
+    lightCanvas: '#DDE3EC',
+    lightAccent: '#5B73F5',
+    darkCanvas: '#0B101B',
+    darkSurfaceCard: '#1C2840',
+    darkSelected: '#1E3A8A',
+    darkPrimaryAccent: '#6E84F7',
+    darkSecondaryAccent: '#38BDF8',
+    description:
+      'Earlier Reference Silver-Blue Light Mode (#DDE3EC / #5B73F5) + Deep Slate-Navy & Light-Blue Periwinkle Dark Mode (#0B101B / #6E84F7 / #38BDF8) with zero red background flood.',
+  },
+  {
+    id: 'chime-blue-dark',
+    label: 'AJ Bell Chime Light + Light-Blue Slate Dark (Hybrid)',
+    shortLabel: 'Chime Light · Blue Dark',
+    lightCanvas: '#E6E5DD',
+    lightAccent: '#E81A41',
+    darkCanvas: '#0B101B',
+    darkSurfaceCard: '#1C2840',
+    darkSelected: '#1E3A8A',
+    darkPrimaryAccent: '#6E84F7',
+    darkSecondaryAccent: '#38BDF8',
+    description:
+      'Preserves the AJ Bell Chime Rebrand Warm Stone Light Mode (#E6E5DD / #E81A41) while switching Dark Mode to the calming Light-Blue & Periwinkle Slate-Navy palette (#0B101B / #6E84F7).',
+  },
+  {
+    id: 'chime-crimson',
+    label: 'AJ Bell Chime Rebrand Warm Stone & Crimson Dark (Preserved Reference)',
+    shortLabel: 'Chime · Crimson Dark',
+    lightCanvas: '#E6E5DD',
+    lightAccent: '#E81A41',
+    darkCanvas: '#110E13',
+    darkSurfaceCard: '#28212D',
+    darkSelected: '#9E1132',
+    darkPrimaryAccent: '#FF385C',
+    darkSecondaryAccent: '#F03E98',
+    description:
+      'Preserved previous AJ Bell Chime Rebrand palette in both Light (#E6E5DD / #5D0A1A) and Crimson-Obsidian Dark (#110E13 / #9E1132 / #FF385C) kept intact for redesign comparison.',
+  },
+];
+
+export interface AgentWorkflowComponentSpec {
+  id: string;
+  componentName: string;
+  sourceFile: string;
+  stageColumn: string;
+  domPortAttributes: {
+    inbound?: string;
+    outbound?: string;
+    cardAnchor: string;
+  };
+  motionTokensUsed: string[];
+  interactionContract: string[];
+  agentIntegrationRule: string;
+}
+
+export const AGENT_WORKFLOW_CONTRACT: AgentWorkflowComponentSpec[] = [
+  {
+    id: 'stage-01-allocation-cards',
+    componentName: 'AllocationStageCard (Stage 01 · Starter Details)',
+    sourceFile: 'src/design-system/components/WorkflowCards.tsx',
+    stageColumn: 'Column 1 (248px–280px responsive grid column)',
+    domPortAttributes: {
+      outbound: 'data-port-id="s1-card-1-out" | "s1-card-2-out"',
+      cardAnchor: 'data-card-id="s1-card-1" | "s1-card-2"',
+    },
+    motionTokensUsed: [
+      '--motion-duration-normal (260ms)',
+      '--ajb-ease-standard (cubic-bezier(0.22, 1, 0.36, 1))',
+      '.ajb-smooth-card (hover translateY(-2px), active scale(0.995))',
+    ],
+    interactionContract: [
+      'Clicking Card 1 or Card 2 selects the active Stage 01 allocation cluster and highlights outbound SVG splines.',
+      'Clicking the top-right expand arrow or double-clicking opens CustomerAllocationModal / StarterDetailModal.',
+      'Selected card switches to --ajb-surface-selected-gradient (#1E3A8A cobalt-blue in Light-Blue Dark, #9E1132 in Chime Crimson Dark).',
+    ],
+    agentIntegrationRule:
+      'Any agent extending Stage 01 must preserve data-port-id="s1-card-*-out" on the right-edge port socket so CurvedConnectorLayer can compute the exact C(x1,y1 x2,y2 x,y) spline origin.',
+  },
+  {
+    id: 'stage-02-03-task-rows',
+    componentName: 'CompactTaskRowCard (Stage 02 · Role Profile & Stage 03 · Manager Review)',
+    sourceFile: 'src/design-system/components/WorkflowCards.tsx',
+    stageColumn: 'Column 2 & Column 3 (stacked 4-row vertical workflow wells)',
+    domPortAttributes: {
+      inbound: 'data-port-id="s2-row-{1..4}-in" | "s3-row-{1..4}-in"',
+      outbound: 'data-port-id="s2-row-{1..4}-out" | "s3-row-{1..4}-out"',
+      cardAnchor: 'data-task-id={task.id}',
+    },
+    motionTokensUsed: [
+      '--ajb-duration-hover (160ms)',
+      '--ajb-ease-standard (cubic-bezier(0.22, 1, 0.36, 1))',
+      '.ajb-smooth-task-row (hover translateX(2px) translateY(-1px))',
+    ],
+    interactionContract: [
+      'Supports drag-and-drop or click-to-assign from NotchAvatarStrip (top notch people icons) onto unassigned rows.',
+      'Clicking the status pill cycles Pending -> In Review -> Completed and updates connected spline active state.',
+      'Clicking the row body opens StarterDetailModal focused on that stage and task.',
+    ],
+    agentIntegrationRule:
+      'Keep left (-in) and right (-out) circular port sockets mounted on every row; CurvedConnectorLayer tracks them continuously at 60fps during hover, filter, and expansion transitions.',
+  },
+  {
+    id: 'stage-04-action-tiles',
+    componentName: 'ActionTileCard (Stage 04 · Ready for Onboarding 2x3 Grid)',
+    sourceFile: 'src/design-system/components/WorkflowCards.tsx',
+    stageColumn: 'Column 4 (2x3 grid of compact square/rounded action tiles)',
+    domPortAttributes: {
+      inbound: 'data-port-id="s4-tile-{1..6}-in"',
+      cardAnchor: 'data-tile-id="tile-{1..6}"',
+    },
+    motionTokensUsed: [
+      '--ajb-duration-tile-select (260ms)',
+      '--ajb-ease-spring (cubic-bezier(0.34, 1.56, 0.64, 1))',
+      '.ajb-smooth-action-tile (hover translateY(-2.5px) scale(1.015))',
+    ],
+    interactionContract: [
+      'Tiles 1-3 represent primary provisioning gates (SSO & Identity, Hardware Bundle, Trading Entitlements).',
+      'Tiles 4-6 represent Day-1 readiness gates (SMCR Attestation, Payroll & Benefits, Induction Pack).',
+      'Toggling a tile immediately recalculates starter overallProgress% and animates inbound Stage 03 -> Stage 04 splines.',
+    ],
+    agentIntegrationRule:
+      'Preserve the 2-column CSS grid (grid-template-columns: repeat(2, minmax(0, 1fr))) and data-port-id="s4-tile-{1..6}-in" anchors.',
+  },
+  {
+    id: 'svg-curved-connector-engine',
+    componentName: 'CurvedConnectorLayer (Real-Time SVG Cubic-Bezier Spline Engine)',
+    sourceFile: 'src/design-system/components/CurvedConnectorLayer.tsx',
+    stageColumn: 'Absolute full-canvas SVG overlay (pointer-events: none on SVG, pointer-events: auto on badges)',
+    domPortAttributes: {
+      inbound: 'Queries [data-port-id="<targetPortId>"] inside canvasRef',
+      outbound: 'Queries [data-port-id="<sourcePortId>"] inside canvasRef',
+      cardAnchor: 'data-connector-id={edge.id}',
+    },
+    motionTokensUsed: [
+      '--ajb-duration-connector (420ms)',
+      '--ajb-connector-primary-stroke (#6E84F7 in Light-Blue Dark / #FF385C in Crimson Dark)',
+      '--ajb-connector-secondary-stroke (#38BDF8 in Light-Blue Dark / #F03E98 in Crimson Dark)',
+      '@keyframes refConnectorDashFlow (1.35s linear infinite)',
+    ],
+    interactionContract: [
+      'Uses ResizeObserver + window resize + 420ms requestAnimationFrame transition tracking loop so splines never lag behind card animations.',
+      'Renders 3 layered paths per active connection: ambient glow halo, crisp base cubic-bezier curve, and animated dashed signal overlay.',
+      'Renders interactive midpoint status pills (Executed / Active Flow / Pending Gate) when showConnectorLabels is enabled.',
+    ],
+    agentIntegrationRule:
+      'Never hardcode static pixel coordinates for connectors; pass declarative ConnectorEdgeSpec[] with sourcePortId and targetPortId to CurvedConnectorLayer.',
+  },
+];
+

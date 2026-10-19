@@ -111,13 +111,13 @@ export const AJBellChimeMark: React.FC<{ size?: number }> = ({ size = 36 }) => (
     xmlns="http://www.w3.org/2000/svg"
     aria-label="AJ Bell Chime Icon"
     role="img"
-    style={{ display: 'block', flexShrink: 0, filter: 'drop-shadow(0 4px 10px rgba(232, 26, 65, 0.26))' }}
+    style={{ display: 'block', flexShrink: 0, filter: 'drop-shadow(0 4px 10px rgba(18, 23, 38, 0.22))' }}
   >
     <defs>
       <linearGradient id="ajbell-rail-chime-grad" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
-        <stop offset="0%" stopColor="#E81A41" />
-        <stop offset="52%" stopColor="#B80F30" />
-        <stop offset="100%" stopColor="#5D0A1A" />
+        <stop offset="0%" stopColor="var(--ajb-brand-crimson, #6F8ED6)" />
+        <stop offset="52%" stopColor="var(--ajb-accent-periwinkle, #8FA8E0)" />
+        <stop offset="100%" stopColor="var(--ajb-brand-burgundy, #0D0D0F)" />
       </linearGradient>
     </defs>
     <rect width="36" height="36" rx="18" fill="url(#ajbell-rail-chime-grad)" />
@@ -160,12 +160,12 @@ export const AJBellMottoPill: React.FC<{ compact?: boolean }> = ({ compact = fal
       padding: compact ? '0 10px' : '0 12px',
       borderRadius: 9999,
       background:
-        'var(--ajb-gradient-motto-pill, linear-gradient(135deg, #E81A41 0%, #B00054 52%, #5D0A1A 100%))',
+        'var(--ajb-gradient-motto-pill, linear-gradient(135deg, #6F8ED6 0%, #5273C2 54%, #17181C 100%))',
       color: '#FFFFFF',
       fontSize: compact ? 10.5 : 11,
       fontWeight: 700,
       letterSpacing: '-0.01em',
-      boxShadow: '0 4px 12px rgba(93, 10, 26, 0.22)',
+      boxShadow: 'var(--ajb-shadow-pill)',
       whiteSpace: 'nowrap',
     }}
   >

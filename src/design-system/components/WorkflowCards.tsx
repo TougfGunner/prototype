@@ -66,7 +66,7 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
       }}
       data-card-id={card.id}
       aria-label={`${title} — Open starter detail form`}
-      className="ref-task-row-reveal"
+      className="ref-task-row-reveal ajb-smooth-card"
       style={{
         position: 'relative',
         padding: '14px 12px',
@@ -275,7 +275,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
         setIsDragOver(false);
         onAssignSlot(task.id);
       }}
-      className="ref-task-row-reveal"
+      className="ref-task-row-reveal ajb-smooth-task-row"
       style={{
         position: 'relative',
         display: 'flex',
@@ -349,7 +349,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
               borderRadius: '9999px',
               objectFit: 'cover',
               border: '1.5px solid #FFFFFF',
-              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.14)',
+              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.14)',
             }}
           />
         </button>
@@ -369,7 +369,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
             background: showDropHighlight ? 'var(--ajb-accent-black)' : 'var(--ajb-surface-socket)',
             color: showDropHighlight ? '#FFFFFF' : 'var(--ajb-text-primary)',
             boxShadow: showDropHighlight
-              ? '0 6px 14px rgba(158, 17, 50, 0.32)'
+              ? 'var(--ajb-shadow-card-active)'
               : 'var(--ajb-shadow-plus-circle)',
             display: 'inline-flex',
             alignItems: 'center',
@@ -552,7 +552,7 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
       onClick={() => onSelectTile(tile.id)}
       onDoubleClick={() => onOpenDetail(tile.id)}
       aria-pressed={isSelected}
-      className="ref-action-tile-pop"
+      className="ref-action-tile-pop ajb-smooth-action-tile"
       style={{
         position: 'relative',
         minHeight: '80px',
@@ -1132,7 +1132,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 borderRadius: '9999px',
                 objectFit: 'cover',
                 border: '2px solid #FFFFFF',
-                boxShadow: '0 10px 24px rgba(93, 10, 26, 0.28)',
+                boxShadow: 'var(--ajb-shadow-floating)',
               }}
             />
             <span
@@ -1146,7 +1146,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 background: 'var(--ajb-accent-black)',
                 color: '#FFFFFF',
                 border: '1.5px solid #FFFFFF',
-                boxShadow: '0 4px 10px rgba(93, 10, 26, 0.28)',
+                boxShadow: 'var(--ajb-shadow-pill)',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -1320,7 +1320,12 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                   key={tile.id}
                   tile={tile}
                   labelMode={labelMode}
-                  onSelectTile={onSelectTile}
+                  onSelectTile={(id) => {
+                    setAutoLoop(false);
+                    clearTimers();
+                    setPhase('idle');
+                    onSelectTile(id);
+                  }}
                   onOpenDetail={onOpenDetail}
                   forceUnselected={forceUnselected}
                   isPressingTile={isPressingTile}

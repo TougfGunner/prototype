@@ -98,6 +98,14 @@ async function runVerificationAndScreenshots() {
     waitUntil: 'networkidle',
   });
   await page.waitForTimeout(250);
+  const loopToggleBtn = page.locator('button[aria-label="Toggle continuous motion loop"]');
+  if ((await loopToggleBtn.count()) > 0) {
+    const loopPressed = await loopToggleBtn.getAttribute('aria-pressed');
+    if (loopPressed === 'true') {
+      await loopToggleBtn.click();
+      await page.waitForTimeout(100);
+    }
+  }
   await page.locator('[data-tile-id="tile-2"]').click();
   await page.waitForTimeout(200);
   const reqProcTile = page.locator('[data-tile-id="tile-1"]');
@@ -297,26 +305,67 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Check 15: Dark Mode consistency on main / workspace + Role-Level Design Tokens + Token Blueprint drawer
-  await page.goto(`${BASE_URL}/?theme=dark`, { waitUntil: 'networkidle' });
+  // Check 15: Dark Mode consistency on main / workspace (Default Light-Blue Palette) + Role-Level Design Tokens
+  await page.goto(`${BASE_URL}/?theme=dark&palette=light-blue`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   const journeyDarkTheme = await page.evaluate(() =>
     document.documentElement.getAttribute('data-theme')
   );
+  const activePaletteAttr = await page.evaluate(() =>
+    document.documentElement.getAttribute('data-palette')
+  );
   const roleTokenChipVisible = await page.locator('[data-testid="active-role-token-chip"]').isVisible();
   recordAssertion(
     'check_15_journey_dark_mode_and_role_tokens',
-    'Main workspace renders ultra-clear AJ Bell Chime Obsidian Dark Mode with active --role-* design token synchronization',
-    journeyDarkTheme === 'dark' && roleTokenChipVisible,
-    `data-theme=${journeyDarkTheme}, roleChip=${roleTokenChipVisible}`
+    'Main workspace renders clean AJ Bell Light-Blue Cobalt Dark Mode by default with active --role-* design token synchronization',
+    journeyDarkTheme === 'dark' && activePaletteAttr === 'light-blue' && roleTokenChipVisible,
+    `data-theme=${journeyDarkTheme}, data-palette=${activePaletteAttr}, roleChip=${roleTokenChipVisible}`
   );
 
   await page.screenshot({
     path: path.join(SCREENSHOT_DIR, '14_journey_dark_mode_obsidian.png'),
     fullPage: false,
   });
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '16_palette_light_blue_dark.png'),
+    fullPage: false,
+  });
 
-  // Open Root & Role-Level Token Architecture & Repo Merge Blueprint drawer on /
+  // Capture Light-Blue Light Mode comparison
+  await page.goto(`${BASE_URL}/?theme=light&palette=light-blue`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(350);
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '17_palette_light_blue_light.png'),
+    fullPage: false,
+  });
+
+  // Capture preserved Chime-Crimson (Red) Dark & Light Modes for side-by-side reference
+  await page.goto(`${BASE_URL}/?theme=dark&palette=chime-crimson`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(350);
+  const redPaletteAttr = await page.evaluate(() =>
+    document.documentElement.getAttribute('data-palette')
+  );
+  recordAssertion(
+    'check_20_preserved_chime_crimson_palette',
+    'Preserved AJ Bell Chime Crimson (Red) palette switches cleanly via ?palette=chime-crimson in both Dark and Light modes',
+    redPaletteAttr === 'chime-crimson',
+    `data-palette=${redPaletteAttr}`
+  );
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '18_palette_chime_crimson_dark.png'),
+    fullPage: false,
+  });
+
+  await page.goto(`${BASE_URL}/?theme=light&palette=chime-crimson`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(350);
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '19_palette_chime_crimson_light.png'),
+    fullPage: false,
+  });
+
+  // Return to Default Light-Blue Dark Mode and open Root & Role-Level Token Architecture & Repo Merge Blueprint drawer on /
+  await page.goto(`${BASE_URL}/?theme=dark&palette=light-blue`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(300);
   await page.locator('[data-testid="toggle-blueprint-drawer"]').click();
   await page.waitForTimeout(350);
   const blueprintVisibleOnHome = await page
@@ -432,7 +481,7 @@ async function runVerificationAndScreenshots() {
   await vPage.waitForTimeout(500);
   const vAssignBtn = vPage.locator('button[aria-label*="Assign reviewer to"]').first();
   if ((await vAssignBtn.count()) > 0) {
-    await vAssignBtn.click();
+    await vAssignBtn.click({ force: true });
     await vPage.waitForTimeout(500);
   }
   await vPage.locator('[data-tile-id="tile-1"]').first().click();
@@ -441,7 +490,7 @@ async function runVerificationAndScreenshots() {
   await vPage.waitForTimeout(650);
 
   // Step D: Visit /gallery Reference Operations v1
-  await vPage.locator('button:has-text("/gallery")').first().click();
+  await vPage.locator('[data-testid="open-gallery-route"]').first().click();
   await vPage.waitForTimeout(800);
 
   const recordedVideoPath = await vPage.video().path();

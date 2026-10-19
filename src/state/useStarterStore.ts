@@ -20,10 +20,18 @@ import {
   WorkflowStatus,
 } from '../data/syntheticStarters';
 
-export type WorkspaceScreenMode = 'journey' | 'pipelines' | 'in_progress';
+export type WorkspaceScreenMode =
+  | 'relationship'
+  | 'pipelines'
+  | 'in_progress'
+  | 'inductions'
+  | 'journey'
+  | 'audit_log'
+  | 'entitlements';
 export type SimulationViewStatus = 'normal' | 'loading' | 'empty' | 'error' | 'completed';
 export type ConnectorRenderVariant = 'video_dashed_coral' | 'static_solid_dark';
 export type ThemeMode = 'light' | 'dark';
+export type PalettePresetMode = 'light-blue' | 'chime-blue-dark' | 'chime-crimson';
 
 export interface ModalFormDraft {
   mode: 'process_case' | 'add_case' | 'edit_task';
@@ -52,6 +60,7 @@ export interface ValidationErrors {
 interface PersistedOperationsState {
   schemaVersion: number;
   theme: ThemeMode;
+  paletteMode: PalettePresetMode;
   screenMode: WorkspaceScreenMode;
   labelMode: LabelParityMode;
   activeDemoRole: DemoRoleView;
@@ -72,7 +81,7 @@ interface PersistedOperationsState {
 }
 
 const STORAGE_KEY = 'ajb-ref-ops-v1-state';
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 const DEFAULT_MODAL_DRAFT: ModalFormDraft = {
   mode: 'process_case',
@@ -108,11 +117,29 @@ function getInitialThemeFromUrl(): ThemeMode | null {
   return null;
 }
 
+function getInitialPaletteFromUrl(): PalettePresetMode | null {
+  if (typeof window === 'undefined') return null;
+  const params = new URLSearchParams(window.location.search);
+  const p = params.get('palette');
+  if (p === 'light-blue' || p === 'chime-blue-dark' || p === 'chime-crimson') return p;
+  return null;
+}
+
+const VALID_SCREENS: WorkspaceScreenMode[] = [
+  'relationship',
+  'pipelines',
+  'in_progress',
+  'inductions',
+  'journey',
+  'audit_log',
+  'entitlements',
+];
+
 function getInitialScreenFromUrl(): WorkspaceScreenMode {
   if (typeof window === 'undefined') return 'journey';
   const params = new URLSearchParams(window.location.search);
-  const screen = params.get('screen');
-  if (screen === 'pipelines' || screen === 'in_progress' || screen === 'journey') {
+  const screen = params.get('screen') as WorkspaceScreenMode | null;
+  if (screen && VALID_SCREENS.includes(screen)) {
     return screen;
   }
   return 'journey';
@@ -120,21 +147,25 @@ function getInitialScreenFromUrl(): WorkspaceScreenMode {
 
 function loadState(): PersistedOperationsState {
   const urlTheme = getInitialThemeFromUrl();
+  const urlPalette = getInitialPaletteFromUrl();
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as PersistedOperationsState;
       if (parsed && parsed.schemaVersion === SCHEMA_VERSION) {
+        const urlScreen = new URLSearchParams(window.location.search).get('screen') as WorkspaceScreenMode | null;
         return {
           ...parsed,
           theme: urlTheme || parsed.theme || 'light',
+          paletteMode: urlPalette || parsed.paletteMode || 'light-blue',
           labelMode:
             new URLSearchParams(window.location.search).get('labels') === 'reference'
               ? 'reference'
               : parsed.labelMode,
           screenMode:
-            (new URLSearchParams(window.location.search).get('screen') as WorkspaceScreenMode) ||
-            parsed.screenMode,
+            urlScreen && VALID_SCREENS.includes(urlScreen)
+              ? urlScreen
+              : parsed.screenMode,
         };
       }
     }
@@ -145,6 +176,7 @@ function loadState(): PersistedOperationsState {
   return {
     schemaVersion: SCHEMA_VERSION,
     theme: urlTheme || 'light',
+    paletteMode: urlPalette || 'light-blue',
     screenMode: getInitialScreenFromUrl(),
     labelMode: getInitialLabelModeFromUrl(),
     activeDemoRole: 'Operations Coordinator',
@@ -198,10 +230,11 @@ export function useStarterStore() {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Sync theme and role to root <html> attributes & persist to localStorage
+  // Sync theme, palette, and role to root <html> attributes & persist to localStorage
   useEffect(() => {
     if (typeof document !== 'undefined') {
       document.documentElement.setAttribute('data-theme', state.theme || 'light');
+      document.documentElement.setAttribute('data-palette', state.paletteMode || 'light-blue');
       document.documentElement.setAttribute('data-active-role', state.activeDemoRole);
     }
     try {
@@ -227,6 +260,10 @@ export function useStarterStore() {
       ...prev,
       theme: prev.theme === 'dark' ? 'light' : 'dark',
     }));
+  }, []);
+
+  const setPaletteMode = useCallback((paletteMode: PalettePresetMode) => {
+    setState((prev) => ({ ...prev, paletteMode }));
   }, []);
 
   const setScreenMode = useCallback((screenMode: WorkspaceScreenMode) => {
@@ -563,6 +600,7 @@ export function useStarterStore() {
     setState((prev) => ({
       schemaVersion: SCHEMA_VERSION,
       theme: prev.theme || getInitialThemeFromUrl() || 'light',
+      paletteMode: prev.paletteMode || getInitialPaletteFromUrl() || 'light-blue',
       screenMode: getInitialScreenFromUrl(),
       labelMode: getInitialLabelModeFromUrl(),
       activeDemoRole: 'Operations Coordinator',
@@ -596,6 +634,7 @@ export function useStarterStore() {
     toastMessage,
     setTheme,
     toggleTheme,
+    setPaletteMode,
     setScreenMode,
     setLabelMode,
     setActiveDemoRole,

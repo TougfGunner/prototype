@@ -135,5 +135,61 @@
       "darkPrimary": "#44B844",
       "ownedStages": ["01 · Starter Details", "03 · Manager Review"]
     }
+  },
+  "preservedPaletteProfiles": {
+    "light-blue": {
+      "label": "Original Reference Light-Blue & Slate-Navy Dark",
+      "lightCanvas": "#DDE3EC",
+      "lightAccent": "#5B73F5",
+      "darkCanvas": "#0B101B",
+      "darkSurfaceCard": "#1C2840",
+      "darkSelected": "#1E3A8A",
+      "darkPrimaryAccent": "#6E84F7",
+      "darkSecondaryAccent": "#38BDF8"
+    },
+    "chime-blue-dark": {
+      "label": "AJ Bell Chime Light + Light-Blue Slate Dark (Hybrid)",
+      "lightCanvas": "#E6E5DD",
+      "lightAccent": "#E81A41",
+      "darkCanvas": "#0B101B",
+      "darkSurfaceCard": "#1C2840",
+      "darkSelected": "#1E3A8A",
+      "darkPrimaryAccent": "#6E84F7",
+      "darkSecondaryAccent": "#38BDF8"
+    },
+    "chime-crimson": {
+      "label": "AJ Bell Chime Rebrand Warm Stone & Crimson Dark (Preserved Reference)",
+      "lightCanvas": "#E6E5DD",
+      "lightAccent": "#E81A41",
+      "darkCanvas": "#110E13",
+      "darkSurfaceCard": "#28212D",
+      "darkSelected": "#9E1132",
+      "darkPrimaryAccent": "#FF385C",
+      "darkSecondaryAccent": "#F03E98"
+    }
+  },
+  "agentWorkflowContract": {
+    "stage01AllocationCards": {
+      "component": "AllocationStageCard",
+      "outboundPorts": ["s1-card-1-out", "s1-card-2-out"],
+      "cssClass": "ajb-smooth-card"
+    },
+    "stage02And03TaskRows": {
+      "component": "CompactTaskRowCard",
+      "inboundPorts": ["s2-row-1-in", "s2-row-2-in", "s2-row-3-in", "s2-row-4-in", "s3-row-1-in", "s3-row-2-in", "s3-row-3-in", "s3-row-4-in"],
+      "outboundPorts": ["s2-row-1-out", "s2-row-2-out", "s2-row-3-out", "s2-row-4-out", "s3-row-1-out", "s3-row-2-out", "s3-row-3-out", "s3-row-4-out"],
+      "cssClass": "ajb-smooth-task-row"
+    },
+    "stage04ActionTiles": {
+      "component": "ActionTileCard",
+      "inboundPorts": ["s4-tile-1-in", "s4-tile-2-in", "s4-tile-3-in", "s4-tile-4-in", "s4-tile-5-in", "s4-tile-6-in"],
+      "cssClass": "ajb-smooth-action-tile"
+    },
+    "svgConnectorLayer": {
+      "component": "CurvedConnectorLayer",
+      "curveFormula": "M sx sy C cx1 cy1, cx2 cy2, tx ty",
+      "trackingEngine": "ResizeObserver + 420ms requestAnimationFrame loop"
+    }
   }
 }
+

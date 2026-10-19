@@ -627,7 +627,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 position: 'relative',
                 zIndex: 3,
                 width: '170px',
-                accentColor: '#E81A41',
+                accentColor: 'var(--ajb-accent-periwinkle)',
                 cursor: 'ew-resize',
               }}
             />

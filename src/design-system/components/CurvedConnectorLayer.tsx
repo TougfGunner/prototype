@@ -348,10 +348,20 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
 
   useEffect(() => {
     recomputePaths();
-    const timer = window.setTimeout(recomputePaths, 60);
-    const timer2 = window.setTimeout(recomputePaths, 240);
+    let rafId = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      recomputePaths();
+      if (now - start < 380) {
+        rafId = window.requestAnimationFrame(tick);
+      }
+    };
+    rafId = window.requestAnimationFrame(tick);
+    const timer = window.setTimeout(recomputePaths, 120);
+    const timer2 = window.setTimeout(recomputePaths, 390);
     window.addEventListener('resize', recomputePaths);
     return () => {
+      window.cancelAnimationFrame(rafId);
       window.clearTimeout(timer);
       window.clearTimeout(timer2);
       window.removeEventListener('resize', recomputePaths);
@@ -377,12 +387,12 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
     >
       <defs>
         <linearGradient id="ajb-periwinkle-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#FF5272" />
-          <stop offset="100%" stopColor="#E81A41" />
+          <stop offset="0%" stopColor="var(--ajb-connector-primary-stroke, #8FA8E0)" />
+          <stop offset="100%" stopColor="var(--ajb-accent-periwinkle, #7B99DC)" />
         </linearGradient>
         <linearGradient id="ajb-coral-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#F03E98" />
-          <stop offset="100%" stopColor="#970148" />
+          <stop offset="0%" stopColor="var(--ajb-connector-secondary-stroke, #D96B70)" />
+          <stop offset="100%" stopColor="var(--ajb-accent-coral, #E0757A)" />
         </linearGradient>
         <marker
           id="ref-primary-chevron"
@@ -469,6 +479,7 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
               <path
                 d={p.d}
                 fill="none"
+                className="ajb-smooth-connector-path"
                 stroke={
                   p.color === 'var(--ajb-connector-primary-stroke)'
                     ? 'url(#ajb-periwinkle-stroke-grad)'
@@ -491,13 +502,16 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
               strokeLinecap="round"
               strokeLinejoin="round"
               markerEnd={markerEndUrl}
-              className={
+              className={[
+                'ajb-smooth-connector-path',
                 shouldAnimateDraw
                   ? 'ref-connector-draw'
                   : p.dashed
                     ? 'ref-connector-dashed-flow'
-                    : undefined
-              }
+                    : '',
+              ]
+                .filter(Boolean)
+                .join(' ')}
               style={{
                 animationDelay:
                   choreographyPhase === 'seq05_stagger' ? `${p.staggerIndex * 38}ms` : '0ms',

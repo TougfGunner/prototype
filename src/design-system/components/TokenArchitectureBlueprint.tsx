@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import {
+  AGENT_WORKFLOW_CONTRACT,
   DESIGN_SYSTEM_VERSION,
   DESIGN_TOKENS,
+  PalettePresetMode,
   PORTABLE_REPO_MERGE_MANIFEST,
+  PRESERVED_PALETTE_PROFILES,
   ROLE_LEVEL_DESIGN_TOKENS,
   SYSTEM_CONNECTIVITY_GRAPH,
 } from '../tokens';
@@ -11,19 +14,25 @@ import { DemoRoleView as DemoRolePersona } from '../../data/syntheticStarters';
 export interface TokenArchitectureBlueprintProps {
   activeDemoRole: DemoRolePersona;
   theme: 'light' | 'dark';
+  paletteMode?: PalettePresetMode;
   onChangeDemoRole: (role: DemoRolePersona) => void;
   onToggleTheme: () => void;
+  onChangePaletteMode?: (mode: PalettePresetMode) => void;
   compact?: boolean;
 }
 
 export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProps> = ({
   activeDemoRole,
   theme,
+  paletteMode = 'light-blue',
   onChangeDemoRole,
   onToggleTheme,
+  onChangePaletteMode,
   compact = false,
 }) => {
-  const [activeTab, setActiveTab] = useState<'role-tokens' | 'root-tokens' | 'connectivity' | 'repo-merge'>('role-tokens');
+  const [activeTab, setActiveTab] = useState<
+    'role-tokens' | 'root-tokens' | 'connectivity' | 'repo-merge' | 'agent-contract'
+  >('role-tokens');
   const [copiedSnippet, setCopiedSnippet] = useState<string | null>(null);
 
   const handleCopy = (id: string, text: string) => {
@@ -34,6 +43,14 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
     window.setTimeout(() => {
       setCopiedSnippet((prev) => (prev === id ? null : prev));
     }, 1800);
+  };
+
+  const handlePaletteSelect = (mode: PalettePresetMode) => {
+    if (onChangePaletteMode) {
+      onChangePaletteMode(mode);
+    } else if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-palette', mode);
+    }
   };
 
   const rootColorAndSurfaceTokens = DESIGN_TOKENS.filter((t) => t.category === 'color' || t.category === 'elevation');
@@ -62,7 +79,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
           flexWrap: 'wrap',
           paddingBottom: '18px',
           borderBottom: '1px solid var(--ajb-border-subtle)',
-          marginBottom: '18px',
+          marginBottom: '16px',
         }}
       >
         <div>
@@ -71,7 +88,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
               style={{
                 padding: '4px 10px',
                 borderRadius: '9999px',
-                background: 'var(--role-active-badge-bg, #5D0A1A)',
+                background: 'var(--role-active-badge-bg, var(--ajb-accent-black))',
                 color: '#FFFFFF',
                 fontSize: '11px',
                 fontWeight: 800,
@@ -92,7 +109,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                 fontWeight: 700,
               }}
             >
-              Active Theme: {theme === 'dark' ? 'Obsidian Dark (html[data-theme="dark"])' : 'Warm Stone Light (:root)'}
+              Active Theme: {theme === 'dark' ? 'Dark Mode (html[data-theme="dark"])' : 'Light Mode (:root)'} · Palette: {paletteMode}
             </span>
             <span
               style={{
@@ -128,7 +145,8 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
             }}
           >
             Complete token hierarchy showing how <code style={{ fontFamily: 'var(--ajb-font-mono)' }}>:root</code>,{' '}
-            <code style={{ fontFamily: 'var(--ajb-font-mono)' }}>html[data-theme=&quot;dark&quot;]</code>, and{' '}
+            <code style={{ fontFamily: 'var(--ajb-font-mono)' }}>html[data-theme=&quot;dark&quot;]</code>,{' '}
+            <code style={{ fontFamily: 'var(--ajb-font-mono)' }}>data-palette</code> (Pre-Red Blue vs Preserved Chime Crimson), and{' '}
             <code style={{ fontFamily: 'var(--ajb-font-mono)' }}>--role-*</code> tokens cascade into the 4-stage workflow
             canvas and how the entire design system merges cleanly into any external repository.
           </p>
@@ -160,7 +178,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                 width: '9px',
                 height: '9px',
                 borderRadius: '9999px',
-                background: theme === 'dark' ? '#FFE272' : '#E81A41',
+                background: 'var(--ajb-accent-periwinkle)',
               }}
             />
             Switch to {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
@@ -192,6 +210,71 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
         </div>
       </div>
 
+      {/* Preserved Colour Reference Switcher (Both Blue & Red Versions Preserved Side-by-Side) */}
+      <div
+        data-testid="preserved-palette-switcher"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          gap: '10px',
+          marginBottom: '16px',
+        }}
+      >
+        {PRESERVED_PALETTE_PROFILES.map((profile) => {
+          const isSelected = paletteMode === profile.id;
+          return (
+            <button
+              key={profile.id}
+              type="button"
+              onClick={() => handlePaletteSelect(profile.id)}
+              data-testid={`blueprint-palette-${profile.id}`}
+              style={{
+                textAlign: 'left',
+                padding: '11px 14px',
+                borderRadius: '18px',
+                border: isSelected
+                  ? '2px solid var(--ajb-accent-periwinkle)'
+                  : '1px solid var(--ajb-border-subtle)',
+                background: isSelected ? 'var(--ajb-surface-elevated)' : 'var(--ajb-surface-card)',
+                color: 'var(--ajb-text-primary)',
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
+                boxShadow: isSelected ? 'var(--ajb-shadow-card)' : 'none',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                <span style={{ fontSize: '12.5px', fontWeight: 800 }}>
+                  {isSelected ? '● ' : '○ '}
+                  {profile.shortLabel}
+                </span>
+                <div style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                  {[profile.lightCanvas, profile.darkCanvas, profile.darkPrimaryAccent, profile.darkSecondaryAccent].map(
+                    (hex) => (
+                      <span
+                        key={hex}
+                        title={hex}
+                        style={{
+                          width: '13px',
+                          height: '13px',
+                          borderRadius: '50%',
+                          background: hex,
+                          border: '1px solid rgba(128,128,128,0.35)',
+                        }}
+                      />
+                    )
+                  )}
+                </div>
+              </div>
+              <span style={{ fontSize: '11px', color: 'var(--ajb-text-secondary)', lineHeight: 1.35 }}>
+                {profile.description}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Interactive Section Tabs */}
       <div
         role="tablist"
@@ -210,6 +293,7 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
             { id: 'root-tokens', label: '2. Root-Level Light & Dark Tokens (:root / [data-theme="dark"])' },
             { id: 'connectivity', label: '3. How Everything Connects (4-Layer Graph)' },
             { id: 'repo-merge', label: '4. How to Merge into Any Repo (Portable Bundle)' },
+            { id: 'agent-contract', label: '5. Agent Workflow & Animation Contract' },
           ] as const
         ).map((tab) => {
           const isSelected = activeTab === tab.id;
@@ -753,13 +837,118 @@ export const TokenArchitectureBlueprint: React.FC<TokenArchitectureBlueprintProp
                     overflowX: 'auto',
                   }}
                 >
-                  <code>{stepObj.command}</code>
+                    <code>{stepObj.command}</code>
                 </pre>
               </div>
             ))}
           </div>
         </div>
       )}
+
+      {/* TAB 5: AGENT WORKFLOW & MOTION CONTRACT */}
+      {activeTab === 'agent-contract' && (
+        <div
+          role="tabpanel"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '14px',
+          }}
+        >
+          <div
+            style={{
+              padding: '14px 18px',
+              borderRadius: '18px',
+              background: 'var(--ajb-surface-subpanel)',
+              border: '1px solid var(--ajb-border-subtle)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px', marginBottom: '12px' }}>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--ajb-text-primary)' }}>
+                  Agent-Consumable Connected Workflow Cards, Task Rows, Action Tiles &amp; Curved Connectors Contract
+                </div>
+                <div style={{ fontSize: '12px', color: 'var(--ajb-text-secondary)', marginTop: '2px' }}>
+                  Deterministic DOM anchors, cubic-bezier formula, and 5-phase motion choreography exported in <code>/ajbell-design-tokens.json</code> (<code>agentWorkflowContract</code>) so any AI agent can extend or mount the workflow canvas.
+                </div>
+              </div>
+              <span
+                style={{
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  background: 'var(--ajb-surface-elevated)',
+                  border: '1px solid var(--ajb-border-subtle)',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  fontFamily: 'var(--ajb-font-mono)',
+                }}
+              >
+                M x1 y1 C (x1+0.46*dx) y1, (x2-0.46*dx) y2, x2 y2
+              </span>
+            </div>
+
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))',
+                gap: '12px',
+              }}
+            >
+              {AGENT_WORKFLOW_CONTRACT.map((spec) => (
+                <div
+                  key={spec.id}
+                  style={{
+                    padding: '14px 16px',
+                    borderRadius: '16px',
+                    background: 'var(--ajb-surface-card)',
+                    border: '1px solid var(--ajb-border-subtle)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '8px',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px' }}>
+                    <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--ajb-accent-periwinkle)', textTransform: 'uppercase' }}>
+                      {spec.stageColumn}
+                    </span>
+                    <code style={{ fontSize: '10.5px', fontFamily: 'var(--ajb-font-mono)', color: 'var(--ajb-text-muted)' }}>
+                      {spec.sourceFile}
+                    </code>
+                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: 800, color: 'var(--ajb-text-primary)' }}>
+                    {spec.componentName}
+                  </div>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                    {Object.values(spec.domPortAttributes).filter((attr): attr is string => Boolean(attr)).map((attr) => (
+                      <code
+                        key={attr}
+                        style={{
+                          padding: '2px 7px',
+                          borderRadius: '6px',
+                          background: 'var(--ajb-surface-subpanel)',
+                          border: '1px solid var(--ajb-border-subtle)',
+                          fontSize: '10.5px',
+                          fontFamily: 'var(--ajb-font-mono)',
+                          color: 'var(--ajb-text-primary)',
+                        }}
+                      >
+                        {attr}
+                      </code>
+                    ))}
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: 'var(--ajb-text-secondary)', lineHeight: 1.45 }}>
+                    <strong>Interaction:</strong> {spec.interactionContract}
+                  </div>
+                  <div style={{ fontSize: '11.5px', color: 'var(--ajb-text-secondary)', lineHeight: 1.45 }}>
+                    <strong>Agent Rule:</strong> {spec.agentIntegrationRule}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
+

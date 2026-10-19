@@ -63,11 +63,23 @@ export const App: React.FC = () => {
     }
     const screenParam = params.get('screen');
     if (
-      screenParam === 'journey' ||
+      screenParam === 'relationship' ||
       screenParam === 'pipelines' ||
-      screenParam === 'in_progress'
+      screenParam === 'in_progress' ||
+      screenParam === 'inductions' ||
+      screenParam === 'journey' ||
+      screenParam === 'audit_log' ||
+      screenParam === 'entitlements'
     ) {
       store.setScreenMode(screenParam);
+    }
+    const paletteParam = params.get('palette');
+    if (
+      paletteParam === 'light-blue' ||
+      paletteParam === 'chime-blue-dark' ||
+      paletteParam === 'chime-crimson'
+    ) {
+      store.setPaletteMode(paletteParam);
     }
   }, []);
 
@@ -115,20 +127,20 @@ export const App: React.FC = () => {
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '18px 24px',
+        padding: '10px 14px',
         position: 'relative',
       }}
     >
-      {/* Floating Operations Workspace Shell (Ultra-clear scaled shell for Light & Dark modes) */}
+      {/* Floating Operations Workspace Shell (Full-bleed responsive shell for Light & Dark modes) */}
       <main
         aria-label="AJ Bell Internal Operations Prototype Workspace"
         style={{
           position: 'relative',
-          width: '1408px',
+          width: 'min(98.5vw, 1680px)',
           maxWidth: '100%',
-          minHeight: '868px',
-          borderRadius: '38px',
-          padding: '22px 28px 24px',
+          minHeight: 'calc(100vh - 20px)',
+          borderRadius: '30px',
+          padding: '18px 24px 20px',
           background: 'var(--ajb-bg-ambient-wash)',
           backdropFilter: 'blur(22px)',
           border: '1.5px solid var(--ajb-border-glass)',
@@ -147,9 +159,9 @@ export const App: React.FC = () => {
             top: '-6px',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '496px',
-            height: '68px',
-            borderRadius: '0 0 32px 32px',
+            width: '380px',
+            height: '64px',
+            borderRadius: '0 0 28px 28px',
             background: 'var(--ajb-surface-notch)',
             border: '1px solid var(--ajb-border-glass)',
             zIndex: 1,
@@ -165,6 +177,7 @@ export const App: React.FC = () => {
             labelMode={state.labelMode}
             activeDemoRole={state.activeDemoRole}
             theme={state.theme}
+            paletteMode={state.paletteMode}
             participants={state.participants}
             selectedParticipantId={state.selectedParticipantId}
             onSelectParticipant={store.setSelectedParticipantId}
@@ -176,6 +189,7 @@ export const App: React.FC = () => {
             }
             onChangeDemoRole={store.setActiveDemoRole}
             onToggleTheme={store.toggleTheme}
+            onChangePaletteMode={store.setPaletteMode}
             onOpenGallery={() => navigateTo('/gallery')}
           />
 
@@ -323,8 +337,10 @@ export const App: React.FC = () => {
               <TokenArchitectureBlueprint
                 activeDemoRole={state.activeDemoRole}
                 theme={state.theme}
+                paletteMode={state.paletteMode}
                 onChangeDemoRole={store.setActiveDemoRole}
                 onToggleTheme={store.toggleTheme}
+                onChangePaletteMode={store.setPaletteMode}
                 compact
               />
             </div>
@@ -354,7 +370,7 @@ export const App: React.FC = () => {
           style={{
             display: 'grid',
             gridTemplateColumns: '48px 1fr',
-            gap: '24px',
+            gap: '20px',
             alignItems: 'stretch',
             flex: 1,
             marginTop: '4px',
@@ -394,7 +410,7 @@ export const App: React.FC = () => {
                 <h1
                   style={{
                     margin: 0,
-                    fontSize: '30px',
+                    fontSize: '31px',
                     fontWeight: 600,
                     fontFamily: 'var(--ajb-font-display)',
                     letterSpacing: '-0.025em',
@@ -410,14 +426,22 @@ export const App: React.FC = () => {
                       ? state.labelMode === 'reference'
                         ? 'Case Pipelines'
                         : 'Starter Role Pipelines'
-                      : state.labelMode === 'reference'
-                        ? 'Cases in Progress'
-                        : 'Starters in Progress'}
+                      : state.screenMode === 'in_progress'
+                        ? state.labelMode === 'reference'
+                          ? 'Cases in Progress'
+                          : 'Starters in Progress'
+                        : state.screenMode === 'relationship'
+                          ? 'Relationship & Starter Directory'
+                          : state.screenMode === 'inductions'
+                            ? 'Day-1 Inductions & Provisioning'
+                            : state.screenMode === 'audit_log'
+                              ? 'SMCR & CASS Audit Log'
+                              : 'Role Entitlements Matrix'}
                 </h1>
                 <AJBellMottoPill />
               </div>
 
-              {state.screenMode === 'in_progress' && (
+              {(state.screenMode === 'in_progress' || state.screenMode === 'relationship') && (
                 <button
                   type="button"
                   onClick={() => store.openModalForCard('add_case')}
@@ -801,6 +825,176 @@ export const App: React.FC = () => {
                       />
                     ))}
                   </div>
+                )}
+
+                {/* SCREEN MODE 4: RELATIONSHIP & STARTER DIRECTORY */}
+                {state.screenMode === 'relationship' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '14px',
+                      }}
+                    >
+                      {state.participants.map((p) => {
+                        const isSelected = state.selectedParticipantId === p.id;
+                        return (
+                          <div
+                            key={p.id}
+                            onClick={() =>
+                              store.setSelectedParticipantId(isSelected ? null : p.id)
+                            }
+                            style={{
+                              padding: '16px 18px',
+                              borderRadius: '22px',
+                              background: isSelected
+                                ? 'var(--ajb-accent-black)'
+                                : 'var(--ajb-surface-card)',
+                              color: isSelected ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                              border: '1px solid var(--ajb-border-subtle)',
+                              boxShadow: 'var(--ajb-shadow-card)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '12px',
+                            }}
+                          >
+                            <img
+                              src={p.avatarUrl}
+                              alt={p.name}
+                              style={{
+                                width: '44px',
+                                height: '44px',
+                                borderRadius: '9999px',
+                                objectFit: 'cover',
+                                border: '2px solid var(--ajb-accent-periwinkle)',
+                              }}
+                            />
+                            <div style={{ minWidth: 0, flex: 1 }}>
+                              <div style={{ fontSize: '14px', fontWeight: 700 }}>{p.name}</div>
+                              <div
+                                style={{
+                                  fontSize: '12px',
+                                  color: isSelected
+                                    ? 'rgba(255,255,255,0.78)'
+                                    : 'var(--ajb-text-secondary)',
+                                }}
+                              >
+                                {p.roleTitle} · {p.department}
+                              </div>
+                            </div>
+                            <span
+                              className="ajb-tabular"
+                              style={{
+                                padding: '3px 9px',
+                                borderRadius: '9999px',
+                                background: 'var(--ajb-accent-periwinkle)',
+                                color: '#FFFFFF',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                              }}
+                            >
+                              {p.badgeCount ?? 1} tasks
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <SuggestedKnowledgeTable
+                      records={state.knowledgeRecords}
+                      labelMode={state.labelMode}
+                      onToggleStar={store.toggleKnowledgeStar}
+                      onAddRecord={() => store.openModalForCard('add_case')}
+                    />
+                  </div>
+                )}
+
+                {/* SCREEN MODE 5: DAY-1 INDUCTIONS & PROVISIONING */}
+                {state.screenMode === 'inductions' && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div
+                      style={{
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(4, 1fr)',
+                        gap: '14px',
+                      }}
+                    >
+                      {state.onboardingTiles.map((tile) => (
+                        <div
+                          key={tile.id}
+                          onClick={() => store.selectOnboardingTile(tile.id)}
+                          style={{
+                            padding: '18px 20px',
+                            borderRadius: '22px',
+                            background: tile.selected
+                              ? 'var(--ajb-accent-black)'
+                              : 'var(--ajb-surface-card)',
+                            color: tile.selected ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                            border: '1px solid var(--ajb-border-subtle)',
+                            boxShadow: 'var(--ajb-shadow-card)',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            gap: '10px',
+                          }}
+                        >
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <span style={{ fontSize: '11.5px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', opacity: 0.78 }}>
+                              Day-1 Induction Module
+                            </span>
+                            <span
+                              style={{
+                                padding: '3px 10px',
+                                borderRadius: '9999px',
+                                background: tile.selected
+                                  ? 'var(--ajb-accent-periwinkle)'
+                                  : 'var(--ajb-surface-badge-neutral)',
+                                color: tile.selected ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                                fontSize: '11px',
+                                fontWeight: 700,
+                              }}
+                            >
+                              {tile.selected ? 'Active Priority' : 'Scheduled'}
+                            </span>
+                          </div>
+                          <div style={{ fontSize: '16px', fontWeight: 700 }}>
+                            {state.labelMode === 'reference' ? tile.referenceTitle : tile.operationsTitle}
+                          </div>
+                          <div style={{ fontSize: '12px', opacity: 0.8 }}>
+                            Automated Day-1 workspace, security key, and compliance orientation checkpoint.
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <PipelineBottomMetrics labelMode={state.labelMode} />
+                  </div>
+                )}
+
+                {/* SCREEN MODE 6: SMCR & CASS AUDIT LOG */}
+                {state.screenMode === 'audit_log' && (
+                  <div style={{ display: 'grid', gridTemplateColumns: '2.18fr 1fr', gap: '18px' }}>
+                    <SuggestedKnowledgeTable
+                      records={state.knowledgeRecords}
+                      labelMode={state.labelMode}
+                      onToggleStar={store.toggleKnowledgeStar}
+                      onAddRecord={() => store.openModalForCard('add_case')}
+                    />
+                    <SupportTicketJourneyCard labelMode={state.labelMode} />
+                  </div>
+                )}
+
+                {/* SCREEN MODE 7: ROLE ENTITLEMENTS MATRIX */}
+                {state.screenMode === 'entitlements' && (
+                  <TokenArchitectureBlueprint
+                    activeDemoRole={state.activeDemoRole}
+                    theme={state.theme}
+                    paletteMode={state.paletteMode}
+                    onChangeDemoRole={store.setActiveDemoRole}
+                    onToggleTheme={store.toggleTheme}
+                    onChangePaletteMode={store.setPaletteMode}
+                  />
                 )}
               </>
             )}

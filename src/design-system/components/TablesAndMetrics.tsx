@@ -719,10 +719,10 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
           }}
         >
           {[
-            { pct: '68%', tone: 'rgba(232, 26, 65, 0.78)', color: '#FFFFFF', avatar: '/avatars/avatar-1.png' },
-            { pct: '82%', tone: 'rgba(232, 26, 65, 0.94)', color: '#FFFFFF', avatar: '/avatars/avatar-3.png' },
-            { pct: '65%', tone: 'rgba(176, 0, 84, 0.82)', color: '#FFFFFF', avatar: '/avatars/avatar-4.png' },
-            { pct: '48%', tone: 'var(--ajb-surface-input-pill)', color: 'var(--ajb-text-primary)', avatar: '/avatars/avatar-6.png' },
+            { pct: '68%', tone: 'var(--ajb-bar-1-bg)', color: 'var(--ajb-bar-1-fg)', avatar: '/avatars/avatar-1.png' },
+            { pct: '82%', tone: 'var(--ajb-bar-2-bg)', color: 'var(--ajb-bar-2-fg)', avatar: '/avatars/avatar-3.png' },
+            { pct: '65%', tone: 'var(--ajb-bar-3-bg)', color: 'var(--ajb-bar-3-fg)', avatar: '/avatars/avatar-4.png' },
+            { pct: '48%', tone: 'var(--ajb-bar-4-bg)', color: 'var(--ajb-bar-4-fg)', avatar: '/avatars/avatar-6.png' },
           ].map((bar, idx) => (
             <div
               key={idx}

@@ -24,8 +24,8 @@ export const NotchAvatarStrip: React.FC<NotchAvatarStripProps> = ({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '10px',
-        padding: '4px 18px 8px',
+        gap: '8px',
+        padding: '4px 12px 8px',
       }}
     >
       {participants.map((p, index) => {

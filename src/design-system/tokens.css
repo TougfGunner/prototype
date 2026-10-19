@@ -161,14 +161,14 @@ html[data-theme='light'] {
   --ajb-border-strong: rgba(93, 10, 26, 0.20);
   --ajb-border-glass: rgba(255, 255, 255, 0.92);
 
-  /* Ultra-Clear Scaled Typography (+1px to +2px larger across the board) */
+  /* Ultra-Clear Scaled Typography (+1.5px to +2.5px larger for full-bleed browser readability) */
   --ajb-font-sans: 'Mona Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
-  --ajb-text-xs: 11.5px;
-  --ajb-text-sm: 12.5px;
-  --ajb-text-base: 13.5px;
-  --ajb-text-md: 15px;
-  --ajb-text-lg: 17.5px;
-  --ajb-text-xl: 24px;
+  --ajb-text-xs: 12px;
+  --ajb-text-sm: 13.2px;
+  --ajb-text-base: 14.2px;
+  --ajb-text-md: 15.8px;
+  --ajb-text-lg: 18.5px;
+  --ajb-text-xl: 26px;
 
   /* Radius Scale */
   --ajb-radius-xs: 9px;
@@ -701,3 +701,381 @@ dialog.ref-modal-dialog::backdrop {
 .ref-avatar-slot-snap {
   animation: refAvatarSlotSnap 380ms var(--ajb-ease-spring) both;
 }
+
+/* ==========================================================================
+   6. PRESERVED PRE-RED BLUE VERSION (`data-palette="light-blue"`, commit 270bbc9)
+      - Keeps 100% of the AJ Bell Chime Red/Burgundy version above intact (`data-palette="chime-crimson"`)
+      - Restores the exact pre-red Blue colours (`#DDE0E7`, `#8FA8E0`, `#D96B70`, `#0D0D0F`) for `data-palette="light-blue"`
+   ========================================================================== */
+
+:root,
+html[data-theme='light'] {
+  --ajb-bar-1-bg: rgba(232, 26, 65, 0.78);
+  --ajb-bar-1-fg: #FFFFFF;
+  --ajb-bar-2-bg: rgba(232, 26, 65, 0.94);
+  --ajb-bar-2-fg: #FFFFFF;
+  --ajb-bar-3-bg: rgba(176, 0, 84, 0.82);
+  --ajb-bar-3-fg: #FFFFFF;
+  --ajb-bar-4-bg: rgba(235, 235, 229, 0.95);
+  --ajb-bar-4-fg: var(--ajb-text-primary);
+}
+
+html[data-theme='dark'],
+[data-theme='dark'] {
+  --ajb-bar-1-bg: rgba(255, 56, 92, 0.78);
+  --ajb-bar-1-fg: #FFFFFF;
+  --ajb-bar-2-bg: rgba(255, 56, 92, 0.94);
+  --ajb-bar-2-fg: #FFFFFF;
+  --ajb-bar-3-bg: rgba(240, 62, 152, 0.82);
+  --ajb-bar-3-fg: #FFFFFF;
+  --ajb-bar-4-bg: rgba(49, 40, 56, 0.95);
+  --ajb-bar-4-fg: var(--ajb-text-primary);
+}
+
+html[data-theme='light'][data-palette='light-blue'],
+[data-theme='light'][data-palette='light-blue'] {
+  --ref-bg-canvas: #DDE0E7;
+  --ref-bg-ambient-wash: rgba(155, 178, 232, 0.34);
+  --ref-bg-ambient-wash-secondary: rgba(196, 208, 238, 0.42);
+  --ref-surface-workspace: rgba(240, 242, 246, 0.82);
+  --ref-surface-stage: rgba(248, 249, 252, 0.92);
+  --ref-surface-card: #FFFFFF;
+  --ref-surface-card-hover: #F9FAFC;
+  --ref-surface-card-muted: rgba(255, 255, 255, 0.68);
+  --ref-surface-input: #FFFFFF;
+  --ref-surface-selected: #0D0D0F;
+  --ref-surface-backdrop: rgba(214, 218, 226, 0.68);
+
+  --ref-text-primary: #17181C;
+  --ref-text-secondary: #686E7C;
+  --ref-text-muted: #989FAD;
+  --ref-text-on-selected: #FFFFFF;
+
+  --ref-accent-blue: #8FA8E0;
+  --ref-accent-blue-strong: #6F8ED6;
+  --ref-accent-blue-soft: rgba(143, 168, 224, 0.22);
+  --ref-accent-coral: #D96B70;
+  --ref-accent-coral-soft: rgba(217, 107, 112, 0.18);
+  --ref-accent-amber: #F0C965;
+  --ref-accent-amber-soft: rgba(240, 201, 101, 0.26);
+  --ref-accent-emerald: #2F9E66;
+  --ref-accent-teal: #18637C;
+  --ref-border-focus: #6F8ED6;
+
+  --ajb-bg-canvas: #DDE0E7;
+  --ajb-bg-canvas-gradient:
+    radial-gradient(circle at 82% 8%, rgba(143, 168, 224, 0.36) 0%, rgba(229, 231, 236, 0) 48%),
+    radial-gradient(circle at 12% 88%, rgba(143, 168, 224, 0.24) 0%, rgba(229, 231, 236, 0) 45%),
+    linear-gradient(135deg, #D5D8E0 0%, #E4E7EE 48%, #D8DCE4 100%);
+  --ajb-bg-ambient-wash: radial-gradient(
+    ellipse 64% 70% at 50% 46%,
+    rgba(154, 179, 236, 0.62) 0%,
+    rgba(188, 206, 244, 0.42) 38%,
+    rgba(235, 238, 245, 0.86) 76%,
+    rgba(242, 244, 248, 0.96) 100%
+  );
+  --ajb-surface-shell: rgba(242, 244, 248, 0.88);
+  --ajb-surface-shell-solid: #EEF0F5;
+  --ajb-surface-panel: rgba(248, 249, 252, 0.92);
+  --ajb-surface-modal: rgba(246, 247, 251, 0.96);
+  --ajb-surface-subpanel: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.60) 0%,
+    rgba(243, 245, 252, 0.48) 100%
+  );
+  --ajb-surface-stage-column: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.76) 0%,
+    rgba(248, 250, 254, 0.60) 100%
+  );
+  --ajb-surface-card: #FFFFFF;
+  --ajb-surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #F9FAFD 100%);
+  --ajb-surface-card-muted: rgba(255, 255, 255, 0.68);
+  --ajb-surface-card-hover: #FFFFFF;
+  --ajb-surface-elevated: #FFFFFF;
+  --ajb-surface-control: rgba(255, 255, 255, 0.88);
+  --ajb-surface-control-solid: #FFFFFF;
+  --ajb-surface-input-pill: rgba(235, 237, 242, 0.85);
+  --ajb-surface-badge-neutral: #E6E9F2;
+  --ajb-surface-socket: #FFFFFF;
+  --ajb-surface-toolbar: rgba(255, 255, 255, 0.84);
+  --ajb-surface-gallery-canvas: rgba(235, 238, 245, 0.84);
+  --ajb-surface-selected: #0D0D0F;
+  --ajb-surface-card-selected: #0D0D0F;
+  --ajb-surface-selected-gradient: linear-gradient(145deg, #18191E 0%, #0A0B0D 100%);
+  --ajb-surface-selected-press: linear-gradient(145deg, #686C77 0%, #525660 100%);
+  --ajb-surface-notch: #E4E6EC;
+
+  --ajb-text-primary: #17181C;
+  --ajb-text-secondary: #686E7C;
+  --ajb-text-muted: #989FAD;
+  --ajb-text-on-dark: #FFFFFF;
+
+  --ajb-accent-periwinkle: #8FA8E0;
+  --ajb-accent-periwinkle-soft: rgba(143, 168, 224, 0.24);
+  --ajb-accent-periwinkle-gradient: linear-gradient(180deg, #9DB5EA 0%, #86A0DC 100%);
+  --ajb-accent-coral: #D96B70;
+  --ajb-accent-coral-soft: rgba(217, 107, 112, 0.20);
+  --ajb-accent-coral-gradient: linear-gradient(180deg, #E3787D 0%, #D56368 100%);
+  --ajb-accent-amber: #F0C965;
+  --ajb-accent-amber-soft: rgba(240, 201, 101, 0.28);
+  --ajb-accent-black: #0D0D0F;
+  --ajb-accent-emerald: #2F9E66;
+  --ajb-accent-emerald-soft: rgba(47, 158, 102, 0.15);
+  --ajb-accent-teal: #18637C;
+  --ajb-accent-teal-soft: rgba(24, 99, 124, 0.15);
+  --ajb-brand-crimson: #6F8ED6;
+  --ajb-brand-logo-red: #17181C;
+  --ajb-brand-burgundy: #0D0D0F;
+  --ajb-brand-berry: #D96B70;
+  --ajb-brand-hero-gradient: linear-gradient(135deg, #8FA8E0 0%, #6F8ED6 52%, #17181C 100%);
+  --ajb-gradient-motto-pill: linear-gradient(135deg, #6F8ED6 0%, #5273C2 54%, #17181C 100%);
+  --ajb-logo-wordmark: #17181C;
+
+  --ajb-connector-primary-stroke: #8FA8E0;
+  --ajb-connector-secondary-stroke: #D96B70;
+  --ajb-connector-dark-stroke: #0D0D0F;
+  --ajb-connector-muted-stroke: rgba(104, 110, 124, 0.50);
+
+  --ajb-shadow-shell: 0 26px 64px -16px rgba(18, 23, 38, 0.12), 0 2px 8px rgba(18, 23, 38, 0.04);
+  --ajb-shadow-stage: 0 10px 26px -8px rgba(24, 32, 56, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.88);
+  --ajb-shadow-card: 0 4px 14px -2px rgba(18, 23, 38, 0.045), 0 1px 3px rgba(18, 23, 38, 0.025);
+  --ajb-shadow-card-active: 0 12px 26px -4px rgba(11, 12, 14, 0.32), 0 3px 8px rgba(11, 12, 14, 0.16);
+
+  --ajb-bar-1-bg: rgba(181, 200, 242, 0.85);
+  --ajb-bar-1-fg: #17181C;
+  --ajb-bar-2-bg: rgba(153, 181, 238, 0.95);
+  --ajb-bar-2-fg: #17181C;
+  --ajb-bar-3-bg: rgba(235, 169, 173, 0.85);
+  --ajb-bar-3-fg: #17181C;
+  --ajb-bar-4-bg: rgba(225, 229, 237, 0.90);
+  --ajb-bar-4-fg: #17181C;
+
+  --role-ops-primary: #6F8ED6;
+  --role-ops-surface: rgba(143, 168, 224, 0.22);
+  --role-ops-border: rgba(111, 142, 214, 0.38);
+  --role-ops-badge-bg: #17181C;
+  --role-ops-badge-fg: #FFFFFF;
+
+  --role-manager-primary: #D96B70;
+  --role-manager-surface: rgba(217, 107, 112, 0.18);
+  --role-manager-border: rgba(217, 107, 112, 0.36);
+  --role-manager-badge-bg: #D96B70;
+  --role-manager-badge-fg: #FFFFFF;
+}
+
+/* ==========================================================================
+   7. PRE-RED BLUE DARK MODE (`data-palette="light-blue"` & `data-palette="chime-blue-dark"`)
+      - Restores the exact pre-red Dark Mode from commits 270bbc9 / e9c74d6:
+        Canvas `#111318`, Shell `#181C24`, Panel `rgba(29, 33, 42, 0.94)`,
+        Card `#222733`, Periwinkle-Blue `#7B99DC` (`linear-gradient(180deg, #8BA6E2 0%, #6E8BD0 100%)`),
+        Soft Coral `#E0757A`, Amber `#E5C158` — with consistent dark surfaces!
+      - Keeps `data-palette="chime-crimson"` (Red Dark Mode) intact for comparison!
+   ========================================================================== */
+html[data-theme='dark'][data-palette='light-blue'],
+[data-theme='dark'][data-palette='light-blue'],
+html[data-theme='dark'][data-palette='chime-blue-dark'],
+[data-theme='dark'][data-palette='chime-blue-dark'] {
+  color-scheme: dark;
+
+  --ref-bg-canvas: #111318;
+  --ref-bg-ambient-wash: rgba(74, 102, 172, 0.18);
+  --ref-bg-ambient-wash-secondary: rgba(54, 72, 122, 0.15);
+  --ref-surface-workspace: rgba(22, 25, 32, 0.86);
+  --ref-surface-stage: rgba(29, 33, 42, 0.92);
+  --ref-surface-card: #252A35;
+  --ref-surface-card-hover: #2C3240;
+  --ref-surface-card-muted: rgba(37, 42, 53, 0.68);
+  --ref-surface-input: #1E222B;
+  --ref-surface-selected: #3B5998;
+  --ref-surface-backdrop: rgba(8, 10, 15, 0.72);
+
+  --ref-text-primary: #F1F3F7;
+  --ref-text-secondary: #9BA2B2;
+  --ref-text-muted: #697082;
+  --ref-text-on-selected: #FFFFFF;
+
+  --ref-accent-blue: #7B99DC;
+  --ref-accent-blue-strong: #92AEE8;
+  --ref-accent-blue-soft: rgba(123, 153, 220, 0.22);
+  --ref-accent-coral: #E0757A;
+  --ref-accent-coral-soft: rgba(224, 117, 122, 0.20);
+  --ref-accent-amber: #E5C358;
+  --ref-accent-amber-soft: rgba(229, 195, 88, 0.20);
+  --ref-accent-emerald: #34D399;
+  --ref-accent-teal: #38BDF8;
+
+  --ref-border-hairline: rgba(255, 255, 255, 0.08);
+  --ref-border-subtle: rgba(255, 255, 255, 0.075);
+  --ref-border-focus: #92AEE8;
+
+  --ref-shadow-panel: 0 10px 28px -4px rgba(0, 0, 0, 0.42);
+  --ref-shadow-card: 0 2px 8px rgba(0, 0, 0, 0.32);
+  --ref-shadow-modal: 0 28px 68px -12px rgba(0, 0, 0, 0.72);
+
+  --ajb-bg-canvas: #111318;
+  --ajb-bg-canvas-gradient: linear-gradient(135deg, #0E1015 0%, #151922 50%, #10131A 100%);
+  --ajb-bg-ambient-wash: radial-gradient(
+    ellipse 62% 68% at 50% 48%,
+    rgba(64, 92, 168, 0.28) 0%,
+    rgba(38, 52, 92, 0.20) 45%,
+    rgba(22, 26, 34, 0.94) 85%
+  );
+  --ajb-surface-shell: rgba(24, 28, 36, 0.90);
+  --ajb-surface-shell-solid: #181C24;
+  --ajb-surface-panel: rgba(29, 33, 42, 0.94);
+  --ajb-surface-modal: rgba(29, 33, 42, 0.98);
+  --ajb-surface-subpanel: linear-gradient(
+    180deg,
+    rgba(31, 36, 46, 0.78) 0%,
+    rgba(25, 29, 38, 0.68) 100%
+  );
+  --ajb-surface-stage-column: linear-gradient(
+    180deg,
+    rgba(35, 41, 52, 0.84) 0%,
+    rgba(28, 33, 43, 0.72) 100%
+  );
+  --ajb-surface-card: #222733;
+  --ajb-surface-card-gradient: linear-gradient(180deg, #262C39 0%, #202531 100%);
+  --ajb-surface-card-muted: rgba(34, 39, 51, 0.74);
+  --ajb-surface-card-hover: #2A303F;
+  --ajb-surface-elevated: #282E3D;
+  --ajb-surface-control: rgba(40, 46, 61, 0.92);
+  --ajb-surface-control-solid: #282E3D;
+  --ajb-surface-input-pill: rgba(22, 26, 35, 0.92);
+  --ajb-surface-badge-neutral: #2B3242;
+  --ajb-surface-socket: #282E3D;
+  --ajb-surface-toolbar: rgba(31, 36, 46, 0.92);
+  --ajb-surface-gallery-canvas: rgba(17, 20, 27, 0.94);
+  --ajb-surface-selected: #0D0D0F;
+  --ajb-surface-card-selected: #0D0D0F;
+  --ajb-surface-selected-gradient: linear-gradient(145deg, #18191E 0%, #0A0B0D 100%);
+  --ajb-surface-selected-press: linear-gradient(145deg, #686C77 0%, #525660 100%);
+  --ajb-surface-notch: #111318;
+
+  --ajb-text-primary: #F3F5F8;
+  --ajb-text-secondary: #A0A7B5;
+  --ajb-text-muted: #687082;
+  --ajb-text-on-dark: #FFFFFF;
+
+  --ajb-accent-periwinkle: #7B99DC;
+  --ajb-accent-periwinkle-soft: rgba(123, 153, 220, 0.22);
+  --ajb-accent-periwinkle-gradient: linear-gradient(180deg, #8BA6E2 0%, #6E8BD0 100%);
+  --ajb-accent-coral: #E0757A;
+  --ajb-accent-coral-soft: rgba(224, 117, 122, 0.22);
+  --ajb-accent-coral-gradient: linear-gradient(180deg, #E58085 0%, #D16469 100%);
+  --ajb-accent-amber: #E5C158;
+  --ajb-accent-amber-soft: rgba(229, 193, 88, 0.22);
+  --ajb-accent-black: #0D0D0F;
+  --ajb-accent-emerald: #34D399;
+  --ajb-accent-emerald-soft: rgba(52, 211, 153, 0.20);
+  --ajb-accent-teal: #38BDF8;
+  --ajb-accent-teal-soft: rgba(56, 189, 248, 0.20);
+  --ajb-brand-crimson: #7B99DC;
+  --ajb-brand-logo-red: #92AEE8;
+  --ajb-brand-burgundy: #1E293B;
+  --ajb-brand-berry: #E0757A;
+  --ajb-brand-hero-gradient: linear-gradient(135deg, #8BA6E2 0%, #7B99DC 52%, #2B3B5E 100%);
+  --ajb-gradient-motto-pill: linear-gradient(135deg, #7B99DC 0%, #5B78C4 54%, #1E293B 100%);
+  --ajb-logo-wordmark: #F3F5F8;
+
+  --ajb-connector-primary-stroke: #7B99DC;
+  --ajb-connector-secondary-stroke: #E0757A;
+  --ajb-connector-dark-stroke: #92AEE8;
+  --ajb-connector-muted-stroke: rgba(160, 167, 181, 0.42);
+
+  --ajb-border-subtle: rgba(255, 255, 255, 0.08);
+  --ajb-border-row-divider: rgba(255, 255, 255, 0.06);
+  --ajb-border-strong: rgba(255, 255, 255, 0.16);
+  --ajb-border-glass: rgba(255, 255, 255, 0.11);
+
+  --ajb-shadow-shell: 0 26px 64px -16px rgba(0, 0, 0, 0.55);
+  --ajb-shadow-stage: 0 10px 26px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  --ajb-shadow-card: 0 4px 14px -2px rgba(0, 0, 0, 0.32);
+  --ajb-shadow-card-active: 0 12px 26px -4px rgba(0, 0, 0, 0.55), 0 3px 8px rgba(123, 153, 220, 0.22);
+  --ajb-shadow-floating: 0 10px 24px -4px rgba(0, 0, 0, 0.5);
+  --ajb-shadow-pill: 0 2px 5px rgba(0, 0, 0, 0.3);
+  --ajb-shadow-modal: 0 28px 68px -12px rgba(0, 0, 0, 0.72);
+
+  --ajb-bar-1-bg: rgba(123, 153, 220, 0.72);
+  --ajb-bar-1-fg: #F3F5F8;
+  --ajb-bar-2-bg: rgba(123, 153, 220, 0.92);
+  --ajb-bar-2-fg: #FFFFFF;
+  --ajb-bar-3-bg: rgba(224, 117, 122, 0.78);
+  --ajb-bar-3-fg: #FFFFFF;
+  --ajb-bar-4-bg: rgba(43, 50, 66, 0.92);
+  --ajb-bar-4-fg: #F3F5F8;
+
+  --role-ops-primary: #7B99DC;
+  --role-ops-surface: rgba(123, 153, 220, 0.20);
+  --role-ops-border: rgba(123, 153, 220, 0.42);
+  --role-ops-badge-bg: #3B5998;
+  --role-ops-badge-fg: #FFFFFF;
+
+  --role-manager-primary: #E0757A;
+  --role-manager-surface: rgba(224, 117, 122, 0.20);
+  --role-manager-border: rgba(224, 117, 122, 0.42);
+  --role-manager-badge-bg: #B84D53;
+  --role-manager-badge-fg: #FFFFFF;
+
+  --role-it-primary: #38BDF8;
+  --role-it-surface: rgba(56, 189, 248, 0.20);
+  --role-it-border: rgba(56, 189, 248, 0.42);
+  --role-it-badge-bg: #0284C7;
+  --role-it-badge-fg: #FFFFFF;
+
+  --role-compliance-primary: #34D399;
+  --role-compliance-surface: rgba(52, 211, 153, 0.20);
+  --role-compliance-border: rgba(52, 211, 153, 0.42);
+  --role-compliance-badge-bg: #059669;
+  --role-compliance-badge-fg: #FFFFFF;
+}
+
+/* ==========================================================================
+   8. ULTRA-SMOOTH WORKFLOW CARDS, TASK ROWS, ACTION TILES & SPLINE TRANSITIONS
+   ========================================================================== */
+.ajb-smooth-card {
+  transition:
+    transform 280ms var(--ajb-ease-standard),
+    box-shadow 280ms var(--ajb-ease-standard),
+    background 220ms var(--ajb-ease-standard),
+    border-color 220ms var(--ajb-ease-standard);
+  will-change: transform, box-shadow;
+}
+
+.ajb-smooth-card:hover {
+  transform: translateY(-2px);
+}
+
+.ajb-smooth-task-row {
+  transition:
+    transform 220ms var(--ajb-ease-standard),
+    box-shadow 220ms var(--ajb-ease-standard),
+    background 180ms var(--ajb-ease-standard),
+    border-color 180ms var(--ajb-ease-standard);
+}
+
+.ajb-smooth-task-row:hover {
+  transform: translateX(2px) translateY(-1px);
+}
+
+.ajb-smooth-action-tile {
+  transition:
+    transform 240ms var(--ajb-ease-spring),
+    box-shadow 240ms var(--ajb-ease-standard),
+    background 200ms var(--ajb-ease-standard),
+    border-color 200ms var(--ajb-ease-standard);
+}
+
+.ajb-smooth-action-tile:hover {
+  transform: translateY(-2.5px) scale(1.015);
+}
+
+.ajb-smooth-connector-path {
+  transition:
+    d 260ms var(--ajb-ease-standard),
+    stroke 220ms var(--ajb-ease-standard),
+    stroke-width 220ms var(--ajb-ease-standard),
+    opacity 220ms var(--ajb-ease-standard);
+}
+
