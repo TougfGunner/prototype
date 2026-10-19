@@ -81,7 +81,7 @@ interface PersistedOperationsState {
 }
 
 const STORAGE_KEY = 'ajb-ref-ops-v1-state';
-const SCHEMA_VERSION = 7;
+const SCHEMA_VERSION = 8;
 
 const DEFAULT_MODAL_DRAFT: ModalFormDraft = {
   mode: 'process_case',
@@ -156,7 +156,7 @@ function loadState(): PersistedOperationsState {
         const urlScreen = new URLSearchParams(window.location.search).get('screen') as WorkspaceScreenMode | null;
         return {
           ...parsed,
-          theme: urlTheme || parsed.theme || 'light',
+          theme: urlTheme || parsed.theme || 'dark',
           paletteMode: urlPalette || parsed.paletteMode || 'chime-crimson',
           labelMode:
             new URLSearchParams(window.location.search).get('labels') === 'reference'
@@ -175,7 +175,7 @@ function loadState(): PersistedOperationsState {
 
   return {
     schemaVersion: SCHEMA_VERSION,
-    theme: urlTheme || 'light',
+    theme: urlTheme || 'dark',
     paletteMode: urlPalette || 'chime-crimson',
     screenMode: getInitialScreenFromUrl(),
     labelMode: getInitialLabelModeFromUrl(),
@@ -230,11 +230,23 @@ export function useStarterStore() {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Ensure open browser tabs receiving Vite HMR updates migrate immediately to SCHEMA_VERSION (chime-crimson + dark)
+  useEffect(() => {
+    if (state.schemaVersion !== SCHEMA_VERSION) {
+      setState((prev) => ({
+        ...prev,
+        schemaVersion: SCHEMA_VERSION,
+        theme: getInitialThemeFromUrl() || 'dark',
+        paletteMode: getInitialPaletteFromUrl() || 'chime-crimson',
+      }));
+    }
+  }, [state.schemaVersion]);
+
   // Sync theme, palette, and role to root <html> attributes & persist to localStorage
   useEffect(() => {
     if (typeof document !== 'undefined') {
       const root = document.documentElement;
-      const targetTheme = state.theme || 'light';
+      const targetTheme = state.theme || 'dark';
       const targetPalette = state.paletteMode || 'chime-crimson';
       if (root.getAttribute('data-theme') !== targetTheme) {
         root.setAttribute('data-theme', targetTheme);
@@ -651,8 +663,8 @@ export function useStarterStore() {
     localStorage.removeItem(STORAGE_KEY);
     setState((prev) => ({
       schemaVersion: SCHEMA_VERSION,
-      theme: prev.theme || getInitialThemeFromUrl() || 'light',
-      paletteMode: prev.paletteMode || getInitialPaletteFromUrl() || 'light-blue',
+      theme: prev.theme || getInitialThemeFromUrl() || 'dark',
+      paletteMode: prev.paletteMode || getInitialPaletteFromUrl() || 'chime-crimson',
       screenMode: getInitialScreenFromUrl(),
       labelMode: getInitialLabelModeFromUrl(),
       activeDemoRole: 'Operations Coordinator',

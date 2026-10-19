@@ -397,21 +397,26 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Check 17: Navigate to /gallery route ("Reference Operations v1") and verify Light Reference & Dark Adaptation
+  // Check 17: Navigate to /gallery route ("Reference Operations v1") and verify Dark & Light modes in chime-crimson
   await page.evaluate(() => localStorage.clear());
   await page.goto(`${BASE_URL}/gallery`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   const galleryText = await page.locator('body').innerText();
   const galleryUrl = page.url();
+  const initialGalleryTheme = await page.evaluate(() =>
+    document.documentElement.getAttribute('data-theme')
+  );
   recordAssertion(
     'check_17_gallery_route_light',
-    'Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Light Reference mode',
-    galleryText.includes('Reference Operations v1') && galleryUrl.endsWith('/gallery'),
-    `url=${galleryUrl}`
+    'Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Crimson Dark mode by default',
+    galleryText.includes('Reference Operations v1') &&
+      galleryUrl.endsWith('/gallery') &&
+      initialGalleryTheme === 'dark',
+    `url=${galleryUrl}, data-theme=${initialGalleryTheme}`
   );
 
   await page.screenshot({
-    path: path.join(SCREENSHOT_DIR, '10_gallery_reference_operations_v1_light.png'),
+    path: path.join(SCREENSHOT_DIR, '11_gallery_reference_operations_v1_dark_adaptation.png'),
     fullPage: false,
   });
 
@@ -431,7 +436,7 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Scroll back to top and switch to Dark Adaptation in /gallery
+  // Scroll back to top and toggle to Light Mode in /gallery
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(150);
   await page.locator('[data-testid="gallery-theme-toggle"]').first().click();
@@ -441,16 +446,16 @@ async function runVerificationAndScreenshots() {
   );
   recordAssertion(
     'check_19_gallery_dark_adaptation',
-    'Dark Adaptation toggle in /gallery switches theme tokens across both /gallery and / via unified store',
-    dataTheme === 'dark'
+    'Theme toggle in /gallery switches theme tokens cleanly between Crimson Dark and Crimson Light across /gallery and /',
+    dataTheme === 'light'
   );
 
   await page.screenshot({
-    path: path.join(SCREENSHOT_DIR, '11_gallery_reference_operations_v1_dark_adaptation.png'),
+    path: path.join(SCREENSHOT_DIR, '10_gallery_reference_operations_v1_light.png'),
     fullPage: false,
   });
 
-  // Reset back to Light Reference
+  // Restore default Crimson Dark mode
   await page.locator('[data-testid="gallery-theme-toggle"]').first().click();
   await page.waitForTimeout(200);
   await context.close();

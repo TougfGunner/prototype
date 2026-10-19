@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-19T10:36:44.628Z",
+  "generated_at": "2026-10-19T13:14:01.282Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
@@ -113,9 +113,9 @@
     },
     {
       "id": "check_17_gallery_route_light",
-      "description": "Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Light Reference mode",
+      "description": "Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Crimson Dark mode by default",
       "passed": true,
-      "detail": "url=http://127.0.0.1:5173/gallery"
+      "detail": "url=http://127.0.0.1:5173/gallery, data-theme=dark"
     },
     {
       "id": "check_18_gallery_section3_shared_canvas",
@@ -125,7 +125,7 @@
     },
     {
       "id": "check_19_gallery_dark_adaptation",
-      "description": "Dark Adaptation toggle in /gallery switches theme tokens across both /gallery and / via unified store",
+      "description": "Theme toggle in /gallery switches theme tokens cleanly between Crimson Dark and Crimson Light across /gallery and /",
       "passed": true,
       "detail": ""
     }
