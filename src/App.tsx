@@ -24,6 +24,7 @@ import {
   WorkflowFilterBar,
 } from './design-system/components/TablesAndMetrics';
 import { GalleryPage } from './pages/GalleryPage';
+import { AJBellMottoPill } from './design-system/components/AJBellBrandAssets';
 import { SimulationViewStatus, useStarterStore } from './state/useStarterStore';
 
 export const App: React.FC = () => {
@@ -143,8 +144,8 @@ export const App: React.FC = () => {
             width: '490px',
             height: '66px',
             borderRadius: '0 0 32px 32px',
-            background: 'rgba(224, 227, 234, 0.85)',
-            border: '1px solid rgba(255, 255, 255, 0.72)',
+            background: 'rgba(235, 235, 229, 0.92)',
+            border: '1px solid rgba(255, 255, 255, 0.78)',
             zIndex: 1,
             pointerEvents: 'none',
           }}
@@ -293,28 +294,32 @@ export const App: React.FC = () => {
                 marginBottom: '12px',
               }}
             >
-              <h1
-                style={{
-                  margin: 0,
-                  fontSize: '30px',
-                  fontWeight: 500,
-                  letterSpacing: '-0.025em',
-                  lineHeight: 1.12,
-                  color: 'var(--ajb-text-primary)',
-                }}
-              >
-                {state.screenMode === 'journey'
-                  ? state.labelMode === 'reference'
-                    ? 'Customer Issue'
-                    : 'New Starter Journey'
-                  : state.screenMode === 'pipelines'
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap' }}>
+                <h1
+                  style={{
+                    margin: 0,
+                    fontSize: '30px',
+                    fontWeight: 600,
+                    fontFamily: 'var(--ajb-font-display)',
+                    letterSpacing: '-0.025em',
+                    lineHeight: 1.12,
+                    color: 'var(--ajb-text-primary)',
+                  }}
+                >
+                  {state.screenMode === 'journey'
                     ? state.labelMode === 'reference'
-                      ? 'Case Pipelines'
-                      : 'Starter Role Pipelines'
-                    : state.labelMode === 'reference'
-                      ? 'Cases in Progress'
-                      : 'Starters in Progress'}
-              </h1>
+                      ? 'Customer Issue'
+                      : 'New Starter Journey'
+                    : state.screenMode === 'pipelines'
+                      ? state.labelMode === 'reference'
+                        ? 'Case Pipelines'
+                        : 'Starter Role Pipelines'
+                      : state.labelMode === 'reference'
+                        ? 'Cases in Progress'
+                        : 'Starters in Progress'}
+                </h1>
+                <AJBellMottoPill />
+              </div>
 
               {state.screenMode === 'in_progress' && (
                 <button
@@ -367,7 +372,7 @@ export const App: React.FC = () => {
               >
                 {store.simulationStatus === 'loading' && (
                   <>
-                    <Loader2 size={32} color="#8FA8E0" />
+                    <Loader2 size={32} color="#E81A41" />
                     <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
                       Synchronising Synthetic Role Profiles & Entitlements…
                     </h2>
@@ -436,7 +441,7 @@ export const App: React.FC = () => {
 
                 {store.simulationStatus === 'error' && (
                   <>
-                    <AlertTriangle size={32} color="#D96B70" />
+                    <AlertTriangle size={32} color="#B00054" />
                     <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
                       Entitlement Provisioning Validation Halted
                     </h2>
@@ -489,7 +494,7 @@ export const App: React.FC = () => {
 
                 {store.simulationStatus === 'completed' && (
                   <>
-                    <CheckCircle2 size={34} color="#58B67E" />
+                    <CheckCircle2 size={34} color="#2A792A" />
                     <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
                       All 4 New Starter Journey Stages Completed
                     </h2>
@@ -634,7 +639,7 @@ export const App: React.FC = () => {
                                 style={{
                                   padding: '2px 7px',
                                   borderRadius: '9999px',
-                                  background: 'rgba(225, 229, 237, 0.9)',
+                                  background: 'rgba(235, 235, 229, 0.95)',
                                   fontSize: '10.5px',
                                   fontWeight: 600,
                                   color: 'var(--ajb-text-secondary)',
@@ -707,13 +712,13 @@ export const App: React.FC = () => {
             justifyContent: 'space-between',
             marginTop: '12px',
             paddingTop: '8px',
-            borderTop: '1px solid rgba(18, 22, 33, 0.05)',
+            borderTop: '1px solid rgba(36, 36, 36, 0.06)',
             fontSize: '10.5px',
             color: 'var(--ajb-text-muted)',
           }}
         >
           <span>
-            AJ Bell Internal Operations Prototype · Synthetic Demonstration Data Only · Local Storage Persistence Active
+            AJ Bell (ajbell.co.uk · &ldquo;Feel good, investing&rdquo;) · Internal Operations Prototype · Synthetic Demonstration Data Only
           </span>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span>
@@ -748,11 +753,11 @@ export const App: React.FC = () => {
             right: '28px',
             padding: '10px 18px',
             borderRadius: '9999px',
-            background: '#18191C',
+            background: 'var(--ajb-accent-black)',
             color: '#FFFFFF',
             fontSize: '12px',
             fontWeight: 500,
-            boxShadow: '0 10px 28px rgba(13, 13, 15, 0.25)',
+            boxShadow: '0 10px 28px rgba(93, 10, 26, 0.28)',
             zIndex: 60,
           }}
         >

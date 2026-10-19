@@ -54,7 +54,7 @@ async function runVerificationAndScreenshots() {
   recordAssertion(
     'check_02_svg_connectors',
     'Curved SVG connector paths render between Stage 1, Stage 2, Stage 3 and Stage 4',
-    connectorCount >= 11,
+    connectorCount === 14,
     `paths=${connectorCount}`
   );
 
@@ -298,6 +298,7 @@ async function runVerificationAndScreenshots() {
   });
 
   // Check 15: Navigate to /gallery route ("Reference Operations v1") and verify Light Reference & Dark Adaptation
+  await page.evaluate(() => localStorage.clear());
   await page.goto(`${BASE_URL}/gallery`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   const galleryText = await page.locator('body').innerText();
@@ -316,13 +317,13 @@ async function runVerificationAndScreenshots() {
 
   // Scroll to Section 3 in /gallery ("3. Connected Workflow Cards, Task Rows, Action Tiles & Curved Connectors") and capture live shared component + choreography
   const gallerySec3Heading = page.locator('#gallery-workflow-heading');
-  await gallerySec3Heading.scrollIntoViewIfNeeded();
+  await gallerySec3Heading.evaluate((el) => el.scrollIntoView({ block: 'start' }));
   await page.waitForTimeout(450);
   const gallerySec3Connectors = await page.locator('svg[data-connector-svg="true"] > g').count();
   recordAssertion(
     'check_17_gallery_section3_shared_canvas',
     'Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar',
-    gallerySec3Connectors >= 10,
+    gallerySec3Connectors === 14,
     `gallery_paths=${gallerySec3Connectors}`
   );
   await page.screenshot({

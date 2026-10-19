@@ -25,6 +25,11 @@ import {
 } from '../../data/syntheticStarters';
 import { WorkspaceScreenMode } from '../../state/useStarterStore';
 import { NotchAvatarStrip } from './AvatarAndStatus';
+import {
+  AJBellWordmarkLogo,
+  AJBellChimeMark,
+  AJBellMottoPill,
+} from './AJBellBrandAssets';
 
 export interface TopNavigationBarProps {
   screenMode: WorkspaceScreenMode;
@@ -88,7 +93,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
         padding: '2px 4px 10px 4px',
       }}
     >
-      {/* Left Cluster: Neutral Wordmark + Quiet Horizontal Navigation */}
+      {/* Left Cluster: Official AJ Bell Redesigned Wordmark + Quiet Horizontal Navigation */}
       <div
         style={{
           display: 'flex',
@@ -101,10 +106,11 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
         <button
           type="button"
           onClick={() => onSwitchScreen('journey')}
+          title="AJ Bell — Feel good, investing (ajbell.co.uk Chime Rebrand)"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '6px',
+            gap: '8px',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
@@ -112,28 +118,15 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
             borderRadius: '8px',
           }}
         >
+          <AJBellWordmarkLogo height={20} variant="crimson" />
           <span
             style={{
-              width: '15px',
-              height: '15px',
-              borderRadius: '4px',
-              background: 'var(--ref-surface-selected)',
-              color: 'var(--ref-text-on-selected)',
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: '9px',
+              fontSize: '11px',
               fontWeight: 700,
-            }}
-          >
-            ▸
-          </span>
-          <span
-            style={{
-              fontSize: '14px',
-              fontWeight: 700,
-              letterSpacing: '-0.02em',
-              color: 'var(--ref-text-primary)',
+              letterSpacing: '-0.01em',
+              color: 'var(--ref-surface-selected)',
+              paddingLeft: '6px',
+              borderLeft: '1px solid var(--ref-border-subtle)',
             }}
           >
             {labelMode === 'reference' ? 'sugarcrm' : 'ops·profiling'}
@@ -371,10 +364,9 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
   onOpenGallery,
 }) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (
-      (document.documentElement.getAttribute('data-theme') as 'light' | 'dark') ||
-      'light'
-    );
+    return document.documentElement.getAttribute('data-theme') === 'dark'
+      ? 'dark'
+      : 'light';
   });
 
   const toggleTheme = () => {

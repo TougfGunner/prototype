@@ -1,0 +1,20 @@
+<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="ajb-chime-bg" x1="0" y1="0" x2="36" y2="36" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#E81A41"/>
+      <stop offset="55%" stop-color="#B80F30"/>
+      <stop offset="100%" stop-color="#5D0A1A"/>
+    </linearGradient>
+  </defs>
+  <rect width="36" height="36" rx="18" fill="url(#ajb-chime-bg)"/>
+  <g transform="translate(-71.5, 2.5)">
+    <path d="M86.6485 0H81.2534V28.1845H86.6485V0Z" fill="#FFFFFF"/>
+    <path d="M85.6448 0H79.9915V4.41795H85.6448V0Z" fill="#FFFFFF"/>
+    <path d="M81.303 6.4462L81.2632 6.51648C81.2632 5.60277 80.7466 4.80955 79.9915 4.40792V4.00629L81.3725 4.40792L81.303 6.4462Z" fill="#FFFFFF"/>
+    <path d="M94.9844 0H89.5894V28.1845H94.9844V0Z" fill="#FFFFFF"/>
+    <path d="M93.9908 0H88.3374V4.41795H93.9908V0Z" fill="#FFFFFF"/>
+    <path d="M89.6489 6.4462L89.6092 6.51648C89.6092 5.60277 89.0925 4.80955 88.3374 4.40792V4.00629L89.7185 4.40792L89.6489 6.4462Z" fill="#FFFFFF"/>
+    <path d="M96.9119 28.1845V25.7145C97.4583 25.4333 97.8259 24.851 97.8259 24.1983V23.385C97.8259 20.8045 99.8925 18.706 102.456 18.706C105.019 18.706 107.086 20.8045 107.086 23.385V24.1983C107.086 24.861 107.454 25.4333 108 25.7145V28.1845H96.9119Z" fill="#FFE272"/>
+    <path d="M104.771 29.6505C104.771 30.9457 103.738 31.99 102.456 31.99C101.174 31.99 100.141 30.9457 100.141 29.6505" fill="#FFE272"/>
+  </g>
+</svg>

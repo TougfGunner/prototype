@@ -91,7 +91,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
             style={{
               padding: '2px 7px',
               borderRadius: '9999px',
-              background: 'rgba(225, 229, 237, 0.9)',
+              background: 'rgba(235, 235, 229, 0.92)',
               fontSize: '10.5px',
               fontWeight: 600,
               color: 'var(--ajb-text-secondary)',
@@ -243,7 +243,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                 padding: '7px 10px',
                 borderRadius: '14px',
                 background: 'var(--ajb-surface-card)',
-                border: '1px solid rgba(18, 22, 33, 0.04)',
+                border: '1px solid rgba(36, 36, 36, 0.05)',
                 fontSize: '11.5px',
               }}
             >
@@ -264,7 +264,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                     background: 'transparent',
                     padding: 0,
                     cursor: 'pointer',
-                    color: rec.starred ? '#18191C' : 'var(--ajb-text-muted)',
+                    color: rec.starred ? '#E81A41' : 'var(--ajb-text-muted)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     flexShrink: 0,
@@ -272,7 +272,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                 >
                   <Star
                     size={12}
-                    fill={rec.starred ? '#18191C' : 'none'}
+                    fill={rec.starred ? '#E81A41' : 'none'}
                     strokeWidth={1.8}
                   />
                 </button>
@@ -328,7 +328,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                   gap: '6px',
                   padding: '2px 8px 2px 3px',
                   borderRadius: '9999px',
-                  background: 'rgba(235, 237, 242, 0.75)',
+                  background: 'rgba(235, 235, 229, 0.85)',
                   width: 'fit-content',
                   maxWidth: '100%',
                 }}
@@ -442,8 +442,8 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
                   background: active ? 'var(--ajb-surface-selected-gradient)' : '#FFFFFF',
                   color: active ? '#FFFFFF' : 'var(--ajb-text-primary)',
                   boxShadow: active
-                    ? '0 6px 14px rgba(13, 13, 15, 0.22)'
-                    : '0 2px 6px rgba(18, 23, 38, 0.05)',
+                    ? '0 6px 14px rgba(93, 10, 26, 0.24)'
+                    : '0 2px 6px rgba(36, 20, 24, 0.05)',
                   fontSize: '11px',
                   fontWeight: 500,
                   cursor: 'pointer',
@@ -457,7 +457,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
         </div>
       </div>
 
-      {/* Bottom Rising Semi-Circular Domes: Executed (5, Periwinkle) & Active (7, Coral) */}
+      {/* Bottom Rising Semi-Circular Domes: Executed (5, AJ Bell Crimson) & Active (7, AJ Bell Berry) */}
       <div
         style={{
           position: 'relative',
@@ -468,7 +468,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
           justifyContent: 'center',
         }}
       >
-        {/* Left Periwinkle Dome: Executed (5) */}
+        {/* Left Crimson Dome: Executed (5) */}
         <div
           style={{
             position: 'absolute',
@@ -496,15 +496,15 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
               width: '26px',
               height: '26px',
               borderRadius: '9999px',
-              background: '#E6E9F2',
+              background: '#F2F2EA',
               border: '2px solid rgba(255, 255, 255, 0.92)',
-              color: '#18191C',
+              color: '#5D0A1A',
               fontSize: '11px',
               fontWeight: 600,
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 10px rgba(18, 23, 38, 0.08)',
+              boxShadow: '0 4px 10px rgba(36, 20, 24, 0.08)',
             }}
           >
             {counts.executed}
@@ -521,7 +521,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
           </span>
         </div>
 
-        {/* Right Coral Dome: Active (7) */}
+        {/* Right Berry Dome: Active (7) */}
         <div
           style={{
             position: 'absolute',
@@ -549,15 +549,15 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
               width: '28px',
               height: '28px',
               borderRadius: '9999px',
-              background: '#E6E9F2',
+              background: '#F2F2EA',
               border: '2px solid rgba(255, 255, 255, 0.92)',
-              color: '#18191C',
+              color: '#5D0A1A',
               fontSize: '11px',
               fontWeight: 600,
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 10px rgba(18, 23, 38, 0.08)',
+              boxShadow: '0 4px 10px rgba(36, 20, 24, 0.08)',
             }}
           >
             {counts.active}
@@ -621,7 +621,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
             style={{
               padding: '2px 7px',
               borderRadius: '9999px',
-              background: 'rgba(225, 229, 237, 0.9)',
+              background: 'rgba(235, 235, 229, 0.92)',
               fontSize: '10.5px',
               fontWeight: 600,
             }}
@@ -716,10 +716,10 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
           }}
         >
           {[
-            { pct: '68%', tone: 'rgba(181, 200, 242, 0.85)', avatar: '/avatars/avatar-1.png' },
-            { pct: '82%', tone: 'rgba(153, 181, 238, 0.95)', avatar: '/avatars/avatar-3.png' },
-            { pct: '65%', tone: 'rgba(235, 169, 173, 0.85)', avatar: '/avatars/avatar-4.png' },
-            { pct: '48%', tone: 'rgba(225, 229, 237, 0.9)', avatar: '/avatars/avatar-6.png' },
+            { pct: '68%', tone: 'rgba(232, 26, 65, 0.78)', color: '#FFFFFF', avatar: '/avatars/avatar-1.png' },
+            { pct: '82%', tone: 'rgba(232, 26, 65, 0.94)', color: '#FFFFFF', avatar: '/avatars/avatar-3.png' },
+            { pct: '65%', tone: 'rgba(176, 0, 84, 0.82)', color: '#FFFFFF', avatar: '/avatars/avatar-4.png' },
+            { pct: '48%', tone: 'rgba(235, 235, 229, 0.95)', color: 'var(--ajb-text-primary)', avatar: '/avatars/avatar-6.png' },
           ].map((bar, idx) => (
             <div
               key={idx}
@@ -727,6 +727,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
                 height: bar.pct,
                 borderRadius: '14px',
                 background: bar.tone,
+                color: bar.color,
                 padding: '6px',
                 display: 'flex',
                 flexDirection: 'column',
@@ -770,7 +771,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
                 style={{
                   padding: '5px 11px',
                   borderRadius: '9999px',
-                  background: idx === 1 ? '#18191C' : '#FFFFFF',
+                  background: idx === 1 ? 'var(--ajb-accent-black)' : '#FFFFFF',
                   color: idx === 1 ? '#FFFFFF' : 'var(--ajb-text-primary)',
                   fontSize: '10.5px',
                   fontWeight: 500,
@@ -929,7 +930,7 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
             cursor: 'pointer',
           }}
         >
-          Connector: {connectorVariant === 'static_solid_dark' ? 'Static Image (Dark Arrow)' : 'Video f=0950 (Dashed Coral)'}
+          Connector: {connectorVariant === 'static_solid_dark' ? 'Static Image (Dark Arrow)' : 'Video f=0950 (Dashed Berry)'}
         </button>
 
         {/* View State Simulator (Normal / Loading / Empty / Error / Completed) */}
@@ -940,7 +941,7 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
             display: 'inline-flex',
             padding: '2px',
             borderRadius: '9999px',
-            background: 'rgba(225, 229, 237, 0.8)',
+            background: 'rgba(235, 235, 229, 0.92)',
           }}
         >
           {(['normal', 'loading', 'empty', 'error', 'completed'] as const).map((st) => {
@@ -954,7 +955,7 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
                   padding: '3px 8px',
                   borderRadius: '9999px',
                   border: 'none',
-                  background: active ? '#18191C' : 'transparent',
+                  background: active ? 'var(--ajb-accent-black)' : 'transparent',
                   color: active ? '#FFFFFF' : 'var(--ajb-text-secondary)',
                   fontSize: '10px',
                   fontWeight: 500,

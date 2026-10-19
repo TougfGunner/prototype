@@ -13,7 +13,7 @@
         1480,
         980
       ],
-      "mean_rgb_delta": 52.34
+      "mean_rgb_delta": 52.96
     },
     {
       "title": "Comparison 02 \u2014 Workflow Stages, Curved SVG Connectors & Black Selected Tile",
@@ -28,7 +28,7 @@
         1300,
         470
       ],
-      "mean_rgb_delta": 38.48
+      "mean_rgb_delta": 41.87
     },
     {
       "title": "Comparison 03 \u2014 Detail Modal Dialog, Responsible Team Accordion & Budget Slider",
@@ -43,7 +43,7 @@
         960,
         890
       ],
-      "mean_rgb_delta": 30.1
+      "mean_rgb_delta": 29.77
     },
     {
       "title": "Comparison 04 \u2014 Cases in Progress 4x2 8-Card Operations Grid",
@@ -58,7 +58,7 @@
         1380,
         770
       ],
-      "mean_rgb_delta": 28.02
+      "mean_rgb_delta": 28.41
     }
   ]
 }

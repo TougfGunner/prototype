@@ -10,6 +10,10 @@ import {
   TopNavigationBar,
 } from '../design-system/components/NavigationShell';
 import {
+  AJBellWordmarkLogo,
+  AJBellMottoPill,
+} from '../design-system/components/AJBellBrandAssets';
+import {
   ConnectedWorkflowCanvas,
   PipelineRowCard,
   ProgressGridCard,
@@ -31,7 +35,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
   const { state } = store;
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return (document.documentElement.getAttribute('data-theme') as 'light' | 'dark') || 'light';
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
   });
 
   useEffect(() => {
@@ -70,7 +74,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           marginBottom: '28px',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={onNavigateToPrototype}
@@ -93,13 +97,16 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             Back to Operations Prototype (/)
           </button>
 
+          <AJBellWordmarkLogo height={24} variant="crimson" />
+
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <h1
                 style={{
                   margin: 0,
                   fontSize: '22px',
                   fontWeight: 600,
+                  fontFamily: 'var(--ajb-font-display)',
                   letterSpacing: '-0.02em',
                 }}
               >
@@ -115,8 +122,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   fontWeight: 500,
                 }}
               >
-                v{REFERENCE_OPERATIONS_TOKENS.version} · Shared Component Registry
+                v{REFERENCE_OPERATIONS_TOKENS.version} · AJ Bell Chime Rebrand
               </span>
+              <AJBellMottoPill />
             </div>
             <p
               style={{
@@ -125,7 +133,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                 color: 'var(--ajb-text-secondary)',
               }}
             >
-              Reusable design system tokens and live interactive components shared 1:1 with the AJ Bell New Starter Operations Prototype. Synthetic demonstration data only.
+              Official ajbell.co.uk Chime Rebrand design tokens (Warm Stone #E6E5DD, Crimson #E81A41, Deep Burgundy #5D0A1A, Berry #B00054, Gold #FFE272) and live interactive components shared 1:1 with the AJ Bell New Starter Operations Prototype.
             </p>
           </div>
         </div>
@@ -185,7 +193,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           style={{
             padding: '12px 18px',
             borderRadius: '16px',
-            background: 'rgba(143, 168, 224, 0.16)',
+            background: 'rgba(232, 26, 65, 0.14)',
             border: '1px solid var(--ajb-border-strong)',
             marginBottom: '22px',
             fontSize: '12px',
@@ -195,7 +203,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           }}
         >
           <span>
-            <strong>Dark Presentation Adaptation:</strong> The supplied reference image and video use the soft silver-grey Light Reference palette first. This dark mode is kept separate and clearly identified as an adaptation.
+            <strong>Dark Presentation Adaptation:</strong> The primary theme uses the AJ Bell Chime Rebrand Warm Stone &amp; Crimson Light palette first. This dark mode is kept separate and clearly identified as an adaptation.
           </span>
           <button
             type="button"
@@ -230,7 +238,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
           <Layers size={18} />
           <h2 id="gallery-tokens-heading" style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>
-            1. Versioned Design Tokens (Colour, Typography, Spacing, Radius, Elevation & Motion)
+            1. Versioned Design Tokens — AJ Bell Chime Rebrand (ajbell.co.uk)
           </h2>
         </div>
 
@@ -244,13 +252,13 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           }}
         >
           {[
-            { name: 'canvasOuter', hex: REFERENCE_OPERATIONS_TOKENS.color.light.canvasOuter, desc: 'Soft Silver-Grey Canvas' },
-            { name: 'surfaceCard', hex: '#F7F8FA', desc: 'Pale Floating Panel' },
-            { name: 'accentBlack', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentBlack, desc: 'Selected Action State' },
-            { name: 'accentPeriwinkle', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentPeriwinkle, desc: 'Primary Connector / Badge' },
-            { name: 'accentCoral', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentCoral, desc: 'Dashed Connector / Alert' },
-            { name: 'statusExecuted', hex: REFERENCE_OPERATIONS_TOKENS.color.light.statusExecuted, desc: 'Executed Status Dot' },
-            { name: 'statusScheduled', hex: REFERENCE_OPERATIONS_TOKENS.color.light.statusScheduled, desc: 'Scheduled Status Dot' },
+            { name: 'canvasOuter', hex: REFERENCE_OPERATIONS_TOKENS.color.light.canvasOuter, desc: 'AJ Bell Warm Stone Canvas' },
+            { name: 'surfaceCard', hex: '#FAFAF9', desc: 'Warm Alabaster Floating Panel' },
+            { name: 'accentBlack', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentBlack, desc: 'Deep Burgundy Selected State' },
+            { name: 'accentPeriwinkle', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentPeriwinkle, desc: 'AJ Bell Primary Crimson' },
+            { name: 'accentCoral', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentCoral, desc: 'AJ Bell Secondary Berry' },
+            { name: 'accentAmber', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentAmber, desc: 'AJ Bell Warm Gold' },
+            { name: 'accentEmerald', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentEmerald, desc: 'AJ Bell Emerald Green' },
           ].map((sw) => (
             <div
               key={sw.name}
@@ -270,7 +278,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   height: '36px',
                   borderRadius: '12px',
                   background: sw.hex,
-                  border: '1px solid rgba(18,22,33,0.12)',
+                  border: '1px solid rgba(36,36,36,0.12)',
                   flexShrink: 0,
                 }}
               />
@@ -353,7 +361,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           style={{
             padding: '16px',
             borderRadius: '22px',
-            background: 'rgba(229, 231, 236, 0.55)',
+            background: 'rgba(235, 235, 229, 0.72)',
             border: '1px solid var(--ajb-border-subtle)',
           }}
         >

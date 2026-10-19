@@ -1,42 +1,43 @@
-/* Reference Operations v1 — Versioned CSS Custom Properties & Motion Tokens */
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* AJ Bell Redesigned (ajbell.co.uk Chime Rebrand) + Reference Operations v1 — Versioned CSS Custom Properties & Motion Tokens */
+@import url('https://fonts.googleapis.com/css2?family=Mona+Sans:ital,wght@0,400..800;1,400..800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
 :root,
 html[data-theme='light'] {
   color-scheme: light;
 
-  /* 1. Reference Operations v1 Canonical --ref-* Tokens */
-  --ref-bg-canvas: #DDE0E7;
-  --ref-bg-ambient-wash: rgba(155, 178, 232, 0.34);
-  --ref-bg-ambient-wash-secondary: rgba(196, 208, 238, 0.42);
-  --ref-surface-workspace: rgba(240, 242, 246, 0.82);
-  --ref-surface-stage: rgba(248, 249, 252, 0.92);
-  --ref-surface-card: #FFFFFF;
-  --ref-surface-card-hover: #F9FAFC;
-  --ref-surface-card-muted: rgba(255, 255, 255, 0.68);
+  /* 1. AJ Bell Redesigned (ajbell.co.uk Chime Rebrand) Canonical --ref-* Tokens */
+  --ref-bg-canvas: #E6E5DD;
+  --ref-bg-ambient-wash: rgba(232, 26, 65, 0.14);
+  --ref-bg-ambient-wash-secondary: rgba(93, 10, 26, 0.10);
+  --ref-surface-workspace: rgba(247, 246, 241, 0.90);
+  --ref-surface-stage: rgba(252, 252, 249, 0.94);
+  --ref-surface-card: #FAFAF9;
+  --ref-surface-card-hover: #FFFFFF;
+  --ref-surface-card-muted: rgba(250, 250, 249, 0.78);
   --ref-surface-input: #FFFFFF;
-  --ref-surface-selected: #0D0D0F;
-  --ref-surface-backdrop: rgba(214, 218, 226, 0.68);
+  --ref-surface-selected: #5D0A1A;
+  --ref-surface-backdrop: rgba(93, 10, 26, 0.34);
 
-  --ref-text-primary: #17181C;
-  --ref-text-secondary: #686E7C;
-  --ref-text-muted: #989FAD;
+  --ref-text-primary: #242424;
+  --ref-text-secondary: #5C5952;
+  --ref-text-muted: #858278;
   --ref-text-on-selected: #FFFFFF;
 
-  --ref-accent-blue: #8FA8E0;
-  --ref-accent-blue-strong: #6F8ED6;
-  --ref-accent-blue-soft: rgba(143, 168, 224, 0.22);
-  --ref-accent-coral: #D96B70;
-  --ref-accent-coral-soft: rgba(217, 107, 112, 0.18);
-  --ref-accent-amber: #F0C965;
-  --ref-accent-amber-soft: rgba(240, 201, 101, 0.26);
-  --ref-accent-emerald: #2F9E66;
+  --ref-accent-blue: #E81A41;
+  --ref-accent-blue-strong: #DA3946;
+  --ref-accent-blue-soft: rgba(232, 26, 65, 0.14);
+  --ref-accent-coral: #B00054;
+  --ref-accent-coral-soft: rgba(176, 0, 84, 0.14);
+  --ref-accent-amber: #FFE272;
+  --ref-accent-amber-soft: rgba(255, 226, 114, 0.32);
+  --ref-accent-emerald: #2A792A;
+  --ref-accent-teal: #18637C;
 
-  --ref-border-hairline: rgba(255, 255, 255, 0.86);
-  --ref-border-subtle: rgba(18, 22, 33, 0.062);
-  --ref-border-focus: #6F8ED6;
+  --ref-border-hairline: rgba(255, 255, 255, 0.90);
+  --ref-border-subtle: rgba(36, 36, 36, 0.075);
+  --ref-border-focus: #E81A41;
 
-  --ref-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+  --ref-font-sans: 'Mona Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
   --ref-text-title: 1.375rem;
   --ref-text-panel: 0.84375rem;
   --ref-text-body-sm: 0.71875rem;
@@ -52,11 +53,11 @@ html[data-theme='light'] {
   --ref-radius-card: 18px;
   --ref-radius-pill: 9999px;
 
-  --ref-shadow-panel: 0 8px 24px -4px rgba(20, 25, 38, 0.045),
-    0 2px 6px -1px rgba(20, 25, 38, 0.02);
-  --ref-shadow-card: 0 2px 7px rgba(18, 22, 33, 0.038);
-  --ref-shadow-modal: 0 24px 60px -12px rgba(15, 20, 32, 0.18),
-    0 4px 16px rgba(15, 20, 32, 0.06);
+  --ref-shadow-panel: 0 8px 24px -4px rgba(36, 20, 24, 0.055),
+    0 2px 6px -1px rgba(36, 20, 24, 0.025);
+  --ref-shadow-card: 0 2px 7px rgba(36, 20, 24, 0.042);
+  --ref-shadow-modal: 0 24px 60px -12px rgba(58, 8, 18, 0.22),
+    0 4px 16px rgba(36, 20, 24, 0.08);
 
   /* Empirical Video Motion Tokens (60.00 fps / 17.50s) */
   --motion-duration-instant: 90ms;
@@ -69,69 +70,76 @@ html[data-theme='light'] {
   --motion-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --motion-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* 2. Component & Gradient Tokens (--ajb-*) Matched 1:1 to Reference Image & Video */
-  --ajb-bg-canvas: #DDE0E7;
+  /* 2. AJ Bell Chime Rebrand Component & Gradient Tokens (--ajb-*) Matched to ajbell.co.uk */
+  --ajb-bg-canvas: #E6E5DD;
   --ajb-bg-canvas-gradient:
-    radial-gradient(circle at 82% 8%, rgba(143, 168, 224, 0.36) 0%, rgba(229, 231, 236, 0) 48%),
-    radial-gradient(circle at 12% 88%, rgba(143, 168, 224, 0.24) 0%, rgba(229, 231, 236, 0) 45%),
-    linear-gradient(135deg, #D5D8E0 0%, #E4E7EE 48%, #D8DCE4 100%);
+    radial-gradient(circle at 84% 8%, rgba(232, 26, 65, 0.16) 0%, rgba(230, 229, 221, 0) 48%),
+    radial-gradient(circle at 12% 88%, rgba(93, 10, 26, 0.11) 0%, rgba(230, 229, 221, 0) 45%),
+    linear-gradient(135deg, #DFDFD6 0%, #EBEBE5 48%, #E2E1D8 100%);
   --ajb-bg-ambient-wash: radial-gradient(
-    ellipse 64% 70% at 50% 46%,
-    rgba(154, 179, 236, 0.62) 0%,
-    rgba(188, 206, 244, 0.42) 38%,
-    rgba(235, 238, 245, 0.86) 76%,
-    rgba(242, 244, 248, 0.96) 100%
+    ellipse 66% 72% at 50% 44%,
+    rgba(232, 26, 65, 0.17) 0%,
+    rgba(176, 0, 84, 0.09) 34%,
+    rgba(242, 242, 234, 0.92) 72%,
+    rgba(247, 246, 241, 0.98) 100%
   );
-  --ajb-surface-shell: rgba(242, 244, 248, 0.88);
-  --ajb-surface-shell-solid: #EEF0F5;
-  --ajb-surface-panel: rgba(248, 249, 252, 0.92);
-  --ajb-surface-modal: rgba(246, 247, 251, 0.96);
+  --ajb-surface-shell: rgba(247, 246, 241, 0.92);
+  --ajb-surface-shell-solid: #F2F2EA;
+  --ajb-surface-panel: rgba(252, 252, 249, 0.94);
+  --ajb-surface-modal: rgba(250, 250, 248, 0.98);
   --ajb-surface-subpanel: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.60) 0%,
-    rgba(243, 245, 252, 0.48) 100%
+    rgba(255, 255, 255, 0.78) 0%,
+    rgba(242, 242, 234, 0.64) 100%
   );
   --ajb-surface-stage-column: linear-gradient(
     180deg,
-    rgba(255, 255, 255, 0.76) 0%,
-    rgba(248, 250, 254, 0.60) 100%
+    rgba(255, 255, 255, 0.88) 0%,
+    rgba(245, 244, 238, 0.74) 100%
   );
-  --ajb-surface-card: #FFFFFF;
-  --ajb-surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #F9FAFD 100%);
-  --ajb-surface-card-muted: rgba(255, 255, 255, 0.68);
+  --ajb-surface-card: #FAFAF9;
+  --ajb-surface-card-gradient: linear-gradient(180deg, #FFFFFF 0%, #F7F6F1 100%);
+  --ajb-surface-card-muted: rgba(250, 250, 249, 0.76);
   --ajb-surface-card-hover: #FFFFFF;
-  --ajb-surface-selected: #0D0D0F;
-  --ajb-surface-card-selected: #0D0D0F;
-  --ajb-surface-selected-gradient: linear-gradient(145deg, #18191E 0%, #0A0B0D 100%);
-  --ajb-surface-selected-press: linear-gradient(145deg, #686C77 0%, #525660 100%);
-  --ajb-surface-notch: #E4E6EC;
+  --ajb-surface-selected: #5D0A1A;
+  --ajb-surface-card-selected: #5D0A1A;
+  --ajb-surface-selected-gradient: linear-gradient(145deg, #740D22 0%, #5D0A1A 58%, #3F0611 100%);
+  --ajb-surface-selected-press: linear-gradient(145deg, #970148 0%, #5D0A1A 100%);
+  --ajb-surface-notch: #EBEBE5;
 
-  /* Text Hierarchy */
-  --ajb-text-primary: #17181C;
-  --ajb-text-secondary: #686E7C;
-  --ajb-text-muted: #989FAD;
+  /* Text Hierarchy (ajbell.co.uk #242424 Charcoal & Warm Stone Greys) */
+  --ajb-text-primary: #242424;
+  --ajb-text-secondary: #5C5952;
+  --ajb-text-muted: #858278;
   --ajb-text-on-dark: #FFFFFF;
 
-  /* Restrained Pastel Accents & Gradients */
-  --ajb-accent-periwinkle: #8FA8E0;
-  --ajb-accent-periwinkle-soft: rgba(143, 168, 224, 0.24);
-  --ajb-accent-periwinkle-gradient: linear-gradient(180deg, #9DB5EA 0%, #86A0DC 100%);
-  --ajb-accent-coral: #D96B70;
-  --ajb-accent-coral-soft: rgba(217, 107, 112, 0.20);
-  --ajb-accent-coral-gradient: linear-gradient(180deg, #E3787D 0%, #D56368 100%);
-  --ajb-accent-amber: #F0C965;
-  --ajb-accent-amber-soft: rgba(240, 201, 101, 0.28);
-  --ajb-accent-black: #0D0D0F;
-  --ajb-accent-emerald: #2F9E66;
+  /* AJ Bell Chime Rebrand Accents & Gradients (Crimson #E81A41, Burgundy #5D0A1A, Berry #B00054, Gold #FFE272, Green #2A792A) */
+  --ajb-accent-periwinkle: #E81A41;
+  --ajb-accent-periwinkle-soft: rgba(232, 26, 65, 0.15);
+  --ajb-accent-periwinkle-gradient: linear-gradient(180deg, #F2385A 0%, #E81A41 100%);
+  --ajb-accent-coral: #B00054;
+  --ajb-accent-coral-soft: rgba(176, 0, 84, 0.14);
+  --ajb-accent-coral-gradient: linear-gradient(180deg, #C81469 0%, #970148 100%);
+  --ajb-accent-amber: #FFE272;
+  --ajb-accent-amber-soft: rgba(255, 226, 114, 0.34);
+  --ajb-accent-black: #5D0A1A;
+  --ajb-accent-emerald: #2A792A;
+  --ajb-accent-teal: #18637C;
+  --ajb-brand-crimson: #E81A41;
+  --ajb-brand-logo-red: #DA3946;
+  --ajb-brand-burgundy: #5D0A1A;
+  --ajb-brand-berry: #B00054;
+  --ajb-brand-hero-gradient: linear-gradient(135deg, #E81A41 0%, #B00054 52%, #5D0A1A 100%);
+  --ajb-gradient-motto-pill: linear-gradient(135deg, #E81A41 0%, #B00054 52%, #5D0A1A 100%);
 
   /* Borders & Dividers */
-  --ajb-border-subtle: rgba(18, 22, 33, 0.062);
-  --ajb-border-row-divider: rgba(18, 22, 33, 0.05);
-  --ajb-border-strong: rgba(18, 22, 33, 0.14);
-  --ajb-border-glass: rgba(255, 255, 255, 0.86);
+  --ajb-border-subtle: rgba(36, 36, 36, 0.075);
+  --ajb-border-row-divider: rgba(36, 36, 36, 0.058);
+  --ajb-border-strong: rgba(93, 10, 26, 0.18);
+  --ajb-border-glass: rgba(255, 255, 255, 0.90);
 
   /* Typography */
-  --ajb-font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  --ajb-font-sans: 'Mona Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   --ajb-text-xs: 10.5px;
   --ajb-text-sm: 11.5px;
   --ajb-text-base: 12.5px;
@@ -150,14 +158,14 @@ html[data-theme='light'] {
   --ajb-radius-pill: 9999px;
 
   /* Elevation & Restrained Shadows */
-  --ajb-shadow-shell: 0 26px 64px -16px rgba(18, 23, 38, 0.12), 0 2px 8px rgba(18, 23, 38, 0.04);
-  --ajb-shadow-stage: 0 10px 26px -8px rgba(24, 32, 56, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.88);
-  --ajb-shadow-card: 0 4px 14px -2px rgba(18, 23, 38, 0.045), 0 1px 3px rgba(18, 23, 38, 0.025);
-  --ajb-shadow-card-active: 0 12px 26px -4px rgba(11, 12, 14, 0.32), 0 3px 8px rgba(11, 12, 14, 0.16);
-  --ajb-shadow-floating: 0 10px 24px -4px rgba(18, 22, 33, 0.09);
-  --ajb-shadow-pill: 0 2px 5px rgba(18, 22, 33, 0.045);
-  --ajb-shadow-modal: 0 32px 72px -12px rgba(14, 18, 28, 0.24), 0 4px 16px rgba(14, 18, 28, 0.08);
-  --ajb-shadow-plus-circle: 0 2px 6px rgba(18, 23, 38, 0.06), inset 0 1px 0 #FFFFFF;
+  --ajb-shadow-shell: 0 26px 64px -16px rgba(48, 14, 22, 0.13), 0 2px 8px rgba(36, 20, 24, 0.045);
+  --ajb-shadow-stage: 0 10px 26px -8px rgba(48, 14, 22, 0.055), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  --ajb-shadow-card: 0 4px 14px -2px rgba(36, 20, 24, 0.048), 0 1px 3px rgba(36, 20, 24, 0.028);
+  --ajb-shadow-card-active: 0 12px 26px -4px rgba(93, 10, 26, 0.36), 0 3px 8px rgba(93, 10, 26, 0.18);
+  --ajb-shadow-floating: 0 10px 24px -4px rgba(48, 14, 22, 0.10);
+  --ajb-shadow-pill: 0 2px 5px rgba(36, 20, 24, 0.05);
+  --ajb-shadow-modal: 0 32px 72px -12px rgba(58, 8, 18, 0.26), 0 4px 16px rgba(36, 20, 24, 0.09);
+  --ajb-shadow-plus-circle: 0 2px 6px rgba(36, 20, 24, 0.06), inset 0 1px 0 #FFFFFF;
 
   /* Motion Tokens */
   --ajb-dur-hover: 160ms;

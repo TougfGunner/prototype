@@ -70,7 +70,7 @@ interface PersistedOperationsState {
 }
 
 const STORAGE_KEY = 'ajb-ref-ops-v1-state';
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 const DEFAULT_MODAL_DRAFT: ModalFormDraft = {
   mode: 'process_case',

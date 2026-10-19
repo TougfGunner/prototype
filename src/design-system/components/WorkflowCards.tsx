@@ -50,7 +50,8 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
   staggerIndex = 0,
 }) => {
   const title = labelMode === 'reference' ? card.referenceTitle : card.operationsTitle;
-  const socketColor = card.connectorTone === 'blue' ? '#8FA8E0' : '#D96B70';
+  const socketColor =
+    card.connectorTone === 'blue' ? 'var(--ajb-accent-periwinkle)' : 'var(--ajb-accent-coral)';
 
   return (
     <div
@@ -101,7 +102,7 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
             borderRadius: '9999px',
             objectFit: 'cover',
             border: '1.5px solid #FFFFFF',
-            boxShadow: '0 3px 8px rgba(18, 23, 38, 0.10)',
+            boxShadow: '0 3px 8px rgba(36, 20, 24, 0.10)',
           }}
         />
 
@@ -118,8 +119,8 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
               height: '30px',
               borderRadius: '9999px',
               background: '#FFFFFF',
-              border: '1px solid rgba(18, 22, 33, 0.05)',
-              boxShadow: '0 2px 5px rgba(18, 23, 38, 0.05)',
+              border: '1px solid rgba(36, 36, 36, 0.05)',
+              boxShadow: '0 2px 5px rgba(36, 20, 24, 0.05)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -157,7 +158,7 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
           width: '18px',
           height: '18px',
           borderRadius: '9999px',
-          background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+          background: 'var(--ajb-surface-subpanel, #F2F2EA)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -191,6 +192,8 @@ export interface CompactTaskRowCardProps {
   isDropTargetHighlighted?: boolean;
   /** Choreography override: play snap spring when avatar lands in slot (f=0809) */
   justSnappedAvatar?: boolean;
+  choreographyPhase?: ChoreographyPhase;
+  connectorVariant?: ConnectorRenderVariant;
   staggerIndex?: number;
 }
 
@@ -204,28 +207,57 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
   forceUnassignedDuringDrag = false,
   isDropTargetHighlighted = false,
   justSnappedAvatar = false,
+  choreographyPhase = 'idle',
+  connectorVariant = 'static_solid_dark',
   staggerIndex = 0,
 }) => {
   const [isDragOver, setIsDragOver] = useState(false);
   const title = labelMode === 'reference' ? task.referenceTitle : task.operationsTitle;
   const isAssigned = !forceUnassignedDuringDrag && Boolean(task.avatarUrl);
 
-  // In the reference image, rows with diagonal handles or active assignments have bold primary ink (#17181C)
+  // In reference video f=0740..0801 (before avatar drop onto mgr-3), role-4 has bold text + '...' handle.
+  // Once avatar drops onto mgr-3 (seq06_solidify / idle, f=0815..0950 & static reference), role-4 transitions to regular text + CheckCheck + Calendar!
+  const isRole4PreDrop =
+    task.id === 'role-4' &&
+    (choreographyPhase === 'seq05_stagger' || choreographyPhase === 'seq06_drag');
+
+  const showCompletedCalendar = isRole4PreDrop
+    ? false
+    : Boolean(task.completed && task.hasCalendarTag);
+
+  const showDiagonalHandle = isRole4PreDrop
+    ? true
+    : Boolean(task.hasDiagonalConnectorHandle);
+
   const isBoldActiveRow =
     isAssigned &&
-    (task.id === 'role-4' ||
+    (isRole4PreDrop ||
       task.id === 'role-5' ||
       task.id === 'mgr-3' ||
       task.id === 'mgr-4');
 
   const incomingDotColor =
-    !forceUnassignedDuringDrag && task.incomingTone === 'blue' ? '#8FA8E0' : '#D96B70';
-  const outgoingDotColor =
-    task.id === 'role-3' && !forceUnassignedDuringDrag ? '#8FA8E0' : '#D96B70';
+    task.incomingTone === 'blue'
+      ? 'var(--ajb-accent-periwinkle)'
+      : 'var(--ajb-accent-coral)';
+
+  const isPrimaryOutgoing =
+    task.id === 'role-1' || task.id === 'role-2' || task.id === 'role-3';
+
+  const useDarkStage3Socket =
+    task.id === 'mgr-3' &&
+    choreographyPhase !== 'seq07_dashed' &&
+    !(choreographyPhase === 'idle' && connectorVariant === 'video_dashed_coral');
+
+  const outgoingDotColor = isPrimaryOutgoing
+    ? 'var(--ajb-accent-periwinkle)'
+    : useDarkStage3Socket
+      ? 'var(--ajb-accent-black)'
+      : 'var(--ajb-accent-coral)';
 
   const hasOutgoingSocket =
     task.targetTaskIds.length > 0 ||
-    Boolean(task.hasDiagonalConnectorHandle) ||
+    showDiagonalHandle ||
     task.stageId === 'manager_review';
 
   const showDropHighlight = isDragOver || isDropTargetHighlighted;
@@ -253,12 +285,8 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
         padding: '7px 10px',
         minHeight: '50px',
         borderBottom: showBottomDivider ? '1px solid var(--ajb-border-row-divider)' : 'none',
-        background: showDropHighlight
-          ? 'rgba(255, 255, 255, 0.85)'
-          : task.id === 'mgr-3' && isAssigned
-            ? 'rgba(255, 255, 255, 0.72)'
-            : 'transparent',
-        borderRadius: task.id === 'mgr-3' && isAssigned ? '16px' : undefined,
+        background: showDropHighlight ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
+        borderRadius: showDropHighlight ? '14px' : undefined,
         opacity: highlighted ? 1 : 0.38,
         animationDelay: `${staggerIndex * 42}ms`,
         transition:
@@ -277,7 +305,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           width: '18px',
           height: '18px',
           borderRadius: '9999px',
-          background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+          background: 'var(--ajb-surface-subpanel, #F2F2EA)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -321,7 +349,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
               borderRadius: '9999px',
               objectFit: 'cover',
               border: '1.5px solid #FFFFFF',
-              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.10)',
+              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.10)',
             }}
           />
         </button>
@@ -336,12 +364,12 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
             height: '32px',
             borderRadius: '9999px',
             border: showDropHighlight
-              ? '1.5px solid #2A2D35'
-              : '1px solid rgba(18, 22, 33, 0.06)',
-            background: showDropHighlight ? '#34373F' : '#FFFFFF',
+              ? '1.5px solid #5D0A1A'
+              : '1px solid rgba(36, 36, 36, 0.06)',
+            background: showDropHighlight ? '#5D0A1A' : '#FFFFFF',
             color: showDropHighlight ? '#FFFFFF' : 'var(--ajb-text-primary)',
             boxShadow: showDropHighlight
-              ? '0 6px 14px rgba(18, 23, 38, 0.24)'
+              ? '0 6px 14px rgba(93, 10, 26, 0.24)'
               : 'var(--ajb-shadow-plus-circle)',
             display: 'inline-flex',
             alignItems: 'center',
@@ -389,7 +417,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           flexShrink: 0,
         }}
       >
-        {isAssigned && task.completed && task.hasCalendarTag && (
+        {isAssigned && showCompletedCalendar && (
           <CheckCheck
             size={13}
             strokeWidth={2}
@@ -397,7 +425,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           />
         )}
 
-        {task.hasCalendarTag && (
+        {showCompletedCalendar && (
           <button
             type="button"
             onClick={() => onOpenDetail(task.id)}
@@ -406,9 +434,9 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
               width: '28px',
               height: '28px',
               borderRadius: '9999px',
-              border: '1px solid rgba(18, 22, 33, 0.05)',
+              border: '1px solid rgba(36, 36, 36, 0.05)',
               background: '#FFFFFF',
-              boxShadow: '0 2px 5px rgba(18, 23, 38, 0.05)',
+              boxShadow: '0 2px 5px rgba(36, 20, 24, 0.05)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -420,7 +448,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           </button>
         )}
 
-        {isAssigned && task.hasDiagonalConnectorHandle && (
+        {isAssigned && showDiagonalHandle && (
           <button
             type="button"
             onClick={() => onOpenDetail(task.id)}
@@ -461,7 +489,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
             width: '18px',
             height: '18px',
             borderRadius: '9999px',
-            background: 'var(--ajb-surface-subpanel, #E5E8F0)',
+            background: 'var(--ajb-surface-subpanel, #F2F2EA)',
             display: 'inline-flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -531,7 +559,7 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
         padding: '13px 14px',
         borderRadius: '20px',
         border: isSelected
-          ? '1px solid rgba(13, 13, 15, 0.95)'
+          ? '1px solid rgba(93, 10, 26, 0.95)'
           : '1px solid rgba(255, 255, 255, 0.90)',
         background: backgroundStyle,
         color: textColor,
@@ -560,7 +588,7 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
           width: '8px',
           height: '8px',
           borderRadius: '9999px',
-          background: isSelected ? '#18191C' : 'transparent',
+          background: isSelected ? 'var(--ajb-accent-black)' : 'transparent',
           border: isSelected ? '1.5px solid #FFFFFF' : 'none',
           pointerEvents: 'none',
         }}
@@ -781,10 +809,10 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
     if (!autoLoop) return;
     const initialTimer = window.setTimeout(() => {
       runFullChoreography();
-    }, 1800);
+    }, 4500);
     const interval = window.setInterval(() => {
       runFullChoreography();
-    }, 6800);
+    }, 8500);
     return () => {
       window.clearTimeout(initialTimer);
       window.clearInterval(interval);
@@ -850,8 +878,8 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               gap: '4px',
               padding: '3px 5px',
               borderRadius: '9999px',
-              background: 'rgba(255, 255, 255, 0.72)',
-              border: '1px solid rgba(18, 22, 33, 0.06)',
+              background: 'rgba(255, 255, 255, 0.78)',
+              border: '1px solid rgba(36, 36, 36, 0.06)',
             }}
           >
             <button
@@ -864,8 +892,11 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 padding: '3px 9px',
                 borderRadius: '9999px',
                 border: 'none',
-                background: phase !== 'idle' ? '#0D0D0F' : 'rgba(143, 168, 224, 0.22)',
-                color: phase !== 'idle' ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                background:
+                  phase !== 'idle'
+                    ? 'var(--ajb-accent-black)'
+                    : 'var(--ajb-accent-periwinkle-soft)',
+                color: phase !== 'idle' ? '#FFFFFF' : 'var(--ajb-brand-crimson)',
                 fontSize: '10px',
                 fontWeight: 600,
                 cursor: 'pointer',
@@ -878,6 +909,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
             <button
               type="button"
               onClick={() => {
+                setAutoLoop(false);
                 clearTimers();
                 setPhase('seq06_drag');
                 setHoveredDropSlotId('mgr-3');
@@ -887,18 +919,24 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                     setHoveredDropSlotId(null);
                     setFloatingAvatarPos({ visible: false, x: '54.5%', y: '134px', scale: 0.85 });
                     setPhase('seq06_solidify');
-                  }, 1400),
+                  }, 2200),
                   window.setTimeout(() => {
                     setPhase('idle');
-                  }, 2800)
+                  }, 3600)
                 );
               }}
               style={{
                 padding: '3px 8px',
                 borderRadius: '9999px',
                 border: 'none',
-                background: phase === 'seq06_drag' || phase === 'seq06_solidify' ? '#0D0D0F' : 'transparent',
-                color: phase === 'seq06_drag' || phase === 'seq06_solidify' ? '#FFFFFF' : 'var(--ajb-text-secondary)',
+                background:
+                  phase === 'seq06_drag' || phase === 'seq06_solidify'
+                    ? 'var(--ajb-accent-black)'
+                    : 'transparent',
+                color:
+                  phase === 'seq06_drag' || phase === 'seq06_solidify'
+                    ? '#FFFFFF'
+                    : 'var(--ajb-text-secondary)',
                 fontSize: '10px',
                 fontWeight: 500,
                 cursor: 'pointer',
@@ -910,6 +948,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
             <button
               type="button"
               onClick={() => {
+                setAutoLoop(false);
                 clearTimers();
                 setAnimTriggerKey((k) => k + 1);
                 setPhase('seq07_arrow');
@@ -925,7 +964,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 border: 'none',
                 background:
                   phase === 'seq07_arrow' || phase === 'seq07_press' || phase === 'seq07_dashed'
-                    ? '#0D0D0F'
+                    ? 'var(--ajb-accent-black)'
                     : 'transparent',
                 color:
                   phase === 'seq07_arrow' || phase === 'seq07_press' || phase === 'seq07_dashed'
@@ -949,7 +988,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 padding: '3px 8px',
                 borderRadius: '9999px',
                 border: 'none',
-                background: autoLoop ? '#0D0D0F' : 'transparent',
+                background: autoLoop ? 'var(--ajb-accent-black)' : 'transparent',
                 color: autoLoop ? '#FFFFFF' : 'var(--ajb-text-secondary)',
                 fontSize: '10px',
                 fontWeight: 500,
@@ -970,7 +1009,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                       : 'static_solid_dark'
                   )
                 }
-                title="Toggle Stage 3→4 connector between Static Reference (solid dark arrow) and Video f=0925 (dashed coral spline)"
+                title="Toggle Stage 3→4 connector between Static Reference (solid dark arrow) and Video f=0925 (dashed berry spline)"
                 style={{
                   padding: '3px 8px',
                   borderRadius: '9999px',
@@ -983,8 +1022,8 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 }}
               >
                 {connectorVariant === 'static_solid_dark'
-                  ? 'Spline: Dark Arrow (Ref)'
-                  : 'Spline: Dashed Coral (f=0925)'}
+                  ? 'Spline: Burgundy Arrow (Ref)'
+                  : 'Spline: Dashed Berry (f=0925)'}
               </button>
             )}
           </div>
@@ -1002,7 +1041,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               borderRadius: '9999px',
               border: '1px solid rgba(255, 255, 255, 0.88)',
               background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1022,7 +1061,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               borderRadius: '9999px',
               border: '1px solid rgba(255, 255, 255, 0.88)',
               background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1042,7 +1081,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               borderRadius: '9999px',
               border: '1px solid rgba(255, 255, 255, 0.88)',
               background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(18, 23, 38, 0.05)',
+              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1079,9 +1118,9 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               pointerEvents: 'none',
               transition:
                 'left 340ms cubic-bezier(0.22, 1, 0.36, 1), top 340ms cubic-bezier(0.22, 1, 0.36, 1), transform 220ms cubic-bezier(0.34, 1.56, 0.64, 1)',
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              gap: '6px',
+              justifyContent: 'center',
             }}
           >
             <img
@@ -1093,22 +1132,27 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 borderRadius: '9999px',
                 objectFit: 'cover',
                 border: '2px solid #FFFFFF',
-                boxShadow: '0 10px 24px rgba(18, 23, 38, 0.28)',
+                boxShadow: '0 10px 24px rgba(93, 10, 26, 0.28)',
               }}
             />
             <span
               style={{
-                padding: '2px 7px',
+                position: 'absolute',
+                right: '-6px',
+                bottom: '-6px',
+                width: '18px',
+                height: '18px',
                 borderRadius: '9999px',
-                background: '#0D0D0F',
+                background: 'var(--ajb-accent-black)',
                 color: '#FFFFFF',
-                fontSize: '9.5px',
-                fontWeight: 600,
-                boxShadow: '0 4px 12px rgba(0,0,0,0.22)',
-                whiteSpace: 'nowrap',
+                border: '1.5px solid #FFFFFF',
+                boxShadow: '0 4px 10px rgba(93, 10, 26, 0.28)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              Assigning Reviewer…
+              <Plus size={10} strokeWidth={2.5} />
             </span>
           </div>
         )}
@@ -1187,6 +1231,8 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                   onAssignSlot={(taskId) => onAssignSlot(taskId)}
                   onOpenDetail={onOpenDetail}
                   showBottomDivider={idx < stage2Tasks.length - 1}
+                  choreographyPhase={phase}
+                  connectorVariant={connectorVariant}
                   staggerIndex={idx + 2}
                 />
               );
@@ -1234,6 +1280,8 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                   forceUnassignedDuringDrag={forceUnassigned}
                   isDropTargetHighlighted={hoveredDropSlotId === task.id}
                   justSnappedAvatar={justSnapped}
+                  choreographyPhase={phase}
+                  connectorVariant={connectorVariant}
                   staggerIndex={idx + 4}
                 />
               );

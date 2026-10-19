@@ -183,7 +183,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             gap: '6px',
             padding: '4px',
             borderRadius: '14px',
-            background: 'rgba(229, 232, 239, 0.7)',
+            background: 'rgba(235, 235, 229, 0.85)',
             marginBottom: '16px',
           }}
         >
@@ -224,7 +224,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '12px 18px',
             borderRadius: '20px',
-            background: 'rgba(232, 235, 241, 0.72)',
+            background: 'rgba(235, 235, 229, 0.85)',
             border: errors.caseName
               ? '1.5px solid var(--ajb-accent-coral)'
               : '1px solid transparent',
@@ -286,7 +286,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '10px 18px',
             borderRadius: '20px',
-            background: 'rgba(232, 235, 241, 0.72)',
+            background: 'rgba(235, 235, 229, 0.85)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -349,7 +349,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
         <div
           style={{
             borderRadius: '20px',
-            background: 'rgba(232, 235, 241, 0.72)',
+            background: 'rgba(235, 235, 229, 0.85)',
             marginBottom: '10px',
             overflow: 'hidden',
             transition: 'all 220ms var(--ajb-ease-panel)',
@@ -410,7 +410,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       width: '26px',
                       height: '26px',
                       borderRadius: '9999px',
-                      background: '#18191C',
+                      background: '#5D0A1A',
                       color: '#FFFFFF',
                       fontSize: '10px',
                       fontWeight: 600,
@@ -442,7 +442,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '6px',
-                borderTop: '1px solid rgba(18, 22, 33, 0.06)',
+                borderTop: '1px solid rgba(36, 36, 36, 0.06)',
               }}
             >
               {RESPONSIBLE_TEAMS.map((team) => {
@@ -510,7 +510,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                             width: '26px',
                             height: '26px',
                             borderRadius: '9999px',
-                            background: '#18191C',
+                            background: '#5D0A1A',
                             color: '#FFFFFF',
                             fontSize: '10px',
                             fontWeight: 600,
@@ -543,7 +543,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               position: 'relative',
               height: '58px',
               borderRadius: '22px',
-              background: 'rgba(232, 235, 241, 0.72)',
+              background: 'rgba(235, 235, 229, 0.85)',
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
@@ -562,7 +562,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 width: `calc(${Math.max(38, budgetPct)}% - 8px)`,
                 borderRadius: '18px',
                 background: '#FFFFFF',
-                boxShadow: '0 2px 10px rgba(18, 22, 33, 0.06)',
+                boxShadow: '0 2px 10px rgba(36, 20, 24, 0.06)',
                 transition: 'width 60ms linear',
               }}
             />
@@ -581,7 +581,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   width: '36px',
                   height: '36px',
                   borderRadius: '9999px',
-                  background: '#1F2024',
+                  background: '#5D0A1A',
                   color: '#FFFFFF',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -623,7 +623,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 position: 'relative',
                 zIndex: 3,
                 width: '170px',
-                accentColor: '#18191C',
+                accentColor: '#E81A41',
                 cursor: 'ew-resize',
               }}
             />
@@ -655,7 +655,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             style={{
               padding: '10px 14px',
               borderRadius: '16px',
-              background: 'rgba(232, 235, 241, 0.72)',
+              background: 'rgba(235, 235, 229, 0.85)',
               border: errors.costCentreCode
                 ? '1.5px solid var(--ajb-accent-coral)'
                 : '1px solid transparent',
@@ -703,7 +703,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             style={{
               padding: '10px 14px',
               borderRadius: '16px',
-              background: 'rgba(232, 235, 241, 0.72)',
+              background: 'rgba(235, 235, 229, 0.85)',
             }}
           >
             <label
@@ -749,7 +749,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '12px 18px',
             borderRadius: '18px',
-            background: 'rgba(232, 235, 241, 0.72)',
+            background: 'rgba(235, 235, 229, 0.85)',
             border: errors.caseDescription
               ? '1.5px solid var(--ajb-accent-coral)'
               : '1px solid transparent',

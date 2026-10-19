@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-18T22:40:19.053Z",
+  "generated_at": "2026-10-19T00:57:44.478Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
@@ -19,7 +19,7 @@
       "id": "check_02_svg_connectors",
       "description": "Curved SVG connector paths render between Stage 1, Stage 2, Stage 3 and Stage 4",
       "passed": true,
-      "detail": "paths=11"
+      "detail": "paths=14"
     },
     {
       "id": "check_03_reference_1to1_labels",
@@ -103,7 +103,7 @@
       "id": "check_17_gallery_section3_shared_canvas",
       "description": "Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar",
       "passed": true,
-      "detail": "gallery_paths=10"
+      "detail": "gallery_paths=14"
     },
     {
       "id": "check_16_gallery_dark_adaptation",
