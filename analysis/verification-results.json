@@ -1,12 +1,12 @@
 {
-  "generated_at": "2026-10-19T00:57:44.478Z",
+  "generated_at": "2026-10-19T02:14:21.823Z",
   "base_url": "http://127.0.0.1:5173",
   "viewport": {
     "width": 1600,
     "height": 1200
   },
-  "total": 17,
-  "passed": 17,
+  "total": 19,
+  "passed": 19,
   "failed": 0,
   "assertions": [
     {
@@ -94,20 +94,32 @@
       "detail": ""
     },
     {
-      "id": "check_15_gallery_route_light",
+      "id": "check_15_journey_dark_mode_and_role_tokens",
+      "description": "Main workspace renders ultra-clear AJ Bell Chime Obsidian Dark Mode with active --role-* design token synchronization",
+      "passed": true,
+      "detail": "data-theme=dark, roleChip=true"
+    },
+    {
+      "id": "check_16_token_blueprint_and_repo_merge",
+      "description": "Root-Level & Role-Level Design Token Architecture + 6-Step Multi-Repo Merge Blueprint renders interactively",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "id": "check_17_gallery_route_light",
       "description": "Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Light Reference mode",
       "passed": true,
       "detail": "url=http://127.0.0.1:5173/gallery"
     },
     {
-      "id": "check_17_gallery_section3_shared_canvas",
+      "id": "check_18_gallery_section3_shared_canvas",
       "description": "Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar",
       "passed": true,
       "detail": "gallery_paths=14"
     },
     {
-      "id": "check_16_gallery_dark_adaptation",
-      "description": "Dark Adaptation toggle in /gallery switches theme tokens while clearly identifying it as an adaptation",
+      "id": "check_19_gallery_dark_adaptation",
+      "description": "Dark Adaptation toggle in /gallery switches theme tokens across both /gallery and / via unified store",
       "passed": true,
       "detail": ""
     }
@@ -125,7 +137,9 @@
     "analysis/screenshots/10_gallery_reference_operations_v1_light.png",
     "analysis/screenshots/11_gallery_reference_operations_v1_dark_adaptation.png",
     "analysis/screenshots/12_gallery_section3_connected_workflow_choreography.png",
-    "analysis/screenshots/13_journey_seq06_avatar_drag_choreography.png"
+    "analysis/screenshots/13_journey_seq06_avatar_drag_choreography.png",
+    "analysis/screenshots/14_journey_dark_mode_obsidian.png",
+    "analysis/screenshots/15_token_architecture_and_repo_merge_blueprint.png"
   ],
   "recordings": [
     "analysis/verification-recording.mp4",

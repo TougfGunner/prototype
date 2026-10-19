@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { ArrowLeft, Sun, Moon, Layers } from 'lucide-react';
 import { REFERENCE_OPERATIONS_TOKENS } from '../design-system/tokens';
 import {
@@ -24,6 +24,7 @@ import {
   SupportTicketJourneyCard,
   WorkflowFilterBar,
 } from '../design-system/components/TablesAndMetrics';
+import { TokenArchitectureBlueprint } from '../design-system/components/TokenArchitectureBlueprint';
 import { useStarterStore } from '../state/useStarterStore';
 
 export interface GalleryPageProps {
@@ -33,26 +34,15 @@ export interface GalleryPageProps {
 export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype }) => {
   const store = useStarterStore();
   const { state } = store;
-
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    return document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-  });
-
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-    try {
-      localStorage.setItem('ajb-theme', theme);
-    } catch {
-      // Ignore storage restrictions
-    }
-  }, [theme]);
+  const theme = state.theme;
+  const activeColorSet = REFERENCE_OPERATIONS_TOKENS.color[theme];
 
   return (
     <div
       style={{
         minHeight: '100vh',
         padding: '28px 36px 64px',
-        maxWidth: '1440px',
+        maxWidth: '1460px',
         margin: '0 auto',
         color: 'var(--ajb-text-primary)',
       }}
@@ -71,7 +61,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           backdropFilter: 'blur(20px)',
           border: '1px solid var(--ajb-border-subtle)',
           boxShadow: 'var(--ajb-shadow-shell)',
-          marginBottom: '28px',
+          marginBottom: '24px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
@@ -87,8 +77,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
               color: 'var(--ajb-text-primary)',
-              fontSize: '12px',
-              fontWeight: 500,
+              fontSize: '12.5px',
+              fontWeight: 600,
               cursor: 'pointer',
               boxShadow: 'var(--ajb-shadow-pill)',
             }}
@@ -97,15 +87,15 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             Back to Operations Prototype (/)
           </button>
 
-          <AJBellWordmarkLogo height={24} variant="crimson" />
+          <AJBellWordmarkLogo height={26} variant="auto" />
 
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
               <h1
                 style={{
                   margin: 0,
-                  fontSize: '22px',
-                  fontWeight: 600,
+                  fontSize: '23px',
+                  fontWeight: 700,
                   fontFamily: 'var(--ajb-font-display)',
                   letterSpacing: '-0.02em',
                 }}
@@ -118,8 +108,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   borderRadius: '9999px',
                   background: 'var(--ajb-accent-black)',
                   color: '#FFFFFF',
-                  fontSize: '11px',
-                  fontWeight: 500,
+                  fontSize: '11.5px',
+                  fontWeight: 600,
                 }}
               >
                 v{REFERENCE_OPERATIONS_TOKENS.version} · AJ Bell Chime Rebrand
@@ -129,16 +119,16 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             <p
               style={{
                 margin: '4px 0 0',
-                fontSize: '12px',
+                fontSize: '12.5px',
                 color: 'var(--ajb-text-secondary)',
               }}
             >
-              Official ajbell.co.uk Chime Rebrand design tokens (Warm Stone #E6E5DD, Crimson #E81A41, Deep Burgundy #5D0A1A, Berry #B00054, Gold #FFE272) and live interactive components shared 1:1 with the AJ Bell New Starter Operations Prototype.
+              Official ajbell.co.uk Chime Rebrand Root-Level &amp; Role-Level design tokens (Warm Stone #E6E5DD / Obsidian #110E13, Crimson #E81A41 / #FF385C, Deep Burgundy #5D0A1A / #9E1132, Berry #B00054 / #F03E98, Gold #FFE272) and live interactive components shared 1:1 with the AJ Bell New Starter Operations Prototype.
             </p>
           </div>
         </div>
 
-        {/* Controls: Label Mode + Separate Dark Adaptation Switch */}
+        {/* Controls: Label Mode + Unified Light/Dark Switch */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
           <button
             type="button"
@@ -153,8 +143,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
               color: 'var(--ajb-text-primary)',
-              fontSize: '11.5px',
-              fontWeight: 500,
+              fontSize: '12px',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
           >
@@ -163,7 +153,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
 
           <button
             type="button"
-            onClick={() => setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))}
+            data-testid="gallery-theme-toggle"
+            onClick={() => store.toggleTheme()}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
@@ -174,15 +165,15 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               background:
                 theme === 'dark' ? 'var(--ajb-accent-black)' : 'var(--ajb-surface-card)',
               color: theme === 'dark' ? '#FFFFFF' : 'var(--ajb-text-primary)',
-              fontSize: '11.5px',
-              fontWeight: 500,
+              fontSize: '12px',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
           >
-            {theme === 'light' ? <Sun size={14} /> : <Moon size={14} />}
+            {theme === 'light' ? <Sun size={14} /> : <Moon size={14} color="#FFE272" />}
             {theme === 'light'
               ? 'Light Reference (Primary)'
-              : 'Dark Adaptation (Experimental Adaptation)'}
+              : 'Dark Adaptation (Obsidian Chime)'}
           </button>
         </div>
       </header>
@@ -192,30 +183,33 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           role="note"
           style={{
             padding: '12px 18px',
-            borderRadius: '16px',
-            background: 'rgba(232, 26, 65, 0.14)',
+            borderRadius: '18px',
+            background: 'rgba(255, 56, 92, 0.14)',
             border: '1px solid var(--ajb-border-strong)',
             marginBottom: '22px',
-            fontSize: '12px',
+            fontSize: '12.5px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
+            gap: '12px',
           }}
         >
           <span>
-            <strong>Dark Presentation Adaptation:</strong> The primary theme uses the AJ Bell Chime Rebrand Warm Stone &amp; Crimson Light palette first. This dark mode is kept separate and clearly identified as an adaptation.
+            <strong>Obsidian Dark Presentation Adaptation:</strong> Uses calibrated dark surfaces (<code>#110E13</code> canvas, <code>#18141C</code> shell, <code>#28212D</code> card, <code>#2F2735</code> elevated control) and luminous AJ Bell Crimson (<code>#FF385C</code>), Berry (<code>#F03E98</code>), and Warm Gold (<code>#FFE272</code>) splines.
           </span>
           <button
             type="button"
-            onClick={() => setTheme('light')}
+            onClick={() => store.setTheme('light')}
             style={{
-              padding: '5px 12px',
+              padding: '6px 14px',
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-strong)',
-              background: 'var(--ajb-surface-card)',
+              background: 'var(--ajb-surface-elevated)',
               color: 'var(--ajb-text-primary)',
-              fontSize: '11px',
+              fontSize: '11.5px',
+              fontWeight: 600,
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             Restore Light Reference
@@ -237,8 +231,8 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
           <Layers size={18} />
-          <h2 id="gallery-tokens-heading" style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>
-            1. Versioned Design Tokens — AJ Bell Chime Rebrand (ajbell.co.uk)
+          <h2 id="gallery-tokens-heading" style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>
+            1. Versioned Design Tokens — AJ Bell Chime Rebrand ({theme === 'dark' ? 'Obsidian Dark Palette' : 'Warm Stone Light Palette'})
           </h2>
         </div>
 
@@ -252,13 +246,14 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           }}
         >
           {[
-            { name: 'canvasOuter', hex: REFERENCE_OPERATIONS_TOKENS.color.light.canvasOuter, desc: 'AJ Bell Warm Stone Canvas' },
-            { name: 'surfaceCard', hex: '#FAFAF9', desc: 'Warm Alabaster Floating Panel' },
-            { name: 'accentBlack', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentBlack, desc: 'Deep Burgundy Selected State' },
-            { name: 'accentPeriwinkle', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentPeriwinkle, desc: 'AJ Bell Primary Crimson' },
-            { name: 'accentCoral', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentCoral, desc: 'AJ Bell Secondary Berry' },
-            { name: 'accentAmber', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentAmber, desc: 'AJ Bell Warm Gold' },
-            { name: 'accentEmerald', hex: REFERENCE_OPERATIONS_TOKENS.color.light.accentEmerald, desc: 'AJ Bell Emerald Green' },
+            { name: 'canvasOuter', hex: activeColorSet.canvasOuter, desc: theme === 'dark' ? 'Obsidian Outer Canvas' : 'AJ Bell Warm Stone Canvas' },
+            { name: 'surfaceCard', hex: activeColorSet.surfaceCard, desc: theme === 'dark' ? 'Warm Charcoal Card Surface' : 'Warm Alabaster Floating Panel' },
+            { name: 'surfaceElevated', hex: activeColorSet.surfaceElevated, desc: theme === 'dark' ? 'Elevated Control & Socket' : 'Crisp White Control Surface' },
+            { name: 'accentBlack', hex: activeColorSet.accentBlack, desc: 'Deep Burgundy Selected State' },
+            { name: 'accentPeriwinkle', hex: activeColorSet.accentPeriwinkle, desc: 'AJ Bell Primary Crimson' },
+            { name: 'accentCoral', hex: activeColorSet.accentCoral, desc: 'AJ Bell Secondary Berry' },
+            { name: 'accentAmber', hex: activeColorSet.accentAmber, desc: 'AJ Bell Warm Gold' },
+            { name: 'accentEmerald', hex: activeColorSet.accentEmerald, desc: 'AJ Bell Emerald Green' },
           ].map((sw) => (
             <div
               key={sw.name}
@@ -278,16 +273,16 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
                   height: '36px',
                   borderRadius: '12px',
                   background: sw.hex,
-                  border: '1px solid rgba(36,36,36,0.12)',
+                  border: '1px solid var(--ajb-border-subtle)',
                   flexShrink: 0,
                 }}
               />
               <div>
-                <div style={{ fontSize: '11.5px', fontWeight: 600 }}>{sw.name}</div>
-                <div className="ajb-tabular" style={{ fontSize: '10.5px', color: 'var(--ajb-text-secondary)' }}>
+                <div style={{ fontSize: '12px', fontWeight: 700 }}>{sw.name}</div>
+                <div className="ajb-tabular" style={{ fontSize: '11px', color: 'var(--ajb-text-secondary)' }}>
                   {sw.hex}
                 </div>
-                <div style={{ fontSize: '9.5px', color: 'var(--ajb-text-muted)' }}>{sw.desc}</div>
+                <div style={{ fontSize: '10px', color: 'var(--ajb-text-muted)' }}>{sw.desc}</div>
               </div>
             </div>
           ))}
@@ -309,10 +304,10 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               border: '1px solid var(--ajb-border-subtle)',
             }}
           >
-            <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '8px' }}>
               Measured Video Motion Tokens (60.00 fps CFR)
             </div>
-            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '11px', lineHeight: 1.65, color: 'var(--ajb-text-secondary)' }}>
+            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '11.5px', lineHeight: 1.65, color: 'var(--ajb-text-secondary)' }}>
               <li><strong>hoverFlip:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.motion.duration.hoverFlip}</code> (Seq 01 black CTA flip)</li>
               <li><strong>modalOpen:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.motion.duration.modalOpen}</code> @ <code>{REFERENCE_OPERATIONS_TOKENS.motion.easing.modalSpring}</code></li>
               <li><strong>panelMorph:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.motion.duration.panelMorph}</code> (Seq 03/05 screen cross-fade)</li>
@@ -329,18 +324,28 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               border: '1px solid var(--ajb-border-subtle)',
             }}
           >
-            <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '8px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, marginBottom: '8px' }}>
               Radius, Spacing & Typography Hierarchy
             </div>
-            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '11px', lineHeight: 1.65, color: 'var(--ajb-text-secondary)' }}>
+            <ul style={{ margin: 0, paddingLeft: '16px', fontSize: '11.5px', lineHeight: 1.65, color: 'var(--ajb-text-secondary)' }}>
               <li><strong>Shell & Notch Radius:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.radius.shellOuter}</code> / <code>{REFERENCE_OPERATIONS_TOKENS.radius.notch}</code></li>
               <li><strong>Card & Row Radius:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.radius.stageCard}</code> / <code>{REFERENCE_OPERATIONS_TOKENS.radius.taskRow}</code></li>
               <li><strong>Modal Radius:</strong> <code>{REFERENCE_OPERATIONS_TOKENS.radius.modal}</code></li>
-              <li><strong>Typography Scale:</strong> Page <code>30px</code>, Modal <code>20px</code>, Section <code>15px</code>, Card <code>12.5px</code></li>
+              <li><strong>Typography Scale:</strong> Page <code>32px</code>, Modal <code>20px</code>, Section <code>15px</code>, Card <code>13px</code></li>
             </ul>
           </div>
         </div>
       </section>
+
+      {/* SECTION 1B: ROOT & ROLE-LEVEL DESIGN TOKENS, SYSTEM CONNECTIVITY & PORTABLE REPO MERGE BLUEPRINT */}
+      <div style={{ marginBottom: '24px' }}>
+        <TokenArchitectureBlueprint
+          activeDemoRole={state.activeDemoRole}
+          theme={state.theme}
+          onChangeDemoRole={store.setActiveDemoRole}
+          onToggleTheme={store.toggleTheme}
+        />
+      </div>
 
       {/* SECTION 2: NAVIGATION & AVATAR STRIP */}
       <section
@@ -354,14 +359,14 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
           marginBottom: '24px',
         }}
       >
-        <h2 id="gallery-nav-heading" style={{ margin: '0 0 14px', fontSize: '17px', fontWeight: 600 }}>
+        <h2 id="gallery-nav-heading" style={{ margin: '0 0 14px', fontSize: '18px', fontWeight: 700 }}>
           2. Navigation Shell, Carved Notch Avatar Strip & Status Indicators
         </h2>
         <div
           style={{
             padding: '16px',
             borderRadius: '22px',
-            background: 'rgba(235, 235, 229, 0.72)',
+            background: 'var(--ajb-surface-gallery-canvas)',
             border: '1px solid var(--ajb-border-subtle)',
           }}
         >
@@ -369,6 +374,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             screenMode={state.screenMode}
             labelMode={state.labelMode}
             activeDemoRole={state.activeDemoRole}
+            theme={state.theme}
             participants={state.participants}
             selectedParticipantId={state.selectedParticipantId}
             onSelectParticipant={store.setSelectedParticipantId}
@@ -379,6 +385,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               )
             }
             onChangeDemoRole={store.setActiveDemoRole}
+            onToggleTheme={store.toggleTheme}
             onOpenGallery={() => {}}
             isGalleryActive={true}
           />
@@ -397,7 +404,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-              <span style={{ fontSize: '11.5px', fontWeight: 600 }}>Status Pills:</span>
+              <span style={{ fontSize: '12px', fontWeight: 700 }}>Status Pills:</span>
               <StatusPillBadge status="Executed" />
               <StatusPillBadge status="Scheduled" />
               <StatusPillBadge status="In Review" />
@@ -405,7 +412,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-              <span style={{ fontSize: '11.5px', fontWeight: 600 }}>Overlapping Clusters & Rings:</span>
+              <span style={{ fontSize: '12px', fontWeight: 700 }}>Overlapping Clusters & Rings:</span>
               <OverlappingAvatarCluster
                 items={[
                   { url: '/avatars/avatar-3.png', badge: 2, tone: 'blue' },
@@ -440,7 +447,7 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
             marginBottom: '14px',
           }}
         >
-          <h2 id="gallery-workflow-heading" style={{ margin: 0, fontSize: '17px', fontWeight: 600 }}>
+          <h2 id="gallery-workflow-heading" style={{ margin: 0, fontSize: '18px', fontWeight: 700 }}>
             3. Connected Workflow Cards, Task Rows, Action Tiles & Curved Connectors
           </h2>
           <button
@@ -457,8 +464,9 @@ export const GalleryPage: React.FC<GalleryPageProps> = ({ onNavigateToPrototype 
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
-              fontSize: '11px',
-              fontWeight: 500,
+              color: 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 600,
               cursor: 'pointer',
             }}
           >

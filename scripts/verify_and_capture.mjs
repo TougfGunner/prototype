@@ -297,14 +297,50 @@ async function runVerificationAndScreenshots() {
     fullPage: false,
   });
 
-  // Check 15: Navigate to /gallery route ("Reference Operations v1") and verify Light Reference & Dark Adaptation
+  // Check 15: Dark Mode consistency on main / workspace + Role-Level Design Tokens + Token Blueprint drawer
+  await page.goto(`${BASE_URL}/?theme=dark`, { waitUntil: 'networkidle' });
+  await page.waitForTimeout(400);
+  const journeyDarkTheme = await page.evaluate(() =>
+    document.documentElement.getAttribute('data-theme')
+  );
+  const roleTokenChipVisible = await page.locator('[data-testid="active-role-token-chip"]').isVisible();
+  recordAssertion(
+    'check_15_journey_dark_mode_and_role_tokens',
+    'Main workspace renders ultra-clear AJ Bell Chime Obsidian Dark Mode with active --role-* design token synchronization',
+    journeyDarkTheme === 'dark' && roleTokenChipVisible,
+    `data-theme=${journeyDarkTheme}, roleChip=${roleTokenChipVisible}`
+  );
+
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '14_journey_dark_mode_obsidian.png'),
+    fullPage: false,
+  });
+
+  // Open Root & Role-Level Token Architecture & Repo Merge Blueprint drawer on /
+  await page.locator('[data-testid="toggle-blueprint-drawer"]').click();
+  await page.waitForTimeout(350);
+  const blueprintVisibleOnHome = await page
+    .locator('[data-testid="token-architecture-blueprint"]')
+    .isVisible();
+  recordAssertion(
+    'check_16_token_blueprint_and_repo_merge',
+    'Root-Level & Role-Level Design Token Architecture + 6-Step Multi-Repo Merge Blueprint renders interactively',
+    blueprintVisibleOnHome
+  );
+
+  await page.screenshot({
+    path: path.join(SCREENSHOT_DIR, '15_token_architecture_and_repo_merge_blueprint.png'),
+    fullPage: false,
+  });
+
+  // Check 17: Navigate to /gallery route ("Reference Operations v1") and verify Light Reference & Dark Adaptation
   await page.evaluate(() => localStorage.clear());
   await page.goto(`${BASE_URL}/gallery`, { waitUntil: 'networkidle' });
   await page.waitForTimeout(400);
   const galleryText = await page.locator('body').innerText();
   const galleryUrl = page.url();
   recordAssertion(
-    'check_15_gallery_route_light',
+    'check_17_gallery_route_light',
     'Discoverable /gallery route renders Reference Operations v1 token & live shared component showcase in Light Reference mode',
     galleryText.includes('Reference Operations v1') && galleryUrl.endsWith('/gallery'),
     `url=${galleryUrl}`
@@ -321,7 +357,7 @@ async function runVerificationAndScreenshots() {
   await page.waitForTimeout(450);
   const gallerySec3Connectors = await page.locator('svg[data-connector-svg="true"] > g').count();
   recordAssertion(
-    'check_17_gallery_section3_shared_canvas',
+    'check_18_gallery_section3_shared_canvas',
     'Gallery Section 3 renders the exact 1:1 shared ConnectedWorkflowCanvas with curved connectors, gradients, and motion choreography bar',
     gallerySec3Connectors === 14,
     `gallery_paths=${gallerySec3Connectors}`
@@ -334,14 +370,14 @@ async function runVerificationAndScreenshots() {
   // Scroll back to top and switch to Dark Adaptation in /gallery
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.waitForTimeout(150);
-  await page.locator('button:has-text("Light Reference (Primary)")').first().click();
+  await page.locator('[data-testid="gallery-theme-toggle"]').first().click();
   await page.waitForTimeout(350);
   const dataTheme = await page.evaluate(() =>
     document.documentElement.getAttribute('data-theme')
   );
   recordAssertion(
-    'check_16_gallery_dark_adaptation',
-    'Dark Adaptation toggle in /gallery switches theme tokens while clearly identifying it as an adaptation',
+    'check_19_gallery_dark_adaptation',
+    'Dark Adaptation toggle in /gallery switches theme tokens across both /gallery and / via unified store',
     dataTheme === 'dark'
   );
 
@@ -351,7 +387,7 @@ async function runVerificationAndScreenshots() {
   });
 
   // Reset back to Light Reference
-  await page.locator('button:has-text("Restore Light Reference")').first().click();
+  await page.locator('[data-testid="gallery-theme-toggle"]').first().click();
   await page.waitForTimeout(200);
   await context.close();
 

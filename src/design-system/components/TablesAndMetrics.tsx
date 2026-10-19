@@ -54,9 +54,9 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
     <section
       aria-label="Suggested Knowledge"
       style={{
-        padding: '16px 20px',
+        padding: '18px 22px',
         borderRadius: '24px',
-        background: 'rgba(255, 255, 255, 0.56)',
+        background: 'var(--ajb-surface-subpanel)',
         border: '1px solid var(--ajb-border-subtle)',
         boxShadow: 'var(--ajb-shadow-card)',
         display: 'flex',
@@ -78,8 +78,8 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
           <h3
             style={{
               margin: 0,
-              fontSize: '15px',
-              fontWeight: 500,
+              fontSize: '16px',
+              fontWeight: 600,
               letterSpacing: '-0.015em',
               color: 'var(--ajb-text-primary)',
             }}
@@ -89,10 +89,10 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
           <span
             className="ajb-tabular"
             style={{
-              padding: '2px 7px',
+              padding: '2px 8px',
               borderRadius: '9999px',
-              background: 'rgba(235, 235, 229, 0.92)',
-              fontSize: '10.5px',
+              background: 'var(--ajb-surface-badge-neutral)',
+              fontSize: '11px',
               fontWeight: 600,
               color: 'var(--ajb-text-secondary)',
             }}
@@ -110,15 +110,15 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
               placeholder="Filter subject..."
               aria-label="Filter Suggested Knowledge records"
               style={{
-                height: '28px',
+                height: '30px',
                 padding: '0 10px',
                 borderRadius: '9999px',
                 border: '1px solid var(--ajb-border-strong)',
-                background: '#FFFFFF',
-                fontSize: '11px',
+                background: 'var(--ajb-surface-elevated)',
+                fontSize: '11.5px',
                 color: 'var(--ajb-text-primary)',
                 outline: 'none',
-                width: '130px',
+                width: '140px',
               }}
             />
           )}
@@ -127,8 +127,8 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
             onClick={onAddRecord}
             aria-label="Add new knowledge or starter case"
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
@@ -151,8 +151,8 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
             title={`Filter status (Current: ${statusToggle})`}
             aria-label="Cycle knowledge status filter"
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
               border:
                 statusToggle !== 'all'
@@ -173,8 +173,8 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
             onClick={() => setShowSearchInput((prev) => !prev)}
             aria-label="Toggle search input"
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
@@ -191,8 +191,8 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
             type="button"
             aria-label="More table options"
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-subtle)',
               background: 'var(--ajb-surface-card)',
@@ -214,10 +214,10 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
           display: 'grid',
           gridTemplateColumns: '2.1fr 0.95fr 1fr 1fr 1.25fr',
           gap: '8px',
-          padding: '0 8px 6px',
-          fontSize: '10px',
+          padding: '0 10px 6px',
+          fontSize: '11px',
           color: 'var(--ajb-text-muted)',
-          fontWeight: 500,
+          fontWeight: 600,
         }}
       >
         <span>Subject</span>
@@ -228,7 +228,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
       </div>
 
       {/* Rows */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
         {filtered.map((rec) => {
           const subject =
             labelMode === 'reference' ? rec.referenceSubject : rec.operationsSubject;
@@ -240,11 +240,11 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                 gridTemplateColumns: '2.1fr 0.95fr 1fr 1fr 1.25fr',
                 alignItems: 'center',
                 gap: '8px',
-                padding: '7px 10px',
+                padding: '8px 11px',
                 borderRadius: '14px',
                 background: 'var(--ajb-surface-card)',
-                border: '1px solid rgba(36, 36, 36, 0.05)',
-                fontSize: '11.5px',
+                border: '1px solid var(--ajb-border-subtle)',
+                fontSize: '12px',
               }}
             >
               <div
@@ -264,15 +264,15 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                     background: 'transparent',
                     padding: 0,
                     cursor: 'pointer',
-                    color: rec.starred ? '#E81A41' : 'var(--ajb-text-muted)',
+                    color: rec.starred ? 'var(--ajb-accent-periwinkle)' : 'var(--ajb-text-muted)',
                     display: 'inline-flex',
                     alignItems: 'center',
                     flexShrink: 0,
                   }}
                 >
                   <Star
-                    size={12}
-                    fill={rec.starred ? '#E81A41' : 'none'}
+                    size={13}
+                    fill={rec.starred ? 'var(--ajb-accent-periwinkle)' : 'none'}
                     strokeWidth={1.8}
                   />
                 </button>
@@ -299,11 +299,11 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px',
-                  fontSize: '11px',
+                  fontSize: '11.5px',
                   color: 'var(--ajb-text-secondary)',
                 }}
               >
-                <Calendar size={11} style={{ opacity: 0.55 }} />
+                <Calendar size={11} style={{ opacity: 0.65 }} />
                 {rec.startDate}
               </div>
 
@@ -313,11 +313,11 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px',
-                  fontSize: '11px',
+                  fontSize: '11.5px',
                   color: 'var(--ajb-text-secondary)',
                 }}
               >
-                <Calendar size={11} style={{ opacity: 0.55 }} />
+                <Calendar size={11} style={{ opacity: 0.65 }} />
                 {rec.endDate}
               </div>
 
@@ -326,9 +326,10 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  padding: '2px 8px 2px 3px',
+                  padding: '2px 9px 2px 3px',
                   borderRadius: '9999px',
-                  background: 'rgba(235, 235, 229, 0.85)',
+                  background: 'var(--ajb-surface-input-pill)',
+                  border: '1px solid var(--ajb-border-subtle)',
                   width: 'fit-content',
                   maxWidth: '100%',
                 }}
@@ -345,7 +346,7 @@ export const SuggestedKnowledgeTable: React.FC<SuggestedKnowledgeTableProps> = (
                 />
                 <span
                   style={{
-                    fontSize: '10.5px',
+                    fontSize: '11px',
                     fontWeight: 500,
                     color: 'var(--ajb-text-primary)',
                     whiteSpace: 'nowrap',
@@ -382,7 +383,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
     <section
       aria-label="Support Ticket Journey"
       style={{
-        padding: '16px 20px 0 20px',
+        padding: '18px 22px 0 22px',
         borderRadius: '26px',
         background: 'var(--ajb-surface-stage-column)',
         border: '1px solid var(--ajb-border-glass)',
@@ -392,7 +393,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
         justifyContent: 'space-between',
         position: 'relative',
         overflow: 'hidden',
-        minHeight: '198px',
+        minHeight: '206px',
       }}
     >
       {/* Top Row: Heading + Feb/Mar Pill Toggle (Matches Reference Image 1:1) */}
@@ -408,12 +409,12 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
         <h3
           style={{
             margin: 0,
-            fontSize: '15px',
-            fontWeight: 500,
+            fontSize: '16px',
+            fontWeight: 600,
             lineHeight: 1.22,
             letterSpacing: '-0.015em',
             color: 'var(--ajb-text-primary)',
-            maxWidth: '130px',
+            maxWidth: '142px',
           }}
         >
           {labelMode === 'reference'
@@ -436,16 +437,16 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
                 type="button"
                 onClick={() => setActiveMonth(m)}
                 style={{
-                  padding: '5px 12px',
+                  padding: '6px 13px',
                   borderRadius: '9999px',
-                  border: active ? 'none' : '1px solid rgba(255, 255, 255, 0.85)',
-                  background: active ? 'var(--ajb-surface-selected-gradient)' : '#FFFFFF',
+                  border: active ? 'none' : '1px solid var(--ajb-border-subtle)',
+                  background: active ? 'var(--ajb-surface-selected-gradient)' : 'var(--ajb-surface-elevated)',
                   color: active ? '#FFFFFF' : 'var(--ajb-text-primary)',
                   boxShadow: active
                     ? '0 6px 14px rgba(93, 10, 26, 0.24)'
-                    : '0 2px 6px rgba(36, 20, 24, 0.05)',
-                  fontSize: '11px',
-                  fontWeight: 500,
+                    : 'var(--ajb-shadow-pill)',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
                   cursor: 'pointer',
                   transition: 'all var(--ajb-duration-hover) var(--ajb-ease-standard)',
                 }}
@@ -461,7 +462,7 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
       <div
         style={{
           position: 'relative',
-          height: '132px',
+          height: '134px',
           marginTop: '8px',
           display: 'flex',
           alignItems: 'flex-end',
@@ -474,8 +475,8 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
             position: 'absolute',
             left: '-6px',
             bottom: '-34px',
-            width: '148px',
-            height: '126px',
+            width: '152px',
+            height: '128px',
             borderRadius: '9999px 9999px 0 0',
             background: 'var(--ajb-accent-periwinkle-gradient)',
             display: 'flex',
@@ -493,18 +494,18 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
               position: 'absolute',
               top: '-6px',
               left: '22px',
-              width: '26px',
-              height: '26px',
+              width: '28px',
+              height: '28px',
               borderRadius: '9999px',
-              background: '#F2F2EA',
-              border: '2px solid rgba(255, 255, 255, 0.92)',
-              color: '#5D0A1A',
-              fontSize: '11px',
-              fontWeight: 600,
+              background: 'var(--ajb-surface-elevated)',
+              border: '2px solid var(--ajb-border-subtle)',
+              color: 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 700,
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 10px rgba(36, 20, 24, 0.08)',
+              boxShadow: 'var(--ajb-shadow-pill)',
             }}
           >
             {counts.executed}
@@ -512,8 +513,8 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
           <span
             style={{
               color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 500,
+              fontSize: '12.5px',
+              fontWeight: 600,
               letterSpacing: '-0.01em',
             }}
           >
@@ -527,8 +528,8 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
             position: 'absolute',
             right: '-10px',
             bottom: '-28px',
-            width: '166px',
-            height: '146px',
+            width: '170px',
+            height: '148px',
             borderRadius: '9999px 9999px 0 0',
             background: 'var(--ajb-accent-coral-gradient)',
             display: 'flex',
@@ -546,18 +547,18 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
               position: 'absolute',
               top: '-4px',
               left: '20px',
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
-              background: '#F2F2EA',
-              border: '2px solid rgba(255, 255, 255, 0.92)',
-              color: '#5D0A1A',
-              fontSize: '11px',
-              fontWeight: 600,
+              background: 'var(--ajb-surface-elevated)',
+              border: '2px solid var(--ajb-border-subtle)',
+              color: 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 700,
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 4px 10px rgba(36, 20, 24, 0.08)',
+              boxShadow: 'var(--ajb-shadow-pill)',
             }}
           >
             {counts.active}
@@ -565,8 +566,8 @@ export const SupportTicketJourneyCard: React.FC<SupportTicketJourneyCardProps> =
           <span
             style={{
               color: '#FFFFFF',
-              fontSize: '12px',
-              fontWeight: 500,
+              fontSize: '12.5px',
+              fontWeight: 600,
               letterSpacing: '-0.01em',
             }}
           >
@@ -599,7 +600,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
         style={{
           padding: '16px 20px',
           borderRadius: '24px',
-          background: 'rgba(255, 255, 255, 0.56)',
+          background: 'var(--ajb-surface-subpanel)',
           border: '1px solid var(--ajb-border-subtle)',
         }}
       >
@@ -611,7 +612,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
             marginBottom: '10px',
           }}
         >
-          <h3 style={{ margin: 0, fontSize: '14.5px', fontWeight: 500 }}>
+          <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
             {labelMode === 'reference'
               ? 'Last Successful Cases'
               : 'Recently Completed Starters'}
@@ -621,9 +622,10 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
             style={{
               padding: '2px 7px',
               borderRadius: '9999px',
-              background: 'rgba(235, 235, 229, 0.92)',
-              fontSize: '10.5px',
+              background: 'var(--ajb-surface-badge-neutral)',
+              fontSize: '11px',
               fontWeight: 600,
+              color: 'var(--ajb-text-secondary)',
             }}
           >
             28
@@ -664,10 +666,11 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
                 padding: '7px 10px',
                 borderRadius: '14px',
                 background: 'var(--ajb-surface-card)',
-                fontSize: '11px',
+                border: '1px solid var(--ajb-border-subtle)',
+                fontSize: '11.5px',
               }}
             >
-              <span style={{ fontWeight: 500 }}>{row.title}</span>
+              <span style={{ fontWeight: 500, color: 'var(--ajb-text-primary)' }}>{row.title}</span>
               <StatusPillBadge status={row.status} />
               <span className="ajb-tabular" style={{ color: 'var(--ajb-text-secondary)' }}>
                 {row.start}
@@ -675,7 +678,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
               <span className="ajb-tabular" style={{ color: 'var(--ajb-text-secondary)' }}>
                 {row.end}
               </span>
-              <span style={{ fontWeight: 500 }}>{row.user}</span>
+              <span style={{ fontWeight: 500, color: 'var(--ajb-text-primary)' }}>{row.user}</span>
             </div>
           ))}
         </div>
@@ -686,7 +689,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
         style={{
           padding: '16px 20px',
           borderRadius: '24px',
-          background: 'rgba(255, 255, 255, 0.56)',
+          background: 'var(--ajb-surface-subpanel)',
           border: '1px solid var(--ajb-border-subtle)',
           display: 'flex',
           flexDirection: 'column',
@@ -694,7 +697,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
         }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ margin: 0, fontSize: '14.5px', fontWeight: 500 }}>
+          <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
             {labelMode === 'reference' ? 'Agent Workload' : 'Reviewer Capacity'}
           </h3>
           <span
@@ -719,7 +722,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
             { pct: '68%', tone: 'rgba(232, 26, 65, 0.78)', color: '#FFFFFF', avatar: '/avatars/avatar-1.png' },
             { pct: '82%', tone: 'rgba(232, 26, 65, 0.94)', color: '#FFFFFF', avatar: '/avatars/avatar-3.png' },
             { pct: '65%', tone: 'rgba(176, 0, 84, 0.82)', color: '#FFFFFF', avatar: '/avatars/avatar-4.png' },
-            { pct: '48%', tone: 'rgba(235, 235, 229, 0.95)', color: 'var(--ajb-text-primary)', avatar: '/avatars/avatar-6.png' },
+            { pct: '48%', tone: 'var(--ajb-surface-input-pill)', color: 'var(--ajb-text-primary)', avatar: '/avatars/avatar-6.png' },
           ].map((bar, idx) => (
             <div
               key={idx}
@@ -735,7 +738,7 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
                 alignItems: 'center',
               }}
             >
-              <span className="ajb-tabular" style={{ fontSize: '9.5px', fontWeight: 600 }}>
+              <span className="ajb-tabular" style={{ fontSize: '10px', fontWeight: 600 }}>
                 {bar.pct}
               </span>
               <img
@@ -753,14 +756,14 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
         style={{
           padding: '16px 20px',
           borderRadius: '24px',
-          background: 'rgba(255, 255, 255, 0.56)',
+          background: 'var(--ajb-surface-subpanel)',
           border: '1px solid var(--ajb-border-subtle)',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
         }}
       >
-        <h3 style={{ margin: 0, fontSize: '14.5px', fontWeight: 500 }}>
+        <h3 style={{ margin: 0, fontSize: '15px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
           {labelMode === 'reference' ? 'Top Topics' : 'Entitlement Clusters'}
         </h3>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '10px' }}>
@@ -769,11 +772,11 @@ export const PipelineBottomMetrics: React.FC<PipelineBottomMetricsProps> = ({
               <span
                 key={tag}
                 style={{
-                  padding: '5px 11px',
+                  padding: '5px 12px',
                   borderRadius: '9999px',
-                  background: idx === 1 ? 'var(--ajb-accent-black)' : '#FFFFFF',
+                  background: idx === 1 ? 'var(--ajb-accent-black)' : 'var(--ajb-surface-elevated)',
                   color: idx === 1 ? '#FFFFFF' : 'var(--ajb-text-primary)',
-                  fontSize: '10.5px',
+                  fontSize: '11px',
                   fontWeight: 500,
                   border: '1px solid var(--ajb-border-subtle)',
                 }}
@@ -825,12 +828,12 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: '8px',
-        padding: '8px 14px',
+        padding: '9px 15px',
         borderRadius: '16px',
-        background: 'rgba(255, 255, 255, 0.55)',
+        background: 'var(--ajb-surface-subpanel)',
         border: '1px solid var(--ajb-border-subtle)',
         marginBottom: '12px',
-        fontSize: '11px',
+        fontSize: '11.5px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
@@ -844,11 +847,11 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
           value={roleFilter}
           onChange={(e) => onChangeRoleFilter(e.target.value)}
           style={{
-            padding: '4px 10px',
+            padding: '5px 11px',
             borderRadius: '9999px',
             border: '1px solid var(--ajb-border-subtle)',
-            background: '#FFFFFF',
-            fontSize: '11px',
+            background: 'var(--ajb-surface-elevated)',
+            fontSize: '11.5px',
             color: 'var(--ajb-text-primary)',
             cursor: 'pointer',
           }}
@@ -866,11 +869,11 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
           value={teamFilter}
           onChange={(e) => onChangeTeamFilter(e.target.value)}
           style={{
-            padding: '4px 10px',
+            padding: '5px 11px',
             borderRadius: '9999px',
             border: '1px solid var(--ajb-border-subtle)',
-            background: '#FFFFFF',
-            fontSize: '11px',
+            background: 'var(--ajb-surface-elevated)',
+            fontSize: '11.5px',
             color: 'var(--ajb-text-primary)',
             cursor: 'pointer',
           }}
@@ -891,11 +894,11 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
             onChangeStatusFilter(e.target.value as WorkflowStatus | 'all')
           }
           style={{
-            padding: '4px 10px',
+            padding: '5px 11px',
             borderRadius: '9999px',
             border: '1px solid var(--ajb-border-subtle)',
-            background: '#FFFFFF',
-            fontSize: '11px',
+            background: 'var(--ajb-surface-elevated)',
+            fontSize: '11.5px',
             color: 'var(--ajb-text-primary)',
             cursor: 'pointer',
           }}
@@ -920,11 +923,11 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
           }
           title="Switch Stage 3→4 connector between static image f=0909 (solid dark arrow) and video f=0950 (routed dashed coral)"
           style={{
-            padding: '4px 10px',
+            padding: '5px 11px',
             borderRadius: '9999px',
             border: '1px solid var(--ajb-border-subtle)',
-            background: '#FFFFFF',
-            fontSize: '10.5px',
+            background: 'var(--ajb-surface-elevated)',
+            fontSize: '11px',
             fontWeight: 500,
             color: 'var(--ajb-text-secondary)',
             cursor: 'pointer',
@@ -941,7 +944,7 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
             display: 'inline-flex',
             padding: '2px',
             borderRadius: '9999px',
-            background: 'rgba(235, 235, 229, 0.92)',
+            background: 'var(--ajb-surface-badge-neutral)',
           }}
         >
           {(['normal', 'loading', 'empty', 'error', 'completed'] as const).map((st) => {
@@ -952,13 +955,13 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
                 type="button"
                 onClick={() => onChangeSimulationStatus(st)}
                 style={{
-                  padding: '3px 8px',
+                  padding: '4px 9px',
                   borderRadius: '9999px',
                   border: 'none',
                   background: active ? 'var(--ajb-accent-black)' : 'transparent',
                   color: active ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-                  fontSize: '10px',
-                  fontWeight: 500,
+                  fontSize: '10.5px',
+                  fontWeight: 600,
                   cursor: 'pointer',
                   textTransform: 'capitalize',
                 }}
@@ -977,11 +980,11 @@ export const WorkflowFilterBar: React.FC<WorkflowFilterBarProps> = ({
             display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
-            padding: '4px 9px',
+            padding: '5px 10px',
             borderRadius: '9999px',
             border: '1px solid var(--ajb-border-subtle)',
-            background: '#FFFFFF',
-            fontSize: '10.5px',
+            background: 'var(--ajb-surface-elevated)',
+            fontSize: '11px',
             color: 'var(--ajb-text-secondary)',
             cursor: 'pointer',
           }}

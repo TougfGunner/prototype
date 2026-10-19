@@ -141,9 +141,12 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
         nextPaths.push({
           id: `${alloc.id}->${targetId}`,
           d,
-          color: alloc.connectorTone === 'blue' ? '#E81A41' : '#B00054',
+          color:
+            alloc.connectorTone === 'blue'
+              ? 'var(--ajb-connector-primary-stroke)'
+              : 'var(--ajb-connector-secondary-stroke)',
           dashed: alloc.connectorDashed,
-          strokeWidth: isHighlighted ? 1.85 : 1.35,
+          strokeWidth: isHighlighted ? 2.05 : 1.5,
           highlighted: isHighlighted,
           startX: x1,
           startY: y1,
@@ -184,9 +187,9 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
         nextPaths.push({
           id: `alloc-1->alloc-2-link`,
           d: dTrunkLink,
-          color: '#E81A41',
+          color: 'var(--ajb-connector-primary-stroke)',
           dashed: false,
-          strokeWidth: 1.75,
+          strokeWidth: 1.95,
           highlighted: !selectedParticipantId,
           startX: trunkX,
           startY,
@@ -232,17 +235,19 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           s2.id === 'role-1' || s2.id === 'role-2' || s2.id === 'role-3';
 
         // In reference video:
-        // - role-1, role-2 -> mgr-3 and role-3 -> mgr-1, mgr-2 are always solid primary (#E81A41)
-        // - role-4 -> mgr-3 is dashed secondary (#B00054) during seq05_stagger & seq06_drag (f=0740..0801),
-        //   then solidifies to solid secondary (#B00054) on seq06_solidify / idle (f=0809..0950 & static reference)!
-        // - role-5 -> mgr-4, mgr-5 are dashed secondary (#B00054)
+        // - role-1, role-2 -> mgr-3 and role-3 -> mgr-1, mgr-2 are always solid primary
+        // - role-4 -> mgr-3 is dashed secondary during seq05_stagger & seq06_drag (f=0740..0801),
+        //   then solidifies to solid secondary on seq06_solidify / idle (f=0809..0950 & static reference)!
+        // - role-5 -> mgr-4, mgr-5 are dashed secondary
         const isDashed = isPrimaryBranch
           ? false
           : isRole4ToMgr3
             ? choreographyPhase === 'seq05_stagger' || choreographyPhase === 'seq06_drag'
             : true;
 
-        const strokeColor = isPrimaryBranch ? '#E81A41' : '#B00054';
+        const strokeColor = isPrimaryBranch
+          ? 'var(--ajb-connector-primary-stroke)'
+          : 'var(--ajb-connector-secondary-stroke)';
 
         const isHighlighted =
           !selectedParticipantId ||
@@ -254,7 +259,7 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           d,
           color: strokeColor,
           dashed: isDashed,
-          strokeWidth: !isDashed ? 2.0 : 1.75,
+          strokeWidth: !isDashed ? 2.15 : 1.9,
           highlighted: isHighlighted,
           startX: x1,
           startY: y1,
@@ -313,9 +318,11 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
         nextPaths.push({
           id: `${s3.id}->${targetId}-${useDashedCoral ? 'coral' : 'dark'}`,
           d,
-          color: useDashedCoral ? '#B00054' : '#5D0A1A',
+          color: useDashedCoral
+            ? 'var(--ajb-connector-secondary-stroke)'
+            : 'var(--ajb-connector-dark-stroke)',
           dashed: useDashedCoral,
-          strokeWidth: useDashedCoral ? 1.85 : 1.75,
+          strokeWidth: useDashedCoral ? 2.1 : 2.1,
           highlighted: isHighlighted,
           startX: x1,
           startY: y1,
@@ -370,11 +377,11 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
     >
       <defs>
         <linearGradient id="ajb-periwinkle-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#F2385A" />
+          <stop offset="0%" stopColor="#FF5272" />
           <stop offset="100%" stopColor="#E81A41" />
         </linearGradient>
         <linearGradient id="ajb-coral-stroke-grad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#C81469" />
+          <stop offset="0%" stopColor="#F03E98" />
           <stop offset="100%" stopColor="#970148" />
         </linearGradient>
         <marker
@@ -382,15 +389,15 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           viewBox="0 0 8 8"
           refX="6.2"
           refY="4"
-          markerWidth="4.5"
-          markerHeight="4.5"
+          markerWidth="4.8"
+          markerHeight="4.8"
           orient="auto"
         >
           <path
             d="M 1.5 1.2 L 6.5 4 L 1.5 6.8"
             fill="none"
-            stroke="#E81A41"
-            strokeWidth="1.6"
+            stroke="var(--ajb-connector-primary-stroke)"
+            strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -400,15 +407,15 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           viewBox="0 0 8 8"
           refX="6.2"
           refY="4"
-          markerWidth="4.5"
-          markerHeight="4.5"
+          markerWidth="4.8"
+          markerHeight="4.8"
           orient="auto"
         >
           <path
             d="M 1.5 1.2 L 6.5 4 L 1.5 6.8"
             fill="none"
-            stroke="#B00054"
-            strokeWidth="1.6"
+            stroke="var(--ajb-connector-secondary-stroke)"
+            strokeWidth="1.75"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
@@ -418,11 +425,11 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           viewBox="0 0 10 10"
           refX="7.5"
           refY="5"
-          markerWidth="5.5"
-          markerHeight="5.5"
+          markerWidth="5.8"
+          markerHeight="5.8"
           orient="auto-start-reverse"
         >
-          <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="#5D0A1A" />
+          <path d="M 1 1.5 L 8.5 5 L 1 8.5 z" fill="var(--ajb-connector-dark-stroke)" />
         </marker>
       </defs>
 
@@ -445,7 +452,7 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           ? undefined
           : p.isStage3To4
             ? 'url(#ref-dark-arrowhead)'
-            : p.color === '#E81A41'
+            : p.color === 'var(--ajb-connector-primary-stroke)'
               ? 'url(#ref-primary-chevron)'
               : 'url(#ref-secondary-chevron)';
 
@@ -453,7 +460,7 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
           <g
             key={p.id}
             style={{
-              opacity: hideStage3To4 ? 0 : p.highlighted ? 1 : 0.24,
+              opacity: hideStage3To4 ? 0 : p.highlighted ? 1 : 0.28,
               transition: 'opacity var(--ajb-duration-hover) var(--ajb-ease-standard)',
             }}
           >
@@ -463,14 +470,14 @@ export const CurvedConnectorLayer: React.FC<CurvedConnectorLayerProps> = ({
                 d={p.d}
                 fill="none"
                 stroke={
-                  p.color === '#E81A41'
+                  p.color === 'var(--ajb-connector-primary-stroke)'
                     ? 'url(#ajb-periwinkle-stroke-grad)'
-                    : p.color === '#B00054'
+                    : p.color === 'var(--ajb-connector-secondary-stroke)'
                       ? 'url(#ajb-coral-stroke-grad)'
                       : p.color
                 }
-                strokeWidth={p.solidifying ? 6.5 : 4.2}
-                strokeOpacity={p.solidifying ? 0.30 : 0.14}
+                strokeWidth={p.solidifying ? 6.8 : 4.5}
+                strokeOpacity={p.solidifying ? 0.34 : 0.18}
                 strokeLinecap="round"
               />
             )}

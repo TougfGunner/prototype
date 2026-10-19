@@ -25,6 +25,8 @@ import {
 } from './design-system/components/TablesAndMetrics';
 import { GalleryPage } from './pages/GalleryPage';
 import { AJBellMottoPill } from './design-system/components/AJBellBrandAssets';
+import { TokenArchitectureBlueprint } from './design-system/components/TokenArchitectureBlueprint';
+import { ROLE_LEVEL_DESIGN_TOKENS } from './design-system/tokens';
 import { SimulationViewStatus, useStarterStore } from './state/useStarterStore';
 
 export const App: React.FC = () => {
@@ -32,6 +34,10 @@ export const App: React.FC = () => {
   const [showFilterDrawer, setShowFilterDrawer] = useState<boolean>(() => {
     const params = new URLSearchParams(window.location.search);
     return params.get('filters') === 'open' || Boolean(params.get('sim'));
+  });
+  const [showBlueprintDrawer, setShowBlueprintDrawer] = useState<boolean>(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('blueprint') === 'open';
   });
 
   const store = useStarterStore();
@@ -113,19 +119,19 @@ export const App: React.FC = () => {
         position: 'relative',
       }}
     >
-      {/* Floating Operations Workspace Shell (Matches straight-on reference frame 1396x860) */}
+      {/* Floating Operations Workspace Shell (Ultra-clear scaled shell for Light & Dark modes) */}
       <main
         aria-label="AJ Bell Internal Operations Prototype Workspace"
         style={{
           position: 'relative',
-          width: '1368px',
+          width: '1408px',
           maxWidth: '100%',
-          minHeight: '856px',
+          minHeight: '868px',
           borderRadius: '38px',
           padding: '22px 28px 24px',
           background: 'var(--ajb-bg-ambient-wash)',
           backdropFilter: 'blur(22px)',
-          border: '1.5px solid rgba(255, 255, 255, 0.88)',
+          border: '1.5px solid var(--ajb-border-glass)',
           boxShadow: 'var(--ajb-shadow-shell)',
           display: 'flex',
           flexDirection: 'column',
@@ -141,13 +147,14 @@ export const App: React.FC = () => {
             top: '-6px',
             left: '50%',
             transform: 'translateX(-50%)',
-            width: '490px',
-            height: '66px',
+            width: '496px',
+            height: '68px',
             borderRadius: '0 0 32px 32px',
-            background: 'rgba(235, 235, 229, 0.92)',
-            border: '1px solid rgba(255, 255, 255, 0.78)',
+            background: 'var(--ajb-surface-notch)',
+            border: '1px solid var(--ajb-border-glass)',
             zIndex: 1,
             pointerEvents: 'none',
+            transition: 'background 220ms ease, border-color 220ms ease',
           }}
         />
 
@@ -157,6 +164,7 @@ export const App: React.FC = () => {
             screenMode={state.screenMode}
             labelMode={state.labelMode}
             activeDemoRole={state.activeDemoRole}
+            theme={state.theme}
             participants={state.participants}
             selectedParticipantId={state.selectedParticipantId}
             onSelectParticipant={store.setSelectedParticipantId}
@@ -167,16 +175,19 @@ export const App: React.FC = () => {
               )
             }
             onChangeDemoRole={store.setActiveDemoRole}
+            onToggleTheme={store.toggleTheme}
             onOpenGallery={() => navigateTo('/gallery')}
           />
 
-          {/* Sub-header Breadcrumb + Quick Filter Drawer Toggle */}
+          {/* Sub-header Breadcrumb + Live Role Token Pill + Blueprint & Filter Toggles */}
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               paddingRight: '8px',
+              flexWrap: 'wrap',
+              gap: '8px',
             }}
           >
             <SubHeaderBreadcrumb
@@ -190,19 +201,61 @@ export const App: React.FC = () => {
               }
             />
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              {/* Live Role-Level Token Indicator Pill */}
+              {(() => {
+                const activeRoleSpec =
+                  ROLE_LEVEL_DESIGN_TOKENS.find((r) => r.roleId === state.activeDemoRole) ||
+                  ROLE_LEVEL_DESIGN_TOKENS[0];
+                const roleColor =
+                  state.theme === 'dark' ? activeRoleSpec.darkPrimary : activeRoleSpec.lightPrimary;
+                return (
+                  <button
+                    type="button"
+                    data-testid="active-role-token-chip"
+                    onClick={() => setShowBlueprintDrawer((prev) => !prev)}
+                    title="Click to inspect Root-Level & Role-Level Design Tokens and Repo Merge Blueprint"
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '5px 11px',
+                      borderRadius: '9999px',
+                      border: '1px solid var(--role-active-border, var(--ajb-border-subtle))',
+                      background: 'var(--role-active-surface, var(--ajb-surface-elevated))',
+                      color: 'var(--ajb-text-primary)',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <span
+                      style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '9999px',
+                        background: roleColor,
+                      }}
+                    />
+                    <code style={{ fontFamily: 'var(--ajb-font-mono)', fontSize: '11px' }}>
+                      {activeRoleSpec.cssPrefix}-primary: {roleColor}
+                    </code>
+                  </button>
+                );
+              })()}
+
               {state.selectedParticipantId && (
                 <button
                   type="button"
                   onClick={() => store.setSelectedParticipantId(null)}
                   style={{
-                    padding: '4px 10px',
+                    padding: '5px 11px',
                     borderRadius: '9999px',
                     border: '1px solid var(--ajb-accent-black)',
                     background: 'var(--ajb-accent-black)',
                     color: '#FFFFFF',
-                    fontSize: '10.5px',
-                    fontWeight: 500,
+                    fontSize: '11.5px',
+                    fontWeight: 600,
                     cursor: 'pointer',
                   }}
                 >
@@ -212,29 +265,70 @@ export const App: React.FC = () => {
 
               <button
                 type="button"
+                data-testid="toggle-blueprint-drawer"
+                onClick={() => setShowBlueprintDrawer((prev) => !prev)}
+                aria-expanded={showBlueprintDrawer}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '5px 12px',
+                  borderRadius: '9999px',
+                  border: '1px solid var(--ajb-border-subtle)',
+                  background: showBlueprintDrawer
+                    ? 'var(--ajb-accent-black)'
+                    : 'var(--ajb-surface-elevated)',
+                  color: showBlueprintDrawer ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                }}
+              >
+                <span>✦</span>
+                <span>
+                  {showBlueprintDrawer
+                    ? 'Hide Tokens & Repo Merge'
+                    : 'Root & Role Tokens · Repo Merge'}
+                </span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setShowFilterDrawer((prev) => !prev)}
                 aria-expanded={showFilterDrawer}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '5px',
-                  padding: '5px 11px',
+                  padding: '5px 12px',
                   borderRadius: '9999px',
                   border: '1px solid var(--ajb-border-subtle)',
                   background: showFilterDrawer
                     ? 'var(--ajb-accent-black)'
-                    : 'rgba(255, 255, 255, 0.72)',
-                  color: showFilterDrawer ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-                  fontSize: '10.5px',
-                  fontWeight: 500,
+                    : 'var(--ajb-surface-elevated)',
+                  color: showFilterDrawer ? '#FFFFFF' : 'var(--ajb-text-primary)',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
                   cursor: 'pointer',
                 }}
               >
-                <SlidersHorizontal size={11} />
+                <SlidersHorizontal size={12} />
                 {showFilterDrawer ? 'Hide Filters & States' : 'Filters & States'}
               </button>
             </div>
           </div>
+
+          {showBlueprintDrawer && (
+            <div style={{ marginTop: '10px', marginBottom: '6px' }}>
+              <TokenArchitectureBlueprint
+                activeDemoRole={state.activeDemoRole}
+                theme={state.theme}
+                onChangeDemoRole={store.setActiveDemoRole}
+                onToggleTheme={store.toggleTheme}
+                compact
+              />
+            </div>
+          )}
 
           {showFilterDrawer && (
             <div style={{ marginTop: '8px' }}>
@@ -271,9 +365,11 @@ export const App: React.FC = () => {
           {/* Left Vertical Icon Rail */}
           <SlimNavigationRail
             screenMode={state.screenMode}
+            theme={state.theme}
             onSwitchScreen={store.setScreenMode}
             onOpenNewStarterModal={() => store.openModalForCard('add_case')}
             onOpenGallery={() => navigateTo('/gallery')}
+            onToggleTheme={store.toggleTheme}
           />
 
           {/* Main Workspace Area */}
@@ -358,7 +454,7 @@ export const App: React.FC = () => {
                 style={{
                   flex: 1,
                   borderRadius: '26px',
-                  background: 'rgba(255, 255, 255, 0.68)',
+                  background: 'var(--ajb-surface-subpanel)',
                   border: '1px solid var(--ajb-border-subtle)',
                   padding: '36px',
                   display: 'flex',
@@ -372,14 +468,14 @@ export const App: React.FC = () => {
               >
                 {store.simulationStatus === 'loading' && (
                   <>
-                    <Loader2 size={32} color="#E81A41" />
-                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
+                    <Loader2 size={32} color="var(--ajb-accent-periwinkle)" />
+                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
                       Synchronising Synthetic Role Profiles & Entitlements…
                     </h2>
                     <p
                       style={{
                         margin: 0,
-                        fontSize: '12.5px',
+                        fontSize: '13px',
                         color: 'var(--ajb-text-secondary)',
                         maxWidth: '460px',
                       }}
@@ -392,13 +488,13 @@ export const App: React.FC = () => {
                 {store.simulationStatus === 'empty' && (
                   <>
                     <Inbox size={32} color="var(--ajb-text-secondary)" />
-                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
+                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
                       No Matching Starter Workflows Found
                     </h2>
                     <p
                       style={{
                         margin: 0,
-                        fontSize: '12.5px',
+                        fontSize: '13px',
                         color: 'var(--ajb-text-secondary)',
                         maxWidth: '460px',
                       }}
@@ -415,7 +511,8 @@ export const App: React.FC = () => {
                           border: 'none',
                           background: 'var(--ajb-accent-black)',
                           color: '#FFFFFF',
-                          fontSize: '12px',
+                          fontSize: '12.5px',
+                          fontWeight: 600,
                           cursor: 'pointer',
                         }}
                       >
@@ -428,8 +525,10 @@ export const App: React.FC = () => {
                           padding: '9px 18px',
                           borderRadius: '9999px',
                           border: '1px solid var(--ajb-border-subtle)',
-                          background: '#FFFFFF',
-                          fontSize: '12px',
+                          background: 'var(--ajb-surface-elevated)',
+                          color: 'var(--ajb-text-primary)',
+                          fontSize: '12.5px',
+                          fontWeight: 600,
                           cursor: 'pointer',
                         }}
                       >
@@ -441,14 +540,14 @@ export const App: React.FC = () => {
 
                 {store.simulationStatus === 'error' && (
                   <>
-                    <AlertTriangle size={32} color="#B00054" />
-                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
+                    <AlertTriangle size={32} color="var(--ajb-accent-coral)" />
+                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
                       Entitlement Provisioning Validation Halted
                     </h2>
                     <p
                       style={{
                         margin: 0,
-                        fontSize: '12.5px',
+                        fontSize: '13px',
                         color: 'var(--ajb-text-secondary)',
                         maxWidth: '480px',
                       }}
@@ -468,7 +567,8 @@ export const App: React.FC = () => {
                           border: 'none',
                           background: 'var(--ajb-accent-black)',
                           color: '#FFFFFF',
-                          fontSize: '12px',
+                          fontSize: '12.5px',
+                          fontWeight: 600,
                           cursor: 'pointer',
                         }}
                       >
@@ -481,8 +581,10 @@ export const App: React.FC = () => {
                           padding: '9px 18px',
                           borderRadius: '9999px',
                           border: '1px solid var(--ajb-border-subtle)',
-                          background: '#FFFFFF',
-                          fontSize: '12px',
+                          background: 'var(--ajb-surface-elevated)',
+                          color: 'var(--ajb-text-primary)',
+                          fontSize: '12.5px',
+                          fontWeight: 600,
                           cursor: 'pointer',
                         }}
                       >
@@ -494,14 +596,14 @@ export const App: React.FC = () => {
 
                 {store.simulationStatus === 'completed' && (
                   <>
-                    <CheckCircle2 size={34} color="#2A792A" />
-                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 500 }}>
+                    <CheckCircle2 size={34} color="var(--ajb-accent-emerald)" />
+                    <h2 style={{ margin: 0, fontSize: '18px', fontWeight: 600, color: 'var(--ajb-text-primary)' }}>
                       All 4 New Starter Journey Stages Completed
                     </h2>
                     <p
                       style={{
                         margin: 0,
-                        fontSize: '12.5px',
+                        fontSize: '13px',
                         color: 'var(--ajb-text-secondary)',
                         maxWidth: '480px',
                       }}
@@ -517,7 +619,8 @@ export const App: React.FC = () => {
                         border: 'none',
                         background: 'var(--ajb-accent-black)',
                         color: '#FFFFFF',
-                        fontSize: '12px',
+                        fontSize: '12.5px',
+                        fontWeight: 600,
                         cursor: 'pointer',
                         marginTop: '6px',
                       }}
@@ -625,8 +728,8 @@ export const App: React.FC = () => {
                             >
                               <span
                                 style={{
-                                  fontSize: '13px',
-                                  fontWeight: 500,
+                                  fontSize: '13.5px',
+                                  fontWeight: 600,
                                   color: 'var(--ajb-text-primary)',
                                 }}
                               >
@@ -637,12 +740,12 @@ export const App: React.FC = () => {
                               <span
                                 className="ajb-tabular"
                                 style={{
-                                  padding: '2px 7px',
+                                  padding: '2px 8px',
                                   borderRadius: '9999px',
-                                  background: 'rgba(235, 235, 229, 0.95)',
-                                  fontSize: '10.5px',
-                                  fontWeight: 600,
-                                  color: 'var(--ajb-text-secondary)',
+                                  background: 'var(--ajb-surface-badge-neutral)',
+                                  fontSize: '11px',
+                                  fontWeight: 700,
+                                  color: 'var(--ajb-text-primary)',
                                 }}
                               >
                                 {group.count}
@@ -712,8 +815,8 @@ export const App: React.FC = () => {
             justifyContent: 'space-between',
             marginTop: '12px',
             paddingTop: '8px',
-            borderTop: '1px solid rgba(36, 36, 36, 0.06)',
-            fontSize: '10.5px',
+            borderTop: '1px solid var(--ajb-border-subtle)',
+            fontSize: '11px',
             color: 'var(--ajb-text-muted)',
           }}
         >
@@ -732,7 +835,7 @@ export const App: React.FC = () => {
               }}
               style={{
                 color: 'var(--ajb-text-primary)',
-                fontWeight: 500,
+                fontWeight: 600,
                 textDecoration: 'none',
               }}
             >

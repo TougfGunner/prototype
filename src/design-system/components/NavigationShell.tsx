@@ -43,6 +43,8 @@ export interface TopNavigationBarProps {
   onChangeDemoRole: (role: DemoRoleView) => void;
   onOpenGallery: () => void;
   isGalleryActive?: boolean;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: () => void;
 }
 
 export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
@@ -57,6 +59,8 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
   onChangeDemoRole,
   onOpenGallery,
   isGalleryActive = false,
+  theme = 'light',
+  onToggleTheme,
 }) => {
   const navItems: {
     id: string;
@@ -89,8 +93,8 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
         display: 'grid',
         gridTemplateColumns: '1fr auto 1fr',
         alignItems: 'center',
-        gap: '12px',
-        padding: '2px 4px 10px 4px',
+        gap: '14px',
+        padding: '4px 6px 12px 6px',
       }}
     >
       {/* Left Cluster: Official AJ Bell Redesigned Wordmark + Quiet Horizontal Navigation */}
@@ -98,7 +102,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: '10px',
+          gap: '12px',
           flexWrap: 'wrap',
           minWidth: 0,
         }}
@@ -110,23 +114,23 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '8px',
+            gap: '9px',
             background: 'transparent',
             border: 'none',
             cursor: 'pointer',
-            padding: '2px 4px',
-            borderRadius: '8px',
+            padding: '3px 6px',
+            borderRadius: '10px',
           }}
         >
-          <AJBellWordmarkLogo height={20} variant="crimson" />
+          <AJBellWordmarkLogo height={23} variant="auto" />
           <span
             style={{
-              fontSize: '11px',
+              fontSize: '12px',
               fontWeight: 700,
               letterSpacing: '-0.01em',
-              color: 'var(--ref-surface-selected)',
-              paddingLeft: '6px',
-              borderLeft: '1px solid var(--ref-border-subtle)',
+              color: 'var(--ajb-text-primary)',
+              paddingLeft: '7px',
+              borderLeft: '1px solid var(--ajb-border-subtle)',
             }}
           >
             {labelMode === 'reference' ? 'sugarcrm' : 'ops·profiling'}
@@ -138,7 +142,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '2px',
+            gap: '3px',
             flexWrap: 'wrap',
           }}
         >
@@ -159,18 +163,19 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
                 }}
                 aria-current={isSelected ? 'page' : undefined}
                 style={{
-                  padding: isSelected ? '6px 13px' : '5px 8px',
+                  padding: isSelected ? '7px 15px' : '6px 10px',
                   borderRadius: '999px',
                   border: 'none',
                   background: isSelected
-                    ? 'var(--ref-surface-selected)'
+                    ? 'var(--ajb-surface-selected-gradient)'
                     : 'transparent',
                   color: isSelected
                     ? 'var(--ref-text-on-selected)'
-                    : 'var(--ref-text-secondary)',
-                  fontSize: '11px',
-                  fontWeight: isSelected ? 600 : 500,
+                    : 'var(--ajb-text-secondary)',
+                  fontSize: '12.5px',
+                  fontWeight: isSelected ? 700 : 600,
                   cursor: 'pointer',
+                  boxShadow: isSelected ? 'var(--ajb-shadow-pill)' : 'none',
                   transition:
                     'background-color var(--motion-duration-fast) var(--motion-ease-out-quart), color var(--motion-duration-fast) var(--motion-ease-out-quart)',
                 }}
@@ -188,7 +193,7 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          minWidth: '350px',
+          minWidth: '360px',
         }}
       >
         <NotchAvatarStrip
@@ -201,13 +206,13 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
         />
       </div>
 
-      {/* Right Utility Cluster: Role Switcher, Label Mode, /gallery Link, Circular Icons & Operator Avatar */}
+      {/* Right Utility Cluster: Role Switcher, Label Mode, /gallery Link, Theme Toggle, Circular Icons & Operator Avatar */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'flex-end',
-          gap: '6px',
+          gap: '7px',
           flexWrap: 'wrap',
         }}
       >
@@ -217,16 +222,17 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '4px',
-            fontSize: '10px',
-            color: 'var(--ref-text-secondary)',
-            background: 'var(--ref-surface-card)',
-            padding: '4px 9px',
+            gap: '5px',
+            fontSize: '11.5px',
+            color: 'var(--ajb-text-secondary)',
+            background: 'var(--ajb-surface-card)',
+            padding: '5px 11px',
             borderRadius: '999px',
-            border: '1px solid var(--ref-border-subtle)',
+            border: '1px solid var(--ajb-border-subtle)',
+            boxShadow: 'var(--ajb-shadow-pill)',
           }}
         >
-          <span style={{ fontWeight: 600 }}>Role:</span>
+          <span style={{ fontWeight: 700, color: 'var(--ajb-accent-periwinkle)' }}>Role:</span>
           <select
             aria-label="Demonstration role switcher"
             value={activeDemoRole}
@@ -234,9 +240,9 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
             style={{
               border: 'none',
               background: 'transparent',
-              fontSize: '10px',
-              fontWeight: 600,
-              color: 'var(--ref-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              color: 'var(--ajb-text-primary)',
               cursor: 'pointer',
               outline: 'none',
             }}
@@ -254,21 +260,56 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           onClick={onToggleLabelMode}
           title="Toggle between AJ Bell New Starter Journey labels and 1:1 Reference image/video labels"
           style={{
-            padding: '4px 9px',
+            padding: '5px 11px',
             borderRadius: '999px',
-            border: '1px solid var(--ref-border-subtle)',
+            border: '1px solid var(--ajb-border-subtle)',
             background:
               labelMode === 'reference'
                 ? 'var(--ref-accent-blue-soft)'
-                : 'var(--ref-surface-card)',
-            color: 'var(--ref-text-primary)',
-            fontSize: '10px',
+                : 'var(--ajb-surface-card)',
+            color: 'var(--ajb-text-primary)',
+            fontSize: '11.5px',
             fontWeight: 600,
             cursor: 'pointer',
+            boxShadow: 'var(--ajb-shadow-pill)',
           }}
         >
           {labelMode === 'reference' ? 'Labels: Reference 1:1' : 'Labels: Starter Journey'}
         </button>
+
+        {/* Theme Switcher Pill */}
+        {onToggleTheme && (
+          <button
+            type="button"
+            onClick={onToggleTheme}
+            data-testid="top-theme-toggle"
+            aria-label="Switch Light or Dark Theme"
+            title="Switch between Light Reference and AJ Bell Obsidian Dark Mode"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              padding: '5px 11px',
+              borderRadius: '999px',
+              border: '1px solid var(--ajb-border-subtle)',
+              background:
+                theme === 'dark'
+                  ? 'var(--ajb-surface-selected-gradient)'
+                  : 'var(--ajb-surface-card)',
+              color:
+                theme === 'dark'
+                  ? 'var(--ref-text-on-selected)'
+                  : 'var(--ajb-text-primary)',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: 'var(--ajb-shadow-pill)',
+            }}
+          >
+            {theme === 'dark' ? <Sun size={12.5} /> : <Moon size={12.5} />}
+            <span>{theme === 'dark' ? 'Dark' : 'Light'}</span>
+          </button>
+        )}
 
         {/* Discoverable /gallery Route Pill */}
         <button
@@ -276,18 +317,19 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
           onClick={onOpenGallery}
           aria-current={isGalleryActive ? 'page' : undefined}
           style={{
-            padding: '4px 10px',
+            padding: '5px 12px',
             borderRadius: '999px',
-            border: '1px solid var(--ref-border-subtle)',
+            border: '1px solid var(--ajb-border-subtle)',
             background: isGalleryActive
-              ? 'var(--ref-surface-selected)'
-              : 'var(--ref-surface-card)',
+              ? 'var(--ajb-surface-selected-gradient)'
+              : 'var(--ajb-surface-card)',
             color: isGalleryActive
               ? 'var(--ref-text-on-selected)'
-              : 'var(--ref-text-primary)',
-            fontSize: '10px',
-            fontWeight: 600,
+              : 'var(--ajb-text-primary)',
+            fontSize: '11.5px',
+            fontWeight: 700,
             cursor: 'pointer',
+            boxShadow: 'var(--ajb-shadow-pill)',
           }}
         >
           /gallery
@@ -305,31 +347,32 @@ export const TopNavigationBar: React.FC<TopNavigationBarProps> = ({
             type="button"
             aria-label={label}
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '50%',
-              border: '1px solid var(--ref-border-subtle)',
-              background: 'var(--ref-surface-card)',
-              color: 'var(--ref-text-secondary)',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: 'var(--ajb-surface-card)',
+              color: 'var(--ajb-text-secondary)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
+              boxShadow: 'var(--ajb-shadow-pill)',
             }}
           >
-            <Icon size={12.5} strokeWidth={1.8} />
+            <Icon size={13.5} strokeWidth={1.85} />
           </button>
         ))}
 
         {/* Top-Right Operator Avatar */}
         <span
           style={{
-            width: '30px',
-            height: '30px',
+            width: '32px',
+            height: '32px',
             borderRadius: '50%',
             overflow: 'hidden',
-            border: '2px solid var(--ref-surface-card)',
-            boxShadow: '0 2px 5px rgba(0,0,0,0.08)',
+            border: '2px solid var(--ajb-surface-elevated)',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.14)',
             display: 'inline-block',
             flexShrink: 0,
           }}
@@ -355,6 +398,8 @@ export interface SlimNavigationRailProps {
   onSwitchScreen: (mode: WorkspaceScreenMode) => void;
   onOpenNewStarterModal: () => void;
   onOpenGallery: () => void;
+  theme?: 'light' | 'dark';
+  onToggleTheme?: () => void;
 }
 
 export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
@@ -362,22 +407,25 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
   onSwitchScreen,
   onOpenNewStarterModal,
   onOpenGallery,
+  theme: externalTheme,
+  onToggleTheme: externalToggleTheme,
 }) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+  const [localTheme, setLocalTheme] = useState<'light' | 'dark'>(() => {
     return document.documentElement.getAttribute('data-theme') === 'dark'
       ? 'dark'
       : 'light';
   });
 
-  const toggleTheme = () => {
-    const next = theme === 'light' ? 'dark' : 'light';
-    setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
-    try {
-      localStorage.setItem('ajb-theme', next);
-    } catch {
-      // ignore storage errors
+  const activeTheme = externalTheme ?? localTheme;
+
+  const handleToggleTheme = () => {
+    if (externalToggleTheme) {
+      externalToggleTheme();
+      return;
     }
+    const next = activeTheme === 'light' ? 'dark' : 'light';
+    setLocalTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
   };
 
   const railButtons = [
@@ -441,7 +489,7 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
     <aside
       aria-label="Slim tool rail"
       style={{
-        width: '38px',
+        width: '40px',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -458,20 +506,20 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
         }
         aria-label="Cycle workspace view"
         style={{
-          width: '28px',
-          height: '28px',
+          width: '30px',
+          height: '30px',
           borderRadius: '50%',
-          border: '1px solid var(--ref-border-subtle)',
-          background: 'var(--ref-surface-card)',
-          color: 'var(--ref-text-secondary)',
+          border: '1px solid var(--ajb-border-subtle)',
+          background: 'var(--ajb-surface-card)',
+          color: 'var(--ajb-text-secondary)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          boxShadow: 'var(--ref-shadow-card)',
+          boxShadow: 'var(--ajb-shadow-card)',
         }}
       >
-        <ChevronRight size={13} />
+        <ChevronRight size={14} />
       </button>
 
       {/* Center Vertical Action Stack */}
@@ -481,10 +529,11 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
           flexDirection: 'column',
           alignItems: 'center',
           gap: '7px',
-          padding: '8px 4px',
+          padding: '8px 5px',
           borderRadius: '999px',
-          background: 'rgba(255, 255, 255, 0.45)',
-          border: '1px solid var(--ref-border-hairline)',
+          background: 'var(--ajb-surface-toolbar)',
+          border: '1px solid var(--ajb-border-glass)',
+          boxShadow: 'var(--ajb-shadow-card)',
         }}
       >
         {railButtons.map(({ Icon, label, onClick, active }) => (
@@ -495,50 +544,51 @@ export const SlimNavigationRail: React.FC<SlimNavigationRailProps> = ({
             title={label}
             onClick={onClick}
             style={{
-              width: '26px',
-              height: '26px',
+              width: '28px',
+              height: '28px',
               borderRadius: '50%',
-              border: active ? '1px solid var(--ref-surface-selected)' : 'none',
+              border: active ? '1px solid var(--ajb-surface-selected)' : 'none',
               background: active
-                ? 'var(--ref-surface-selected)'
-                : 'var(--ref-surface-card)',
+                ? 'var(--ajb-surface-selected-gradient)'
+                : 'var(--ajb-surface-card)',
               color: active
                 ? 'var(--ref-text-on-selected)'
-                : 'var(--ref-text-secondary)',
+                : 'var(--ajb-text-secondary)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               cursor: 'pointer',
-              boxShadow: 'var(--ref-shadow-card)',
+              boxShadow: 'var(--ajb-shadow-card)',
               transition: 'all 150ms ease',
             }}
           >
-            <Icon size={12} strokeWidth={1.8} />
+            <Icon size={13} strokeWidth={1.85} />
           </button>
         ))}
       </div>
 
-      {/* Bottom Black Moon/Sun Button (Matches Bottom-Left of Reference Image) */}
+      {/* Bottom Burgundy Moon/Sun Button (Matches Bottom-Left of Reference Image) */}
       <button
         type="button"
-        onClick={toggleTheme}
+        onClick={handleToggleTheme}
+        data-testid="rail-theme-toggle"
         aria-label="Toggle light reference or dark adaptation theme"
         title="Toggle Light Reference / Dark Adaptation"
         style={{
-          width: '28px',
-          height: '28px',
+          width: '30px',
+          height: '30px',
           borderRadius: '50%',
-          border: 'none',
-          background: 'var(--ref-surface-selected)',
+          border: '1px solid var(--ajb-border-glass)',
+          background: 'var(--ajb-surface-selected-gradient)',
           color: 'var(--ref-text-on-selected)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          boxShadow: '0 4px 10px rgba(0, 0, 0, 0.18)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.24)',
         }}
       >
-        {theme === 'dark' ? <Sun size={13} /> : <Moon size={13} />}
+        {activeTheme === 'dark' ? <Sun size={14} /> : <Moon size={14} />}
       </button>
     </aside>
   );
@@ -583,41 +633,42 @@ export const SubHeaderBreadcrumb: React.FC<SubHeaderBreadcrumbProps> = ({
         onClick={onBackToPipelines}
         aria-label="Previous workspace view"
         style={{
-          width: '26px',
-          height: '26px',
+          width: '28px',
+          height: '28px',
           borderRadius: '50%',
-          border: '1px solid var(--ref-border-subtle)',
-          background: 'var(--ref-surface-card)',
-          color: 'var(--ref-text-secondary)',
+          border: '1px solid var(--ajb-border-subtle)',
+          background: 'var(--ajb-surface-card)',
+          color: 'var(--ajb-text-secondary)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          boxShadow: 'var(--ref-shadow-card)',
+          boxShadow: 'var(--ajb-shadow-card)',
         }}
       >
-        <ChevronLeft size={14} />
+        <ChevronLeft size={14.5} />
       </button>
       <span
         style={{
-          fontSize: '11px',
-          fontWeight: 500,
-          color: 'var(--ref-text-secondary)',
+          fontSize: '12.5px',
+          fontWeight: 600,
+          color: 'var(--ajb-text-secondary)',
         }}
       >
         {trailLabel}
       </span>
       <span
         style={{
-          fontSize: '10px',
-          padding: '2px 8px',
+          fontSize: '11.5px',
+          fontWeight: 600,
+          padding: '3px 10px',
           borderRadius: '999px',
-          background: 'rgba(255, 255, 255, 0.66)',
-          border: '1px solid var(--ref-border-subtle)',
-          color: 'var(--ref-text-muted)',
+          background: 'var(--ajb-surface-control)',
+          border: '1px solid var(--ajb-border-subtle)',
+          color: 'var(--ajb-text-primary)',
         }}
       >
-        View: {activeDemoRole}
+        Role Token: {activeDemoRole}
       </span>
     </div>
   );

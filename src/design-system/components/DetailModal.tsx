@@ -160,7 +160,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               height: '36px',
               borderRadius: '9999px',
               border: '1px solid var(--ajb-border-subtle)',
-              background: '#FFFFFF',
+              background: 'var(--ajb-surface-elevated)',
               color: 'var(--ajb-text-secondary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -183,7 +183,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             gap: '6px',
             padding: '4px',
             borderRadius: '14px',
-            background: 'rgba(235, 235, 229, 0.85)',
+            background: 'var(--ajb-surface-input-pill)',
             marginBottom: '16px',
           }}
         >
@@ -204,8 +204,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   border: 'none',
                   background: active ? 'var(--ajb-accent-black)' : 'transparent',
                   color: active ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-                  fontSize: '10.5px',
-                  fontWeight: active ? 500 : 400,
+                  fontSize: '11px',
+                  fontWeight: active ? 600 : 500,
                   cursor: 'pointer',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
@@ -224,10 +224,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '12px 18px',
             borderRadius: '20px',
-            background: 'rgba(235, 235, 229, 0.85)',
+            background: 'var(--ajb-surface-input-pill)',
             border: errors.caseName
               ? '1.5px solid var(--ajb-accent-coral)'
-              : '1px solid transparent',
+              : '1px solid var(--ajb-border-subtle)',
             marginBottom: '10px',
           }}
         >
@@ -235,7 +235,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             htmlFor="ajb-field-case-name"
             style={{
               display: 'block',
-              fontSize: '10.5px',
+              fontSize: '11px',
               color: 'var(--ajb-text-muted)',
               marginBottom: '3px',
             }}
@@ -255,8 +255,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               width: '100%',
               border: 'none',
               background: 'transparent',
-              fontSize: '14px',
-              fontWeight: 500,
+              fontSize: '14.5px',
+              fontWeight: 600,
               color: 'var(--ajb-text-primary)',
               outline: 'none',
               padding: 0,
@@ -271,7 +271,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 alignItems: 'center',
                 gap: '4px',
                 marginTop: '4px',
-                fontSize: '10.5px',
+                fontSize: '11px',
                 color: 'var(--ajb-accent-coral)',
               }}
             >
@@ -286,7 +286,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '10px 18px',
             borderRadius: '20px',
-            background: 'rgba(235, 235, 229, 0.85)',
+            background: 'var(--ajb-surface-input-pill)',
+            border: '1px solid var(--ajb-border-subtle)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -294,7 +295,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           }}
         >
           <div>
-            <div style={{ fontSize: '10.5px', color: 'var(--ajb-text-muted)' }}>
+            <div style={{ fontSize: '11px', color: 'var(--ajb-text-muted)' }}>
               {labelMode === 'reference' ? 'Case Creator' : 'Sponsoring Manager / Creator'}
             </div>
             <div
@@ -313,14 +314,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   height: '32px',
                   borderRadius: '9999px',
                   objectFit: 'cover',
-                  border: '1.5px solid #FFFFFF',
+                  border: '1.5px solid var(--ajb-border-subtle)',
                 }}
               />
               <div>
                 <div
                   style={{
-                    fontSize: '13.5px',
-                    fontWeight: 500,
+                    fontSize: '14px',
+                    fontWeight: 600,
                     color: 'var(--ajb-text-primary)',
                   }}
                 >
@@ -334,10 +335,11 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           </div>
           <span
             style={{
-              fontSize: '10.5px',
-              padding: '3px 8px',
+              fontSize: '11px',
+              padding: '3px 9px',
               borderRadius: '9999px',
-              background: '#FFFFFF',
+              background: 'var(--ajb-surface-elevated)',
+              border: '1px solid var(--ajb-border-subtle)',
               color: 'var(--ajb-text-secondary)',
             }}
           >
@@ -349,7 +351,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
         <div
           style={{
             borderRadius: '20px',
-            background: 'rgba(235, 235, 229, 0.85)',
+            background: 'var(--ajb-surface-input-pill)',
+            border: '1px solid var(--ajb-border-subtle)',
             marginBottom: '10px',
             overflow: 'hidden',
             transition: 'all 220ms var(--ajb-ease-panel)',
@@ -372,13 +375,13 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             }}
           >
             <div>
-              <div style={{ fontSize: '10.5px', color: 'var(--ajb-text-muted)' }}>
+              <div style={{ fontSize: '11px', color: 'var(--ajb-text-muted)' }}>
                 Responsible Team
               </div>
               <div
                 style={{
-                  fontSize: '14px',
-                  fontWeight: 500,
+                  fontSize: '14.5px',
+                  fontWeight: 600,
                   color: 'var(--ajb-text-primary)',
                   marginTop: '2px',
                 }}
@@ -399,7 +402,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       height: '26px',
                       borderRadius: '9999px',
                       objectFit: 'cover',
-                      border: '1.5px solid #FFFFFF',
+                      border: '1.5px solid var(--ajb-surface-elevated)',
                       marginLeft: idx === 0 ? 0 : '-7px',
                     }}
                   />
@@ -410,7 +413,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       width: '26px',
                       height: '26px',
                       borderRadius: '9999px',
-                      background: '#5D0A1A',
+                      background: 'var(--ajb-accent-black)',
                       color: '#FFFFFF',
                       fontSize: '10px',
                       fontWeight: 600,
@@ -418,7 +421,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       alignItems: 'center',
                       justifyContent: 'center',
                       marginLeft: '-7px',
-                      border: '1.5px solid #FFFFFF',
+                      border: '1.5px solid var(--ajb-surface-elevated)',
                     }}
                   >
                     +{selectedTeam.extraCount}
@@ -442,7 +445,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '6px',
-                borderTop: '1px solid rgba(36, 36, 36, 0.06)',
+                borderTop: '1px solid var(--ajb-border-subtle)',
               }}
             >
               {RESPONSIBLE_TEAMS.map((team) => {
@@ -466,7 +469,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                       border: isSelected
                         ? '1px solid var(--ajb-accent-black)'
                         : '1px solid transparent',
-                      background: isSelected ? '#FFFFFF' : 'rgba(255,255,255,0.45)',
+                      background: isSelected ? 'var(--ajb-surface-elevated)' : 'var(--ajb-surface-subpanel)',
                       cursor: 'pointer',
                       textAlign: 'left',
                     }}
@@ -474,14 +477,14 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                     <div>
                       <div
                         style={{
-                          fontSize: '13px',
-                          fontWeight: 500,
+                          fontSize: '13.5px',
+                          fontWeight: 600,
                           color: 'var(--ajb-text-primary)',
                         }}
                       >
                         {labelMode === 'reference' ? team.code : team.name}
                       </div>
-                      <div style={{ fontSize: '10.5px', color: 'var(--ajb-text-muted)' }}>
+                      <div style={{ fontSize: '11px', color: 'var(--ajb-text-muted)' }}>
                         {labelMode === 'reference'
                           ? team.referenceSubtitle
                           : team.operationsSubtitle}
@@ -499,7 +502,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                             height: '26px',
                             borderRadius: '9999px',
                             objectFit: 'cover',
-                            border: '1.5px solid #FFFFFF',
+                            border: '1.5px solid var(--ajb-surface-elevated)',
                             marginLeft: idx === 0 ? 0 : '-7px',
                           }}
                         />
@@ -510,7 +513,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                             width: '26px',
                             height: '26px',
                             borderRadius: '9999px',
-                            background: '#5D0A1A',
+                            background: 'var(--ajb-accent-black)',
                             color: '#FFFFFF',
                             fontSize: '10px',
                             fontWeight: 600,
@@ -518,7 +521,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginLeft: '-7px',
-                            border: '1.5px solid #FFFFFF',
+                            border: '1.5px solid var(--ajb-surface-elevated)',
                           }}
                         >
                           +{team.extraCount}
@@ -543,7 +546,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               position: 'relative',
               height: '58px',
               borderRadius: '22px',
-              background: 'rgba(235, 235, 229, 0.85)',
+              background: 'var(--ajb-surface-input-pill)',
+              border: '1px solid var(--ajb-border-subtle)',
               overflow: 'hidden',
               display: 'flex',
               alignItems: 'center',
@@ -551,7 +555,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               padding: '0 18px 0 12px',
             }}
           >
-            {/* Active white fill bar proportional to slider value */}
+            {/* Active elevated fill bar proportional to slider value */}
             <div
               aria-hidden="true"
               style={{
@@ -561,8 +565,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 bottom: '4px',
                 width: `calc(${Math.max(38, budgetPct)}% - 8px)`,
                 borderRadius: '18px',
-                background: '#FFFFFF',
-                boxShadow: '0 2px 10px rgba(36, 20, 24, 0.06)',
+                background: 'var(--ajb-surface-elevated)',
+                boxShadow: 'var(--ajb-shadow-pill)',
                 transition: 'width 60ms linear',
               }}
             />
@@ -581,7 +585,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                   width: '36px',
                   height: '36px',
                   borderRadius: '9999px',
-                  background: '#5D0A1A',
+                  background: 'var(--ajb-accent-black)',
                   color: '#FFFFFF',
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -592,13 +596,13 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 <DollarSign size={15} />
               </span>
               <div>
-                <div style={{ fontSize: '10px', color: 'var(--ajb-text-muted)' }}>
+                <div style={{ fontSize: '10.5px', color: 'var(--ajb-text-muted)' }}>
                   {labelMode === 'reference' ? 'Allocated Budget' : 'Provisioning & Role Budget'}
                 </div>
                 <div
                   className="ajb-tabular"
                   style={{
-                    fontSize: '14.5px',
+                    fontSize: '15px',
                     fontWeight: 600,
                     color: 'var(--ajb-text-primary)',
                   }}
@@ -633,7 +637,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               role="alert"
               style={{
                 marginTop: '4px',
-                fontSize: '10.5px',
+                fontSize: '11px',
                 color: 'var(--ajb-accent-coral)',
               }}
             >
@@ -655,17 +659,17 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             style={{
               padding: '10px 14px',
               borderRadius: '16px',
-              background: 'rgba(235, 235, 229, 0.85)',
+              background: 'var(--ajb-surface-input-pill)',
               border: errors.costCentreCode
                 ? '1.5px solid var(--ajb-accent-coral)'
-                : '1px solid transparent',
+                : '1px solid var(--ajb-border-subtle)',
             }}
           >
             <label
               htmlFor="ajb-field-cost-centre"
               style={{
                 display: 'block',
-                fontSize: '10px',
+                fontSize: '10.5px',
                 color: 'var(--ajb-text-muted)',
                 marginBottom: '2px',
               }}
@@ -682,8 +686,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 width: '100%',
                 border: 'none',
                 background: 'transparent',
-                fontSize: '12px',
-                fontWeight: 500,
+                fontSize: '12.5px',
+                fontWeight: 600,
                 color: 'var(--ajb-text-primary)',
                 outline: 'none',
                 padding: 0,
@@ -692,7 +696,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             {errors.costCentreCode && (
               <div
                 role="alert"
-                style={{ fontSize: '10px', color: 'var(--ajb-accent-coral)', marginTop: '2px' }}
+                style={{ fontSize: '10.5px', color: 'var(--ajb-accent-coral)', marginTop: '2px' }}
               >
                 {errors.costCentreCode}
               </div>
@@ -703,14 +707,15 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             style={{
               padding: '10px 14px',
               borderRadius: '16px',
-              background: 'rgba(235, 235, 229, 0.85)',
+              background: 'var(--ajb-surface-input-pill)',
+              border: '1px solid var(--ajb-border-subtle)',
             }}
           >
             <label
               htmlFor="ajb-field-clearance"
               style={{
                 display: 'block',
-                fontSize: '10px',
+                fontSize: '10.5px',
                 color: 'var(--ajb-text-muted)',
                 marginBottom: '2px',
               }}
@@ -730,8 +735,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 width: '100%',
                 border: 'none',
                 background: 'transparent',
-                fontSize: '12px',
-                fontWeight: 500,
+                fontSize: '12.5px',
+                fontWeight: 600,
                 color: 'var(--ajb-text-primary)',
                 outline: 'none',
                 padding: 0,
@@ -749,10 +754,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
           style={{
             padding: '12px 18px',
             borderRadius: '18px',
-            background: 'rgba(235, 235, 229, 0.85)',
+            background: 'var(--ajb-surface-input-pill)',
             border: errors.caseDescription
               ? '1.5px solid var(--ajb-accent-coral)'
-              : '1px solid transparent',
+              : '1px solid var(--ajb-border-subtle)',
             marginBottom: '18px',
           }}
         >
@@ -760,7 +765,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
             htmlFor="ajb-field-description"
             style={{
               display: 'block',
-              fontSize: '10.5px',
+              fontSize: '11px',
               color: 'var(--ajb-text-muted)',
               marginBottom: '4px',
             }}
@@ -780,7 +785,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               width: '100%',
               border: 'none',
               background: 'transparent',
-              fontSize: '12px',
+              fontSize: '12.5px',
               color: 'var(--ajb-text-primary)',
               resize: 'none',
               outline: 'none',
@@ -793,7 +798,7 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               role="alert"
               style={{
                 marginTop: '4px',
-                fontSize: '10.5px',
+                fontSize: '11px',
                 color: 'var(--ajb-accent-coral)',
               }}
             >
@@ -820,10 +825,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 padding: '9px 12px',
                 borderRadius: '9999px',
                 border: '1px solid var(--ajb-border-subtle)',
-                background: '#FFFFFF',
+                background: 'var(--ajb-surface-elevated)',
                 color: 'var(--ajb-text-secondary)',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '11.5px',
+                fontWeight: 600,
                 cursor: draft.activeStageTab === 'starter_details' ? 'not-allowed' : 'pointer',
                 opacity: draft.activeStageTab === 'starter_details' ? 0.45 : 1,
               }}
@@ -838,10 +843,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 padding: '9px 12px',
                 borderRadius: '9999px',
                 border: '1px solid var(--ajb-border-subtle)',
-                background: '#FFFFFF',
+                background: 'var(--ajb-surface-elevated)',
                 color: 'var(--ajb-text-secondary)',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '11.5px',
+                fontWeight: 600,
                 cursor:
                   draft.activeStageTab === 'ready_for_onboarding' ? 'not-allowed' : 'pointer',
                 opacity: draft.activeStageTab === 'ready_for_onboarding' ? 0.45 : 1,
@@ -859,10 +864,10 @@ export const DetailModal: React.FC<DetailModalProps> = ({
                 padding: '9px 14px',
                 borderRadius: '9999px',
                 border: '1px solid var(--ajb-border-subtle)',
-                background: '#FFFFFF',
+                background: 'var(--ajb-surface-elevated)',
                 color: 'var(--ajb-text-primary)',
-                fontSize: '11px',
-                fontWeight: 500,
+                fontSize: '11.5px',
+                fontWeight: 600,
                 cursor: 'pointer',
               }}
             >
@@ -879,8 +884,8 @@ export const DetailModal: React.FC<DetailModalProps> = ({
               border: 'none',
               background: 'var(--ajb-accent-black)',
               color: '#FFFFFF',
-              fontSize: '12.5px',
-              fontWeight: 500,
+              fontSize: '13px',
+              fontWeight: 600,
               cursor: 'pointer',
               boxShadow: '0 8px 20px rgba(13, 13, 15, 0.22)',
             }}

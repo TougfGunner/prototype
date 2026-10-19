@@ -193,8 +193,8 @@ export const OverlappingAvatarCluster: React.FC<OverlappingAvatarClusterProps> =
                   padding: '0 3px',
                   borderRadius: '999px',
                   background: badgeBg,
-                  color: '#ffffff',
-                  fontSize: '8.5px',
+                  color: item.tone === 'amber' ? '#241418' : '#ffffff',
+                  fontSize: '9px',
                   fontWeight: 700,
                   lineHeight: '13px',
                   textAlign: 'center',
@@ -219,7 +219,7 @@ export const OverlappingAvatarCluster: React.FC<OverlappingAvatarClusterProps> =
             marginLeft: '-8px',
             background: 'var(--ref-surface-stage)',
             color: 'var(--ref-text-primary)',
-            fontSize: '10px',
+            fontSize: '10.5px',
             fontWeight: 600,
             display: 'inline-flex',
             alignItems: 'center',
@@ -278,9 +278,9 @@ export const StatusPillBadge: React.FC<StatusPillBadgeProps> = ({ status }) => {
         display: 'inline-flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '3px 10px',
+        padding: '4px 11px',
         borderRadius: '999px',
-        fontSize: '10px',
+        fontSize: '11px',
         fontWeight: 600,
         background: s.bg,
         color: s.color,
@@ -311,7 +311,7 @@ export const ConicProgressRing: React.FC<ConicProgressRingProps> = ({
   caption,
   label,
   tone,
-  size = 64,
+  size = 68,
 }) => {
   const textValue = centerLabel ?? displayValue ?? '';
   const textCaption = caption ?? label ?? '';
@@ -365,7 +365,7 @@ export const ConicProgressRing: React.FC<ConicProgressRingProps> = ({
             r={radius}
             fill="none"
             stroke="var(--ref-border-subtle)"
-            strokeWidth="3.5"
+            strokeWidth="3.8"
           />
           <circle
             cx={size / 2}
@@ -373,7 +373,7 @@ export const ConicProgressRing: React.FC<ConicProgressRingProps> = ({
             r={radius}
             fill="none"
             stroke={strokeColor}
-            strokeWidth="3.5"
+            strokeWidth="3.8"
             strokeLinecap="round"
             strokeDasharray={circumference}
             strokeDashoffset={dashOffset}
@@ -391,7 +391,7 @@ export const ConicProgressRing: React.FC<ConicProgressRingProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            fontSize: '11px',
+            fontSize: '12px',
             fontWeight: 700,
             color: 'var(--ref-text-primary)',
           }}
@@ -401,9 +401,9 @@ export const ConicProgressRing: React.FC<ConicProgressRingProps> = ({
       </div>
       <span
         style={{
-          fontSize: '9.5px',
+          fontSize: '10.5px',
           color: 'var(--ref-text-secondary)',
-          fontWeight: 500,
+          fontWeight: 550,
         }}
       >
         {textCaption}

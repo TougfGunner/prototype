@@ -115,19 +115,19 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
           <span
             title={`Target date: ${card.dueDate}`}
             style={{
-              width: '30px',
-              height: '30px',
+              width: '32px',
+              height: '32px',
               borderRadius: '9999px',
-              background: '#FFFFFF',
-              border: '1px solid rgba(36, 36, 36, 0.05)',
-              boxShadow: '0 2px 5px rgba(36, 20, 24, 0.05)',
+              background: 'var(--ajb-surface-socket)',
+              border: '1px solid var(--ajb-border-subtle)',
+              boxShadow: 'var(--ajb-shadow-plus-circle)',
               display: 'inline-flex',
               alignItems: 'center',
               justifyContent: 'center',
               color: 'var(--ajb-text-primary)',
             }}
           >
-            <Calendar size={13} strokeWidth={1.8} />
+            <Calendar size={14} strokeWidth={1.9} />
           </span>
         </div>
       </div>
@@ -135,12 +135,12 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
       {/* Bottom Row: 2-Line Action Label on Bottom-Left (Matches Reference 1:1) */}
       <span
         style={{
-          fontSize: '12px',
+          fontSize: '13px',
           fontWeight: 500,
-          lineHeight: 1.28,
+          lineHeight: 1.3,
           color: 'var(--ajb-text-primary)',
           letterSpacing: '-0.01em',
-          maxWidth: '155px',
+          maxWidth: '165px',
         }}
       >
         {title}
@@ -167,8 +167,8 @@ export const AllocationStageCard: React.FC<AllocationStageCardProps> = ({
       >
         <span
           style={{
-            width: '6.5px',
-            height: '6.5px',
+            width: '7px',
+            height: '7px',
             borderRadius: '9999px',
             background: socketColor,
           }}
@@ -252,7 +252,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
   const outgoingDotColor = isPrimaryOutgoing
     ? 'var(--ajb-accent-periwinkle)'
     : useDarkStage3Socket
-      ? 'var(--ajb-accent-black)'
+      ? 'var(--ajb-connector-dark-stroke)'
       : 'var(--ajb-accent-coral)';
 
   const hasOutgoingSocket =
@@ -282,10 +282,10 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         gap: '10px',
-        padding: '7px 10px',
-        minHeight: '50px',
+        padding: '8px 10px',
+        minHeight: '52px',
         borderBottom: showBottomDivider ? '1px solid var(--ajb-border-row-divider)' : 'none',
-        background: showDropHighlight ? 'rgba(255, 255, 255, 0.72)' : 'transparent',
+        background: showDropHighlight ? 'var(--ajb-surface-elevated)' : 'transparent',
         borderRadius: showDropHighlight ? '14px' : undefined,
         opacity: highlighted ? 1 : 0.38,
         animationDelay: `${staggerIndex * 42}ms`,
@@ -314,8 +314,8 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
       >
         <span
           style={{
-            width: '6.5px',
-            height: '6.5px',
+            width: '7px',
+            height: '7px',
             borderRadius: '9999px',
             background: incomingDotColor,
             transition: 'background var(--ajb-duration-connector) var(--ajb-ease-standard)',
@@ -344,12 +344,12 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
             src={task.avatarUrl!}
             alt=""
             style={{
-              width: '32px',
-              height: '32px',
+              width: '34px',
+              height: '34px',
               borderRadius: '9999px',
               objectFit: 'cover',
               border: '1.5px solid #FFFFFF',
-              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.10)',
+              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.14)',
             }}
           />
         </button>
@@ -360,16 +360,16 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           aria-label={`Assign reviewer to ${title}`}
           title="Click or drop a top-notch participant here to assign"
           style={{
-            width: '32px',
-            height: '32px',
+            width: '34px',
+            height: '34px',
             borderRadius: '9999px',
             border: showDropHighlight
-              ? '1.5px solid #5D0A1A'
-              : '1px solid rgba(36, 36, 36, 0.06)',
-            background: showDropHighlight ? '#5D0A1A' : '#FFFFFF',
+              ? '1.5px solid var(--ajb-accent-black)'
+              : '1px solid var(--ajb-border-subtle)',
+            background: showDropHighlight ? 'var(--ajb-accent-black)' : 'var(--ajb-surface-socket)',
             color: showDropHighlight ? '#FFFFFF' : 'var(--ajb-text-primary)',
             boxShadow: showDropHighlight
-              ? '0 6px 14px rgba(93, 10, 26, 0.24)'
+              ? '0 6px 14px rgba(158, 17, 50, 0.32)'
               : 'var(--ajb-shadow-plus-circle)',
             display: 'inline-flex',
             alignItems: 'center',
@@ -381,7 +381,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
               'background 140ms var(--ajb-ease-standard), color 140ms var(--ajb-ease-standard), transform 140ms var(--ajb-ease-spring)',
           }}
         >
-          <Plus size={13} strokeWidth={2} />
+          <Plus size={14} strokeWidth={2.1} />
         </button>
       )}
 
@@ -397,11 +397,11 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
           textAlign: 'left',
           cursor: 'pointer',
           fontFamily: 'var(--ajb-font-sans)',
-          fontSize: '11.5px',
-          fontWeight: isBoldActiveRow ? 600 : isAssigned ? 500 : 400,
-          lineHeight: 1.22,
+          fontSize: '12.5px',
+          fontWeight: isBoldActiveRow ? 600 : isAssigned ? 500 : 450,
+          lineHeight: 1.25,
           letterSpacing: '-0.01em',
-          color: isAssigned ? 'var(--ajb-text-primary)' : 'var(--ajb-text-muted)',
+          color: isAssigned ? 'var(--ajb-text-primary)' : 'var(--ajb-text-secondary)',
           transition: 'color var(--ajb-duration-hover) var(--ajb-ease-standard)',
         }}
       >
@@ -419,9 +419,9 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
       >
         {isAssigned && showCompletedCalendar && (
           <CheckCheck
-            size={13}
+            size={14}
             strokeWidth={2}
-            style={{ color: 'var(--ajb-text-primary)', opacity: 0.78 }}
+            style={{ color: 'var(--ajb-text-primary)', opacity: 0.84 }}
           />
         )}
 
@@ -431,12 +431,12 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
             onClick={() => onOpenDetail(task.id)}
             aria-label={`Schedule ${title}`}
             style={{
-              width: '28px',
-              height: '28px',
+              width: '30px',
+              height: '30px',
               borderRadius: '9999px',
-              border: '1px solid rgba(36, 36, 36, 0.05)',
-              background: '#FFFFFF',
-              boxShadow: '0 2px 5px rgba(36, 20, 24, 0.05)',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: 'var(--ajb-surface-socket)',
+              boxShadow: 'var(--ajb-shadow-plus-circle)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -444,7 +444,7 @@ export const CompactTaskRowCard: React.FC<CompactTaskRowCardProps> = ({
               cursor: 'pointer',
             }}
           >
-            <Calendar size={12} strokeWidth={1.8} />
+            <Calendar size={13} strokeWidth={1.8} />
           </button>
         )}
 
@@ -555,12 +555,12 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
       className="ref-action-tile-pop"
       style={{
         position: 'relative',
-        minHeight: '76px',
-        padding: '13px 14px',
+        minHeight: '80px',
+        padding: '14px 15px',
         borderRadius: '20px',
         border: isSelected
-          ? '1px solid rgba(93, 10, 26, 0.95)'
-          : '1px solid rgba(255, 255, 255, 0.90)',
+          ? '1px solid var(--ajb-accent-black)'
+          : '1px solid var(--ajb-border-subtle)',
         background: backgroundStyle,
         color: textColor,
         boxShadow: isSelected ? 'var(--ajb-shadow-card-active)' : 'var(--ajb-shadow-card)',
@@ -588,7 +588,7 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
           width: '8px',
           height: '8px',
           borderRadius: '9999px',
-          background: isSelected ? 'var(--ajb-accent-black)' : 'transparent',
+          background: isSelected ? 'var(--ajb-connector-dark-stroke)' : 'transparent',
           border: isSelected ? '1.5px solid #FFFFFF' : 'none',
           pointerEvents: 'none',
         }}
@@ -596,11 +596,11 @@ export const ActionTileCard: React.FC<ActionTileCardProps> = ({
 
       <span
         style={{
-          fontSize: '11.5px',
+          fontSize: '12.5px',
           fontWeight: isSelected ? 600 : 500,
-          lineHeight: 1.24,
+          lineHeight: 1.26,
           letterSpacing: '-0.01em',
-          maxWidth: '96px',
+          maxWidth: '108px',
         }}
       >
         {title}
@@ -641,7 +641,7 @@ export const FrostedStageColumn: React.FC<FrostedStageColumnProps> = ({
         style={{
           position: 'relative',
           flex: 1,
-          minHeight: '264px',
+          minHeight: '274px',
           padding: contentPadding,
           borderRadius: 'var(--ajb-radius-stage)',
           background: 'var(--ajb-surface-stage-column)',
@@ -661,8 +661,8 @@ export const FrostedStageColumn: React.FC<FrostedStageColumnProps> = ({
         style={{
           marginTop: '10px',
           textAlign: 'center',
-          fontSize: '12px',
-          fontWeight: 500,
+          fontSize: '13px',
+          fontWeight: 550,
           letterSpacing: '-0.01em',
           color: 'var(--ajb-text-primary)',
         }}
@@ -836,7 +836,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
   return (
     <div
       style={{
-        padding: '16px 20px 18px',
+        padding: '18px 22px 20px',
         borderRadius: '30px',
         background: 'var(--ajb-surface-subpanel)',
         border: '1px solid var(--ajb-border-glass)',
@@ -859,8 +859,8 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
           <h2
             style={{
               margin: 0,
-              fontSize: '15.5px',
-              fontWeight: 500,
+              fontSize: '16.5px',
+              fontWeight: 550,
               letterSpacing: '-0.015em',
               color: 'var(--ajb-text-primary)',
             }}
@@ -876,10 +876,10 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              padding: '3px 5px',
+              padding: '4px 6px',
               borderRadius: '9999px',
-              background: 'rgba(255, 255, 255, 0.78)',
-              border: '1px solid rgba(36, 36, 36, 0.06)',
+              background: 'var(--ajb-surface-toolbar)',
+              border: '1px solid var(--ajb-border-subtle)',
             }}
           >
             <button
@@ -889,15 +889,15 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '3px 9px',
+                padding: '4px 10px',
                 borderRadius: '9999px',
                 border: 'none',
                 background:
                   phase !== 'idle'
                     ? 'var(--ajb-accent-black)'
                     : 'var(--ajb-accent-periwinkle-soft)',
-                color: phase !== 'idle' ? '#FFFFFF' : 'var(--ajb-brand-crimson)',
-                fontSize: '10px',
+                color: phase !== 'idle' ? '#FFFFFF' : 'var(--ajb-accent-periwinkle)',
+                fontSize: '11px',
                 fontWeight: 600,
                 cursor: 'pointer',
               }}
@@ -926,7 +926,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 );
               }}
               style={{
-                padding: '3px 8px',
+                padding: '4px 9px',
                 borderRadius: '9999px',
                 border: 'none',
                 background:
@@ -937,7 +937,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                   phase === 'seq06_drag' || phase === 'seq06_solidify'
                     ? '#FFFFFF'
                     : 'var(--ajb-text-secondary)',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 500,
                 cursor: 'pointer',
               }}
@@ -959,7 +959,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 );
               }}
               style={{
-                padding: '3px 8px',
+                padding: '4px 9px',
                 borderRadius: '9999px',
                 border: 'none',
                 background:
@@ -970,7 +970,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                   phase === 'seq07_arrow' || phase === 'seq07_press' || phase === 'seq07_dashed'
                     ? '#FFFFFF'
                     : 'var(--ajb-text-secondary)',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 500,
                 cursor: 'pointer',
               }}
@@ -985,12 +985,12 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '4px',
-                padding: '3px 8px',
+                padding: '4px 9px',
                 borderRadius: '9999px',
                 border: 'none',
                 background: autoLoop ? 'var(--ajb-accent-black)' : 'transparent',
                 color: autoLoop ? '#FFFFFF' : 'var(--ajb-text-secondary)',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 500,
                 cursor: 'pointer',
               }}
@@ -1011,12 +1011,12 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
                 }
                 title="Toggle Stage 3→4 connector between Static Reference (solid dark arrow) and Video f=0925 (dashed berry spline)"
                 style={{
-                  padding: '3px 8px',
+                  padding: '4px 9px',
                   borderRadius: '9999px',
                   border: 'none',
                   background: 'transparent',
                   color: 'var(--ajb-text-secondary)',
-                  fontSize: '10px',
+                  fontSize: '11px',
                   fontWeight: 500,
                   cursor: 'pointer',
                 }}
@@ -1036,12 +1036,12 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
             onClick={onAddNewCase}
             aria-label="Add new starter case"
             style={{
-              width: '30px',
-              height: '30px',
+              width: '32px',
+              height: '32px',
               borderRadius: '9999px',
-              border: '1px solid rgba(255, 255, 255, 0.88)',
-              background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: 'var(--ajb-surface-elevated)',
+              boxShadow: 'var(--ajb-shadow-plus-circle)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1049,19 +1049,19 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               cursor: 'pointer',
             }}
           >
-            <Plus size={13} strokeWidth={1.9} />
+            <Plus size={14} strokeWidth={1.9} />
           </button>
           <button
             type="button"
             onClick={runFullChoreography}
             aria-label="Share or replay workflow"
             style={{
-              width: '30px',
-              height: '30px',
+              width: '32px',
+              height: '32px',
               borderRadius: '9999px',
-              border: '1px solid rgba(255, 255, 255, 0.88)',
-              background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: 'var(--ajb-surface-elevated)',
+              boxShadow: 'var(--ajb-shadow-plus-circle)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1069,19 +1069,19 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               cursor: 'pointer',
             }}
           >
-            <Share2 size={12} strokeWidth={1.8} />
+            <Share2 size={13} strokeWidth={1.8} />
           </button>
           <button
             type="button"
             onClick={() => onOpenDetail('alloc-1')}
             aria-label="Open schedule calendar"
             style={{
-              width: '30px',
-              height: '30px',
+              width: '32px',
+              height: '32px',
               borderRadius: '9999px',
-              border: '1px solid rgba(255, 255, 255, 0.88)',
-              background: '#FFFFFF',
-              boxShadow: '0 2px 6px rgba(36, 20, 24, 0.05)',
+              border: '1px solid var(--ajb-border-subtle)',
+              background: 'var(--ajb-surface-elevated)',
+              boxShadow: 'var(--ajb-shadow-plus-circle)',
               color: 'var(--ajb-text-primary)',
               display: 'inline-flex',
               alignItems: 'center',
@@ -1089,7 +1089,7 @@ export const ConnectedWorkflowCanvas: React.FC<ConnectedWorkflowCanvasProps> = (
               cursor: 'pointer',
             }}
           >
-            <Calendar size={12} strokeWidth={1.8} />
+            <Calendar size={13} strokeWidth={1.8} />
           </button>
         </div>
       </div>
@@ -1362,7 +1362,7 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
       onClick={() => onTakeForProcessing(item)}
       style={{
         width: '100%',
-        height: '54px',
+        height: '58px',
         padding: '0 14px 0 10px',
         borderRadius: '18px',
         border: showBlackTakeCta
@@ -1389,8 +1389,8 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
           src={item.avatarUrl}
           alt=""
           style={{
-            width: '34px',
-            height: '34px',
+            width: '36px',
+            height: '36px',
             borderRadius: '9999px',
             objectFit: 'cover',
             border: '1.5px solid #FFFFFF',
@@ -1412,7 +1412,7 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
             >
               <Plus size={13} />
             </span>
-            <span style={{ fontSize: '12px', fontWeight: 500, color: '#FFFFFF' }}>
+            <span style={{ fontSize: '13px', fontWeight: 550, color: '#FFFFFF' }}>
               {labelMode === 'reference' ? 'Take for Processing' : 'Open Starter Review'}
             </span>
           </div>
@@ -1420,8 +1420,8 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
           <div style={{ minWidth: 0 }}>
             <div
               style={{
-                fontSize: '12px',
-                fontWeight: 500,
+                fontSize: '13px',
+                fontWeight: 550,
                 color: 'var(--ajb-text-primary)',
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -1432,8 +1432,8 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
             </div>
             <div
               style={{
-                fontSize: '10.5px',
-                color: 'var(--ajb-text-muted)',
+                fontSize: '11.5px',
+                color: 'var(--ajb-text-secondary)',
                 marginTop: '2px',
               }}
             >
@@ -1445,7 +1445,7 @@ export const PipelineRowCard: React.FC<PipelineRowCardProps> = ({
 
       {!showBlackTakeCta && (
         <span style={{ color: 'var(--ajb-text-secondary)', flexShrink: 0 }}>
-          <Check size={13} strokeWidth={1.9} />
+          <Check size={14} strokeWidth={2} />
         </span>
       )}
     </button>
@@ -1480,16 +1480,16 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
         padding: '18px 20px',
         borderRadius: '24px',
         background: card.muted
-          ? 'rgba(255, 255, 255, 0.52)'
+          ? 'var(--ajb-surface-card)'
           : 'var(--ajb-surface-card-gradient)',
         border: '1px solid var(--ajb-border-subtle)',
         boxShadow: 'var(--ajb-shadow-card)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        minHeight: '214px',
+        minHeight: '220px',
         cursor: 'pointer',
-        opacity: card.muted ? 0.68 : 1,
+        opacity: card.muted ? 0.72 : 1,
         transition:
           'transform 180ms var(--ajb-ease-standard), box-shadow 180ms var(--ajb-ease-standard)',
       }}
@@ -1505,16 +1505,16 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
       >
         <div
           style={{
-            fontSize: '14px',
-            fontWeight: 500,
+            fontSize: '15px',
+            fontWeight: 550,
             lineHeight: 1.28,
             color: 'var(--ajb-text-primary)',
-            maxWidth: '130px',
+            maxWidth: '140px',
           }}
         >
           {title}
         </div>
-        <OverlappingAvatarCluster items={card.avatars} size={30} />
+        <OverlappingAvatarCluster items={card.avatars} size={32} />
       </div>
 
       {/* Middle Metrics Row */}
@@ -1525,7 +1525,7 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
           gap: '6px',
           margin: '16px 0',
           paddingTop: '10px',
-          borderTop: '1px solid rgba(18, 22, 33, 0.05)',
+          borderTop: '1px solid var(--ajb-border-row-divider)',
         }}
       >
         <div
@@ -1533,10 +1533,10 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: '11px',
+            fontSize: '12px',
           }}
         >
-          <span style={{ color: 'var(--ajb-text-muted)' }}>
+          <span style={{ color: 'var(--ajb-text-secondary)' }}>
             {labelMode === 'reference' ? 'Allocated Budget' : 'Onboarding Allowance'}
           </span>
           <span
@@ -1551,10 +1551,10 @@ export const ProgressGridCard: React.FC<ProgressGridCardProps> = ({
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            fontSize: '11px',
+            fontSize: '12px',
           }}
         >
-          <span style={{ color: 'var(--ajb-text-muted)' }}>Team Members</span>
+          <span style={{ color: 'var(--ajb-text-secondary)' }}>Team Members</span>
           <span
             className="ajb-tabular"
             style={{ fontWeight: 600, color: 'var(--ajb-text-primary)' }}

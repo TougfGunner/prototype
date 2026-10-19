@@ -23,6 +23,7 @@ import {
 export type WorkspaceScreenMode = 'journey' | 'pipelines' | 'in_progress';
 export type SimulationViewStatus = 'normal' | 'loading' | 'empty' | 'error' | 'completed';
 export type ConnectorRenderVariant = 'video_dashed_coral' | 'static_solid_dark';
+export type ThemeMode = 'light' | 'dark';
 
 export interface ModalFormDraft {
   mode: 'process_case' | 'add_case' | 'edit_task';
@@ -50,6 +51,7 @@ export interface ValidationErrors {
 
 interface PersistedOperationsState {
   schemaVersion: number;
+  theme: ThemeMode;
   screenMode: WorkspaceScreenMode;
   labelMode: LabelParityMode;
   activeDemoRole: DemoRoleView;
@@ -70,7 +72,7 @@ interface PersistedOperationsState {
 }
 
 const STORAGE_KEY = 'ajb-ref-ops-v1-state';
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 const DEFAULT_MODAL_DRAFT: ModalFormDraft = {
   mode: 'process_case',
@@ -98,6 +100,14 @@ function getInitialLabelModeFromUrl(): LabelParityMode {
   return 'operations';
 }
 
+function getInitialThemeFromUrl(): ThemeMode | null {
+  if (typeof window === 'undefined') return null;
+  const params = new URLSearchParams(window.location.search);
+  const t = params.get('theme');
+  if (t === 'dark' || t === 'light') return t;
+  return null;
+}
+
 function getInitialScreenFromUrl(): WorkspaceScreenMode {
   if (typeof window === 'undefined') return 'journey';
   const params = new URLSearchParams(window.location.search);
@@ -109,6 +119,7 @@ function getInitialScreenFromUrl(): WorkspaceScreenMode {
 }
 
 function loadState(): PersistedOperationsState {
+  const urlTheme = getInitialThemeFromUrl();
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
@@ -116,6 +127,7 @@ function loadState(): PersistedOperationsState {
       if (parsed && parsed.schemaVersion === SCHEMA_VERSION) {
         return {
           ...parsed,
+          theme: urlTheme || parsed.theme || 'light',
           labelMode:
             new URLSearchParams(window.location.search).get('labels') === 'reference'
               ? 'reference'
@@ -132,6 +144,7 @@ function loadState(): PersistedOperationsState {
 
   return {
     schemaVersion: SCHEMA_VERSION,
+    theme: urlTheme || 'light',
     screenMode: getInitialScreenFromUrl(),
     labelMode: getInitialLabelModeFromUrl(),
     activeDemoRole: 'Operations Coordinator',
@@ -185,8 +198,12 @@ export function useStarterStore() {
   const [validationErrors, setValidationErrors] = useState<ValidationErrors>({});
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // Persist to localStorage automatically
+  // Sync theme and role to root <html> attributes & persist to localStorage
   useEffect(() => {
+    if (typeof document !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', state.theme || 'light');
+      document.documentElement.setAttribute('data-active-role', state.activeDemoRole);
+    }
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     } catch {
@@ -199,6 +216,17 @@ export function useStarterStore() {
     window.setTimeout(() => {
       setToastMessage((prev) => (prev === msg ? null : prev));
     }, 3200);
+  }, []);
+
+  const setTheme = useCallback((theme: ThemeMode) => {
+    setState((prev) => ({ ...prev, theme }));
+  }, []);
+
+  const toggleTheme = useCallback(() => {
+    setState((prev) => ({
+      ...prev,
+      theme: prev.theme === 'dark' ? 'light' : 'dark',
+    }));
   }, []);
 
   const setScreenMode = useCallback((screenMode: WorkspaceScreenMode) => {
@@ -532,8 +560,9 @@ export function useStarterStore() {
 
   const resetAllDemoData = useCallback(() => {
     localStorage.removeItem(STORAGE_KEY);
-    setState({
+    setState((prev) => ({
       schemaVersion: SCHEMA_VERSION,
+      theme: prev.theme || getInitialThemeFromUrl() || 'light',
       screenMode: getInitialScreenFromUrl(),
       labelMode: getInitialLabelModeFromUrl(),
       activeDemoRole: 'Operations Coordinator',
@@ -551,7 +580,7 @@ export function useStarterStore() {
       pipelineItems: INITIAL_PIPELINE_ITEMS,
       progressGridCards: INITIAL_PROGRESS_GRID_CARDS,
       modalDraft: DEFAULT_MODAL_DRAFT,
-    });
+    }));
     setSimulationStatus('normal');
     showToast('Reset synthetic demonstration dataset to reference defaults.');
   }, [showToast]);
@@ -565,6 +594,8 @@ export function useStarterStore() {
     validationErrors,
     setValidationErrors,
     toastMessage,
+    setTheme,
+    toggleTheme,
     setScreenMode,
     setLabelMode,
     setActiveDemoRole,

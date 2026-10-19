@@ -1,0 +1,139 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "name": "Reference Operations v1 · AJ Bell Chime Rebrand",
+    "version": "2.1.0",
+    "motto": "Feel good, investing",
+    "packageId": "@ajbell-ops/reference-operations-v1",
+    "themes": ["light", "dark"],
+    "roles": [
+      "Operations Coordinator",
+      "Line Manager",
+      "IT Provisioning",
+      "Compliance & SMCR"
+    ]
+  },
+  "rootTokens": {
+    "color": {
+      "canvas": {
+        "$type": "color",
+        "cssVar": "--ajb-bg-canvas",
+        "light": "#E6E5DD",
+        "dark": "#110E13"
+      },
+      "surfaceShell": {
+        "$type": "color",
+        "cssVar": "--ajb-surface-shell-solid",
+        "light": "#F2F2EA",
+        "dark": "#18141C"
+      },
+      "surfaceCard": {
+        "$type": "color",
+        "cssVar": "--ajb-surface-card",
+        "light": "#FAFAF9",
+        "dark": "#28212D"
+      },
+      "surfaceElevated": {
+        "$type": "color",
+        "cssVar": "--ajb-surface-elevated",
+        "light": "#FFFFFF",
+        "dark": "#2F2735"
+      },
+      "surfaceSelected": {
+        "$type": "color",
+        "cssVar": "--ajb-surface-selected",
+        "light": "#5D0A1A",
+        "dark": "#9E1132"
+      },
+      "textPrimary": {
+        "$type": "color",
+        "cssVar": "--ajb-text-primary",
+        "light": "#242424",
+        "dark": "#FAF9F5"
+      },
+      "textSecondary": {
+        "$type": "color",
+        "cssVar": "--ajb-text-secondary",
+        "light": "#524F48",
+        "dark": "#CEC9C0"
+      },
+      "brandCrimson": {
+        "$type": "color",
+        "cssVar": "--ajb-accent-periwinkle",
+        "light": "#E81A41",
+        "dark": "#FF385C"
+      },
+      "brandBerry": {
+        "$type": "color",
+        "cssVar": "--ajb-accent-coral",
+        "light": "#B00054",
+        "dark": "#F03E98"
+      },
+      "brandGold": {
+        "$type": "color",
+        "cssVar": "--ajb-accent-amber",
+        "light": "#FFE272",
+        "dark": "#FFE272"
+      },
+      "brandEmerald": {
+        "$type": "color",
+        "cssVar": "--ajb-accent-emerald",
+        "light": "#2A792A",
+        "dark": "#44B844"
+      },
+      "brandTeal": {
+        "$type": "color",
+        "cssVar": "--ajb-accent-teal",
+        "light": "#18637C",
+        "dark": "#38A5C8"
+      }
+    },
+    "typography": {
+      "fontSans": "'Mona Sans', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Inter', sans-serif",
+      "scale": {
+        "xs": "11.5px",
+        "sm": "12.5px",
+        "base": "13.5px",
+        "md": "15px",
+        "lg": "17.5px",
+        "xl": "24px"
+      }
+    },
+    "motion": {
+      "instant": "90ms",
+      "fast": "160ms",
+      "normal": "260ms",
+      "modal": "320ms",
+      "connector": "380ms",
+      "stagger": "42ms",
+      "easeOutQuart": "cubic-bezier(0.22, 1, 0.36, 1)",
+      "easeSpring": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    }
+  },
+  "roleLevelTokens": {
+    "Operations Coordinator": {
+      "cssPrefix": "--role-ops",
+      "lightPrimary": "#E81A41",
+      "darkPrimary": "#FF385C",
+      "ownedStages": ["01 · Starter Details", "04 · Ready for Onboarding"]
+    },
+    "Hiring Manager": {
+      "cssPrefix": "--role-manager",
+      "lightPrimary": "#B00054",
+      "darkPrimary": "#F03E98",
+      "ownedStages": ["02 · Role & Access Profile", "03 · Manager Review"]
+    },
+    "Identity & Access Lead": {
+      "cssPrefix": "--role-it",
+      "lightPrimary": "#18637C",
+      "darkPrimary": "#38A5C8",
+      "ownedStages": ["02 · Role & Access Profile", "04 · Ready for Onboarding"]
+    },
+    "Compliance Reviewer": {
+      "cssPrefix": "--role-compliance",
+      "lightPrimary": "#2A792A",
+      "darkPrimary": "#44B844",
+      "ownedStages": ["01 · Starter Details", "03 · Manager Review"]
+    }
+  }
+}

@@ -2,17 +2,18 @@ import React from 'react';
 
 export interface AJBellWordmarkProps {
   height?: number;
-  variant?: 'crimson' | 'white' | 'burgundy' | 'monochrome';
+  variant?: 'auto' | 'crimson' | 'white' | 'burgundy' | 'monochrome';
   className?: string;
 }
 
 /**
  * Official AJ Bell Redesigned ("Chime") Wordmark & Bell SVG
  * Extracted verbatim from https://www.ajbell.co.uk/ header vector paths (viewBox 0 0 110 35).
+ * Defaults to variant="auto" which adapts via --ajb-logo-wordmark (#DA3946 in Light, #FAF9F5 in Dark).
  */
 export const AJBellWordmarkLogo: React.FC<AJBellWordmarkProps> = ({
   height = 24,
-  variant = 'crimson',
+  variant = 'auto',
   className,
 }) => {
   const width = Math.round((height / 35) * 110);
@@ -23,7 +24,9 @@ export const AJBellWordmarkLogo: React.FC<AJBellWordmarkProps> = ({
         ? '#5D0A1A'
         : variant === 'monochrome'
           ? 'currentColor'
-          : '#E81A41';
+          : variant === 'crimson'
+            ? '#E81A41'
+            : 'var(--ajb-logo-wordmark, #DA3946)';
   const bellFill =
     variant === 'white'
       ? '#FFE272'
@@ -31,7 +34,13 @@ export const AJBellWordmarkLogo: React.FC<AJBellWordmarkProps> = ({
         ? '#E81A41'
         : variant === 'monochrome'
           ? 'currentColor'
-          : '#DA3946';
+          : 'var(--ajb-brand-logo-red, #DA3946)';
+  const clapperFill =
+    variant === 'monochrome'
+      ? 'currentColor'
+      : variant === 'crimson'
+        ? '#DA3946'
+        : '#FFE272';
 
   return (
     <svg
@@ -63,7 +72,7 @@ export const AJBellWordmarkLogo: React.FC<AJBellWordmarkProps> = ({
       />
       <path
         d="M104.771 29.6505C104.771 30.9457 103.738 31.99 102.456 31.99C101.174 31.99 100.141 30.9457 100.141 29.6505"
-        fill={bellFill}
+        fill={clapperFill}
       />
       <path
         d="M36.3644 0H30.7607V20.8146C30.7607 21.9592 30.4825 22.9733 28.863 22.9733H27.2932V28.1845C27.9788 28.2247 29.1512 28.2247 29.6678 28.2247C35.0231 28.2247 36.3545 25.4936 36.3545 21.427V0H36.3644Z"
